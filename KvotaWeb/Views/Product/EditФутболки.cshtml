@@ -1,0 +1,152 @@
+﻿@model KvotaWeb.Models.ListItem
+
+<form id="myform" method="post" action="/Product/EditФутболки">
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        <h4>Элемент заказа № @Model.listId</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.listId)
+        @Html.HiddenFor(model => model.tipProd)
+        @Html.HiddenFor(model => model.kolvoMest)
+        @Html.HiddenFor(model => model.total)
+
+        @Html.HiddenFor(model => model.ssilk)
+        @Html.HiddenFor(model => model.cebest)
+        @Html.HiddenFor(model => model.vid1)
+        @* <div class="form-group">
+            <label class="control-label col-sm-5">Ссылка на продукцию:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.ssilk, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ssilk, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="cebestDiv" style=@ViewData["cebestDivStyle"]>
+            <label class="control-label col-sm-5">Себестоимость продукции:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.cebest, new { htmlAttributes = new { @id = "cebestBag", @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.cebest, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            <label class="control-label col-sm-5">Тираж:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.tiraz, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.tiraz, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group" id="paramDiv11" style=@ViewData["paramDivStyle11"]>
+            <label id="paramLabel11" class="control-label col-sm-5">@ViewData["paramLabel11"]</label>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.param11, @ViewData["paramBag11"] as SelectList, "(не выбрано)", new { @id = "param11", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.param11, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="paramDiv12" style=@ViewData["paramDivStyle12"]>
+            <label id="paramLabel12" class="control-label col-sm-5">@ViewData["paramLabel12"]</label>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.param12, @ViewData["paramBag12"] as SelectList, "(не выбрано)", new { @id = "param12", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.param12, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        
+
+        <div class="form-group" id="paramDiv21" style=@ViewData["paramDivStyle21"]>
+            <label id="paramLabel21" class="control-label col-sm-5">@ViewData["paramLabel21"]</label>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.param21, @ViewData["paramBag21"] as SelectList, "(не выбрано)", new { @id = "param21", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.param21, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="paramDiv22" style=@ViewData["paramDivStyle22"]>
+            <label id="paramLabel22" class="control-label col-sm-5">@ViewData["paramLabel22"]</label>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.param22, @ViewData["paramBag22"] as SelectList, "(не выбрано)", new { @id = "param22", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.param22, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        
+        <div class="form-group" id="paramDiv31" style=@ViewData["paramDivStyle31"]>
+            <label id="paramLabel31" class="control-label col-sm-5">@ViewData["paramLabel31"]</label>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.param31, @ViewData["paramBag31"] as SelectList, "(не выбрано)", new { @id = "param31", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.param31, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <hr class="divider" />
+            <label class="control-label col-sm-5">Итого:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.totalLabel, new { htmlAttributes = new { @class = "form-control", @id = "totalLabel", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.totalLabel, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="askBetterPriceDiv" style=@ViewData["askBetterPriceDivStyle"] align="left">
+            <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                *Для получения лучшей цены обратитесь в Отдел реализации
+            </label>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-7">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+  
+   
+    function OnChangeEvent()
+    {
+        $("body").css("cursor", "progress");
+       // var test = '<%= new JavaScriptSerializer().Serialize(ViewData["labelByVid"])) %>';
+       // alert(test);
+       // alert(test[24][1]);
+        //test = '<%= new JavaScriptSerializer().Serialize(ViewData["labelByVid"][24][1])) %>';
+       // alert("upd");
+        //return;
+            $.ajax({
+                type: 'POST',
+                url: "/Product/Recalc",
+                data: $('#myform').serialize(),
+                success: function (data, res) {
+                    document.getElementById('total').value = data.total;
+                    document.getElementById('totalLabel').value = data.totalLabel;
+                    if (data.askBetterPrice)
+                        document.getElementById('askBetterPriceDiv').style.display = "block";
+                    else
+                        document.getElementById('askBetterPriceDiv').style.display = "none";
+                    $("body").css("cursor", "default");
+                },
+                error: function () {
+                    //$("#commentList").append($("#name").val() + "<br />" + $("#body").val());
+                    alert("There was an error submitting comment");
+                    $("body").css("cursor", "default");
+                }
+            });
+}
+</script>
+<script type='text/javascript'>
+        //alert("Stop that parsing!");.style.display = "block";
+        //$('#param' + vidNum + 2)
+        //elem.style.display = "none";
+        /* OnChangeVidEvent(1);
+       OnChangeVidEvent(2);
+        OnChangeVidEvent(3);
+        OnChangeVidEvent(4);*/
+</script>
+<div>
+    @Html.ActionLink("К заказу", "Edit", "Home", new { id = @Model.listId }, null)
+</div>

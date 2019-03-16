@@ -1,0 +1,186 @@
+﻿@model KvotaWeb.Models.ListItem
+
+
+<form id="myform" method="post" action="/Product/EditBanner">
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        <h4>Элемент заказа № @Model.listId</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.id)
+                        @Html.HiddenFor(model => model.listId)
+                                @Html.HiddenFor(model => model.tipProd)
+                                @Html.HiddenFor(model => model.total)
+     
+        <div class="form-group">
+            <label class="control-label col-sm-5">Вид печати:</label>                
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.bVid, @ViewBag.vidi as SelectList, "(не выбрано)", new { @id = "bVid",@class = "form-control" , @onchange = "bVidChanged();" })
+                @Html.ValidationMessageFor(model => model.bVid, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <script type="text/javascript">
+            function bVidChanged() {
+                var vidId = $('#bVid').val();
+            var url = '@Url.Action("fillBMats", "Product")';
+                $.getJSON(url, { id:vidId }, function (result) {
+                    var ddl = $('#bMat');
+                    ddl.empty();
+                    $(result).each(function() {
+                        $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
+                    });
+
+                    $.getJSON('@Url.Action("fillBdpis", "Product")', { id: vidId }, function (result) {
+                        var ddl = $('#bDpi');
+                        ddl.empty();
+                        $(result).each(function () {
+                            $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
+                        });
+                        OnChangeEvent();
+                    });
+                });
+            };
+        </script>
+        <div class="form-group">
+            <label class="control-label col-sm-5">Наименование материала:</label>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.bMat, @ViewBag.mats as SelectList, "(не выбрано)", new { @id = "bMat",@class = "form-control" , @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.bMat, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-5">Качество печати:</label>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.bDpi, @ViewBag.dpis as SelectList, "(не выбрано)", new { @id = "bDpi", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.bDpi, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-5">Площадь печати, м.кв.:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.tiraz, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.tiraz, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<hr class="divider" />
+    <fieldset>
+        <legend>Войти в систему</legend>*@
+            <div class="form-group">
+                <label class="control-label col-sm-5">Стыковка. Поля по 50мм:</label>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.bPost1, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                    @Html.ValidationMessageFor(model => model.bPost1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-5">Люверсы д. 10мм, шт.:</label>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.bPost2, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                    @Html.ValidationMessageFor(model => model.bPost2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-5">Проклейка края баннера, м.п.:</label>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.bPost3, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                    @Html.ValidationMessageFor(model => model.bPost3, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-5">Проклейка края сетки, м.п.:</label>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.bPost4, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                    @Html.ValidationMessageFor(model => model.bPost4, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-5">Проклейка края баннера с веревкой, м.п.:</label>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.bPost5, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                    @Html.ValidationMessageFor(model => model.bPost5, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-5">Проклейка края сетки с веревкой, м.п.:</label>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.bPost6, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                    @Html.ValidationMessageFor(model => model.bPost6, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-5">Карманы, м.п.:</label>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.bPost7, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                    @Html.ValidationMessageFor(model => model.bPost7, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-5">Обрезка в край, м.п.:</label>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.bPost8, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                    @Html.ValidationMessageFor(model => model.bPost8, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-5">Ламинирование Китай, м.кв.:</label>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.bPost9, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                    @Html.ValidationMessageFor(model => model.bPost9, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <hr class="divider" />
+                <label class="control-label col-sm-5">Итого:</label>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.totalLabel, new { htmlAttributes = new { @class = "form-control", @id = "totalLabel", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.totalLabel, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-5 col-sm-7">
+                    <input type="submit" value="Сохранить" class="btn btn-primary" />
+                </div>
+            </div>
+</div>
+</form>
+<script type="text/javascript">
+    function OnChangeEvent()
+        {
+            //alert("");
+            $.ajax({
+                type: 'POST',
+                url: "/Product/Recalc",
+                data: $('#myform').serialize(),
+                //UpdateTargetId: "#results",
+                success: function (data, res) {
+                    //$("#results").html(data);
+                   // alert(data.total);
+                    //alert(data.totalLabel);
+                    document.getElementById('total').value = data.total;
+                    document.getElementById('totalLabel').value = data.totalLabel;
+                },
+                error: function () {
+                    //$("#commentList").append($("#name").val() + "<br />" + $("#body").val());
+                    alert("There was an error submitting comment");
+                }
+            });
+}
+</script>
+<div>
+@Html.ActionLink("К заказу", "Edit", "Home", new { id = @Model.listId }, null)
+    </div>

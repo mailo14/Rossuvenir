@@ -1,0 +1,23 @@
+﻿@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        <ul class="nav navbar-nav navbar-right">
+            @*<li>User.Identity.Name</li>*@
+            <li>@Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "изменить" })</li>
+            @Html.AntiForgeryToken()
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a></li>
+            @if (@User.Identity.Name == "Ефименко")
+            {
+            <li>@Html.ActionLink("добавить", "Register", "Account", routeValues: null, htmlAttributes: new { title = "добавить менеджера" })</li>
+            }
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
+        <li>@Html.ActionLink("Войти", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

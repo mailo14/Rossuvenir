@@ -1,0 +1,6 @@
+ поменять в Рубрики.xlsx с сохранением номеров
+
+в хом Edit.cshtml 
+-- поменять в  <ul class="dropdown-menu" role="menu">
+//-- в  function getProdName(tipProd)
+-- в   public string tipProdName{

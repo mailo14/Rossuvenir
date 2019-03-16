@@ -1,0 +1,30 @@
+﻿<table class="table table-bordered table-hover table-striped ">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Количество</th>
+            <th>Стоимость</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var b in @ViewBag.listItemsP)
+            {
+            <tr>
+                <td>@b.tipProdName</td>
+                <td>@b.tiraz</td>
+                <td>@b.total</td>
+                @*<td><p><a href="/Product/Edit/@b.id"></a></p></td>*@
+                <td>
+                    <a href="/Home/EditLi?id=@b.id&tipProd=@b.tipProd">
+                        <img src="/Images/edit.png" height="27" style="margin:1px 1px" />
+                    </a>
+                    <a>
+                        @*="/Home/DeleteLi?id=@b.id">*@
+                        <img src="/Images/delete.png" height="27" style="margin:1px 1px; cursor: pointer;" onclick="if (confirm('Удалить запись?') == true) window.location.href = '/Home/DeleteLi?id=@b.id';" />
+                    </a>
+                </td>
+            </tr>
+        }
+</table>
+

@@ -1,0 +1,22 @@
+﻿@model KvotaWeb.Models.LocalPasswordModel
+@{
+//ViewBag.Title = "Управление аккаунтом";
+}
+<hr />
+<h4>Управление аккаунтом</h4>
+<hr />
+
+<p>Вы вошли как <strong>@User.Identity.Name</strong></p>
+
+@if (ViewBag.HasLocalPassword)
+{
+    @Html.Partial("_ChangePasswordPartial")
+}
+else
+{
+    @Html.Partial("_SetPasswordPartial")
+}
+<p class="message-success">@ViewBag.StatusMessage</p>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,43 @@
+﻿<div class="form-horizontal">  
+    <hr />  
+    <h4>Заказы</h4>
+    <hr />
+    <div class="form-group">
+        <div class="col-md-offset-5 col-sm-7">
+            <input value="добавить заказ" type="button" class="btn btn-default" onclick="window.location.href = '/Home/Add?userId=1';" />
+        </div>
+    </div>
+    <div class="form-group">
+        <table class="table table-bordered table-hover table-striped ">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Дата</th>
+                    <th>Менеджер</th>
+                    <th>Наименование</th>
+                    <th>Стоимость</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var b in ViewBag.zz)
+            {
+                    <tr>
+                        <td>@b.id</td>
+                        <td>@b.dat.ToString("dd.MM.yyyy")</td>
+                        <td>@b.userName</td>
+                        <td>@b.comment</td>
+                        <td>@b.total</td>
+                        <td>
+                            <a href="/Home/Edit/@b.id">
+                                <img src="/Images/edit.png" height="27" style="margin:1px 1px" />
+                            </a>
+                            <a>
+                                <img src="/Images/delete.png" height="27" style="margin:1px 1px; cursor: pointer;" onclick="if (confirm('Удалить запись?') == true) window.location.href = '/Home/Delete?id=@b.id';" />
+                            </a>
+                        </td>
+                    </tr>
+                }
+        </table>
+    </div>
+</div>

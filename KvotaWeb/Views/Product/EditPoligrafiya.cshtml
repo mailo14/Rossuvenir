@@ -1,0 +1,112 @@
+﻿@model KvotaWeb.Models.ListItem
+
+<form id="myform" method="post" action="/Product/EditPoligrafiya">
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        <h4>Элемент заказа № @Model.listId</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.listId)
+        @Html.HiddenFor(model => model.tipProd)
+        @Html.HiddenFor(model => model.total)
+
+
+        <div class="form-group">
+            <label class="control-label col-sm-5">Размер продукции:</label>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.pRazm, @ViewBag.razm as SelectList, "(не выбрано)", new { @id = "pRazm",@class = "form-control" , @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.pRazm, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-5">Цветность:</label>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.pCvet, @ViewBag.cvet as SelectList, "(не выбрано)", new { @id = "pCvet",@class = "form-control" , @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.pCvet, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-5">Плотность бумаги:</label>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.pPlotn, @ViewBag.plotn as SelectList, "(не выбрано)", new { @id = "pPlotn",@class = "form-control" , @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.pPlotn, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-5">Тираж:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.tiraz, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.tiraz, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <hr class="divider"/>
+        <!--label class="col-xs-12">Спец. отделка:</label-->
+        <div class="form-group">
+            <label class="control-label col-sm-5">Ламинация:</label>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.pLamin, @ViewBag.lamin as SelectList, "(не выбрано)", new { @id = "pLamin",@class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.pLamin, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-5">Биговка, шт./ед.тиража:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.pBigov, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.pBigov, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-5">Дырки, шт./ед.тиража:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.pDirk, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.pDirk, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <hr class="divider" />
+<label class="control-label col-sm-5">Итого:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.totalLabel, new { htmlAttributes = new { @class = "form-control", @id = "totalLabel", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.totalLabel, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-5 col-sm-7">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    function OnChangeEvent()
+        {
+            $.ajax({
+                type: 'POST',
+                url: "/Product/Recalc",
+                data: $('#myform').serialize(),
+                success: function (data, res) {
+                    document.getElementById('total').value = data.total;
+                    document.getElementById('totalLabel').value = data.totalLabel;
+                },
+                error: function () {
+                    //$("#commentList").append($("#name").val() + "<br />" + $("#body").val());
+                    alert("There was an error submitting comment");
+                }
+            });
+}
+</script>
+
+    <div>
+        @Html.ActionLink("К заказу", "Edit", "Home", new { id = @Model.listId }, null)
+    </div>

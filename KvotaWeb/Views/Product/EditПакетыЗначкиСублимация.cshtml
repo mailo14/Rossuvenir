@@ -1,0 +1,207 @@
+﻿@model KvotaWeb.Models.ListItem
+
+<form id="myform" method="post" action="/Product/EditПакетыЗначкиСублимация" >
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        <h4>Элемент заказа № @Model.listId</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.listId)
+        @Html.HiddenFor(model => model.tipProd)
+        @Html.HiddenFor(model => model.kolvoMest)
+        @Html.HiddenFor(model => model.total)
+
+        @Html.HiddenFor(model => model.ssilk)
+        @Html.HiddenFor(model => model.cebest)
+        @* <div class="form-group">
+            <label class="control-label col-sm-5">Ссылка на продукцию:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.ssilk, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ssilk, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="cebestDiv" style=@ViewData["cebestDivStyle"]>
+            <label class="control-label col-sm-5">Себестоимость продукции:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.cebest, new { htmlAttributes = new { @id = "cebestBag", @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.cebest, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            <label class="control-label col-sm-5">Тираж:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.tiraz, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.tiraz, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div id="vidDiv1">
+            @Html.HiddenFor(model => model.vid1)
+
+            <div class="form-group" id="paramDiv11" style=@ViewData["paramDivStyle11"]>
+                <label id="paramLabel11" class="control-label col-sm-5">@ViewData["paramLabel11"]</label>
+                <div class="col-sm-7">
+                    @Html.DropDownListFor(model => model.param11, @ViewData["paramBag11"] as SelectList, "(не выбрано)", new { @id = "param11", @class = "form-control", @onchange = "OnChangeParam1Event(1);" })
+                    @Html.ValidationMessageFor(model => model.param11, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" id="paramDiv12" style=@ViewData["paramDivStyle12"]>
+                <label id="paramLabel12" class="control-label col-sm-5">@ViewData["paramLabel12"]</label>
+                <div class="col-sm-7">
+                    @Html.DropDownListFor(model => model.param12, @ViewData["paramBag12"] as SelectList, "(не выбрано)", new { @id = "param12", @class = "form-control", @onchange = "OnChangeEvent();" })
+                    @Html.ValidationMessageFor(model => model.param12, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" id="paramDiv13" style=@ViewData["paramDivStyle13"]>
+                <label id="paramLabel13" class="control-label col-sm-5">@ViewData["paramLabel13"]</label>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.param13, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                    @Html.ValidationMessageFor(model => model.param13, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group" id="paramDiv14" style=@ViewData["paramDivStyle14"] align="left">
+                <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                    @Html.EditorFor(model => model.param14, new { htmlAttributes = new { @id = "param14", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
+                    <label for="param14" id="paramLabel14">@ViewData["paramLabel14"]</label>
+                </label>
+            </div>
+            <div class="form-group" id="paramDiv15" style=@ViewData["paramDivStyle15"] align="left">
+                <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                    @Html.EditorFor(model => model.param15, new { htmlAttributes = new { @id = "param15", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
+                    <label for="param15" id="paramLabel15">@ViewData["paramLabel15"]</label>
+                </label>
+            </div>
+
+
+            <div class="form-group" id="paramDiv16" style=@ViewData["paramDivStyle16"] align="left">
+                <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                    @Html.EditorFor(model => model.param24, new { htmlAttributes = new { @id = "param16", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
+                    <label for="param16" id="paramLabel16">@ViewData["paramLabel16"]</label>
+                </label>
+            </div>
+
+            <div class="form-group" id="paramDiv17" style=@ViewData["paramDivStyle17"] align="left">
+                <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                    @Html.EditorFor(model => model.param25, new { htmlAttributes = new { @id = "param17", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
+                    <label for="param17" id="paramLabel17">@ViewData["paramLabel17"]</label>
+                </label>
+            </div>
+
+            <div class="form-group" id="paramDiv18" style=@ViewData["paramDivStyle18"] align="left">
+                <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                    @Html.EditorFor(model => model.param34, new { htmlAttributes = new { @id = "param18", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
+                    <label for="param18" id="paramLabel18">@ViewData["paramLabel18"]</label>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <hr class="divider" />
+            <label class="control-label col-sm-5">Итого:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.totalLabel, new { htmlAttributes = new { @class = "form-control", @id = "totalLabel", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.totalLabel, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="askBetterPriceDiv" style=@ViewData["askBetterPriceDivStyle"] align="left">
+            <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+              *Для получения лучшей цены обратитесь в Отдел реализации
+            </label>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-7">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    function OnChangeParam1Event(vidNum) {
+        //var catId = $(this).val();
+      
+        catId = $('#param' + vidNum.toString() + 1).val();
+        if (catId == 229)
+            document.getElementById('paramDiv18').style.display = "none";        
+        else 
+            if (catId == 230)
+                document.getElementById('paramDiv18').style.display = "block";
+            else
+                if (catId == 232)
+                    document.getElementById('paramDiv16').style.display = "none";
+                else
+                    if (catId == 231)
+                    document.getElementById('paramDiv16').style.display = "block";
+
+       // alert(catId);
+        var vidId=$('#vid' + vidNum).val();
+        //if (vidId != 201 && vidId != 205 && vidId != 29 && vidId != 25 && (vidId < 211 || vidId==212)) {
+        if (vidId == 212) {
+            var url = '@Url.Action("fillParam2", "Product")';
+            $.getJSON(url, { catId: catId }, function (result) {
+          //      alert(catId);
+                var ddl = $('#param' + vidNum.toString() + 2);
+                ddl.empty();
+                $(result).each(function () {
+                    $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
+                });
+                OnChangeEvent();
+                $('#param' + vidNum + 2).focus();
+            });
+        }
+        else {
+           // alert('else');
+            $('#param' + vidNum + 3).focus();
+            OnChangeEvent();
+        }
+    }
+    function OnChangeEvent()
+    {
+        $("body").css("cursor", "progress");
+       // var test = '<%= new JavaScriptSerializer().Serialize(ViewData["labelByVid"])) %>';        
+       // alert(test);
+       // alert(test[24][1]);
+        //test = '<%= new JavaScriptSerializer().Serialize(ViewData["labelByVid"][24][1])) %>';
+       // alert("upd");
+        //return;
+            $.ajax({
+                type: 'POST',
+                url: "/Product/Recalc",
+                data: $('#myform').serialize(),
+                success: function (data, res) {
+                    document.getElementById('total').value = data.total;
+                    document.getElementById('totalLabel').value = data.totalLabel;
+                    if (data.askBetterPrice)
+                        document.getElementById('askBetterPriceDiv').style.display = "block";
+                    else
+                        document.getElementById('askBetterPriceDiv').style.display = "none";
+                    $("body").css("cursor", "default");
+                },
+                error: function () {
+                    //$("#commentList").append($("#name").val() + "<br />" + $("#body").val());
+                    alert("There was an error submitting comment");
+                    $("body").css("cursor", "default");
+                } 
+            });
+}
+</script>
+<script type='text/javascript'>
+    //alert("Stop that parsing!");.style.display = "block";
+    //$('#param' + vidNum + 2)
+    //elem.style.display = "none";
+    /* OnChangeVidEvent(1);
+   OnChangeVidEvent(2);
+    OnChangeVidEvent(3);
+    OnChangeVidEvent(4);*/
+</script>
+    <div>       
+@Html.ActionLink("К заказу", "Edit", "Home",new { id = @Model.listId }, null)
+    </div>

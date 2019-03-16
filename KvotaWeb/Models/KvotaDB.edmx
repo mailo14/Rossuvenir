@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище kvotaModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tip" Type="nvarchar(max)" />
+          <Property Name="parentId" Type="int" />
+        </EntityType>
+        <EntityType Name="ListItem">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="listId" Type="int" />
+          <Property Name="tipProd" Type="int" Nullable="false" />
+          <Property Name="tiraz" Type="float" />
+          <Property Name="ssilk" Type="nvarchar(max)" />
+          <Property Name="cebest" Type="float" />
+          <Property Name="kolvoMest" Type="int" />
+          <Property Name="vid1" Type="int" />
+          <Property Name="param11" Type="int" />
+          <Property Name="param12" Type="int" />
+          <Property Name="param13" Type="float" />
+          <Property Name="vid2" Type="int" />
+          <Property Name="param21" Type="int" />
+          <Property Name="param22" Type="int" />
+          <Property Name="param23" Type="float" />
+          <Property Name="vid3" Type="int" />
+          <Property Name="param31" Type="int" />
+          <Property Name="param32" Type="int" />
+          <Property Name="param33" Type="float" />
+          <Property Name="vid4" Type="int" />
+          <Property Name="param41" Type="int" />
+          <Property Name="param42" Type="int" />
+          <Property Name="param43" Type="float" />
+          <Property Name="pRazm" Type="int" />
+          <Property Name="pCvet" Type="int" />
+          <Property Name="pPlotn" Type="int" />
+          <Property Name="pLamin" Type="int" />
+          <Property Name="pBigov" Type="int" />
+          <Property Name="pDirk" Type="int" />
+          <Property Name="bVid" Type="int" />
+          <Property Name="bMat" Type="int" />
+          <Property Name="bPost1" Type="int" />
+          <Property Name="bPost2" Type="int" />
+          <Property Name="bPost3" Type="int" />
+          <Property Name="bPost4" Type="int" />
+          <Property Name="bPost5" Type="int" />
+          <Property Name="bPost6" Type="int" />
+          <Property Name="bPost7" Type="int" />
+          <Property Name="bPost8" Type="int" />
+          <Property Name="bPost9" Type="int" />
+          <Property Name="total" Type="float" />
+          <Property Name="totalLabel" Type="nvarchar(max)" />
+          <Property Name="bDpi" Type="int" />
+          <Property Name="param55" Type="bit" Nullable="false" />
+          <Property Name="param14" Type="bit" Nullable="false" />
+          <Property Name="param24" Type="bit" Nullable="false" />
+          <Property Name="param34" Type="bit" Nullable="false" />
+          <Property Name="param44" Type="bit" Nullable="false" />
+          <Property Name="param15" Type="bit" Nullable="false" />
+          <Property Name="param25" Type="bit" Nullable="false" />
+          <Property Name="param35" Type="bit" Nullable="false" />
+          <Property Name="param45" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Price">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="catId" Type="int" Nullable="false" />
+          <Property Name="subtip" Type="nvarchar(max)" />
+          <Property Name="tiraz" Type="int" Nullable="false" />
+          <Property Name="cena" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rabotnik">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="login" Type="nvarchar(max)" />
+          <Property Name="passw" Type="nvarchar(max)" />
+          <Property Name="uroven" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Zakaz">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="num" Type="int" />
+          <Property Name="comment" Type="nvarchar(max)" />
+          <Property Name="total" Type="float" />
+          <Property Name="dopUslDost" Type="bit" Nullable="false" />
+          <Property Name="dopUslMaket" Type="bit" Nullable="false" />
+          <Property Name="nacenTip" Type="int" />
+          <Property Name="nacenValue" Type="float" />
+          <Property Name="dopTrat" Type="float" />
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="dat" Type="smalldatetime" Nullable="false" />
+          <Property Name="userName" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityContainer Name="Хранилище kvotaModelContainer">
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ListItem" EntityType="Self.ListItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Price" EntityType="Self.Price" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rabotnik" EntityType="Self.Rabotnik" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Zakaz" EntityType="Self.Zakaz" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="kvotaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="kvotaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Category" EntityType="kvotaModel.Category" />
+          <EntitySet Name="ListItem" EntityType="kvotaModel.ListItem" />
+          <EntitySet Name="Price" EntityType="kvotaModel.Price" />
+          <EntitySet Name="Rabotnik" EntityType="kvotaModel.Rabotnik" />
+          <EntitySet Name="Zakaz" EntityType="kvotaModel.Zakaz" />
+        </EntityContainer>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="parentId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ListItem">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="listId" Type="Int32" />
+          <Property Name="tipProd" Type="Int32" Nullable="false" />
+          <Property Name="tiraz" Type="Double" />
+          <Property Name="ssilk" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cebest" Type="Double" />
+          <Property Name="kolvoMest" Type="Int32" />
+          <Property Name="vid1" Type="Int32" />
+          <Property Name="param11" Type="Int32" />
+          <Property Name="param12" Type="Int32" />
+          <Property Name="param13" Type="Double" />
+          <Property Name="vid2" Type="Int32" />
+          <Property Name="param21" Type="Int32" />
+          <Property Name="param22" Type="Int32" />
+          <Property Name="param23" Type="Double" />
+          <Property Name="vid3" Type="Int32" />
+          <Property Name="param31" Type="Int32" />
+          <Property Name="param32" Type="Int32" />
+          <Property Name="param33" Type="Double" />
+          <Property Name="vid4" Type="Int32" />
+          <Property Name="param41" Type="Int32" />
+          <Property Name="param42" Type="Int32" />
+          <Property Name="param43" Type="Double" />
+          <Property Name="pRazm" Type="Int32" />
+          <Property Name="pCvet" Type="Int32" />
+          <Property Name="pPlotn" Type="Int32" />
+          <Property Name="pLamin" Type="Int32" />
+          <Property Name="pBigov" Type="Int32" />
+          <Property Name="pDirk" Type="Int32" />
+          <Property Name="bVid" Type="Int32" />
+          <Property Name="bMat" Type="Int32" />
+          <Property Name="bPost1" Type="Int32" />
+          <Property Name="bPost2" Type="Int32" />
+          <Property Name="bPost3" Type="Int32" />
+          <Property Name="bPost4" Type="Int32" />
+          <Property Name="bPost5" Type="Int32" />
+          <Property Name="bPost6" Type="Int32" />
+          <Property Name="bPost7" Type="Int32" />
+          <Property Name="bPost8" Type="Int32" />
+          <Property Name="bPost9" Type="Int32" />
+          <Property Name="total" Type="Double" />
+          <Property Name="totalLabel" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="bDpi" Type="Int32" />
+          <Property Name="param55" Type="Boolean" Nullable="false" />
+          <Property Name="param14" Type="Boolean" Nullable="false" />
+          <Property Name="param24" Type="Boolean" Nullable="false" />
+          <Property Name="param34" Type="Boolean" Nullable="false" />
+          <Property Name="param44" Type="Boolean" Nullable="false" />
+          <Property Name="param15" Type="Boolean" Nullable="false" />
+          <Property Name="param25" Type="Boolean" Nullable="false" />
+          <Property Name="param35" Type="Boolean" Nullable="false" />
+          <Property Name="param45" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Price">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="catId" Type="Int32" Nullable="false" />
+          <Property Name="subtip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="tiraz" Type="Int32" Nullable="false" />
+          <Property Name="cena" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rabotnik">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="login" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="passw" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="uroven" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Zakaz">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="num" Type="Int32" />
+          <Property Name="comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="total" Type="Double" />
+          <Property Name="dopUslDost" Type="Boolean" Nullable="false" />
+          <Property Name="dopUslMaket" Type="Boolean" Nullable="false" />
+          <Property Name="nacenTip" Type="Int32" />
+          <Property Name="nacenValue" Type="Double" />
+          <Property Name="dopTrat" Type="Double" />
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="dat" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="userName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище kvotaModelContainer" CdmEntityContainer="kvotaEntities">
+          <EntitySetMapping Name="Category">
+            <EntityTypeMapping TypeName="kvotaModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="parentId" ColumnName="parentId" />
+                <ScalarProperty Name="tip" ColumnName="tip" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ListItem">
+            <EntityTypeMapping TypeName="kvotaModel.ListItem">
+              <MappingFragment StoreEntitySet="ListItem">
+                <ScalarProperty Name="param45" ColumnName="param45" />
+                <ScalarProperty Name="param35" ColumnName="param35" />
+                <ScalarProperty Name="param25" ColumnName="param25" />
+                <ScalarProperty Name="param15" ColumnName="param15" />
+                <ScalarProperty Name="param44" ColumnName="param44" />
+                <ScalarProperty Name="param34" ColumnName="param34" />
+                <ScalarProperty Name="param24" ColumnName="param24" />
+                <ScalarProperty Name="param14" ColumnName="param14" />
+                <ScalarProperty Name="param55" ColumnName="param55" />
+                <ScalarProperty Name="bDpi" ColumnName="bDpi" />
+                <ScalarProperty Name="totalLabel" ColumnName="totalLabel" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="bPost9" ColumnName="bPost9" />
+                <ScalarProperty Name="bPost8" ColumnName="bPost8" />
+                <ScalarProperty Name="bPost7" ColumnName="bPost7" />
+                <ScalarProperty Name="bPost6" ColumnName="bPost6" />
+                <ScalarProperty Name="bPost5" ColumnName="bPost5" />
+                <ScalarProperty Name="bPost4" ColumnName="bPost4" />
+                <ScalarProperty Name="bPost3" ColumnName="bPost3" />
+                <ScalarProperty Name="bPost2" ColumnName="bPost2" />
+                <ScalarProperty Name="bPost1" ColumnName="bPost1" />
+                <ScalarProperty Name="bMat" ColumnName="bMat" />
+                <ScalarProperty Name="bVid" ColumnName="bVid" />
+                <ScalarProperty Name="pDirk" ColumnName="pDirk" />
+                <ScalarProperty Name="pBigov" ColumnName="pBigov" />
+                <ScalarProperty Name="pLamin" ColumnName="pLamin" />
+                <ScalarProperty Name="pPlotn" ColumnName="pPlotn" />
+                <ScalarProperty Name="pCvet" ColumnName="pCvet" />
+                <ScalarProperty Name="pRazm" ColumnName="pRazm" />
+                <ScalarProperty Name="param43" ColumnName="param43" />
+                <ScalarProperty Name="param42" ColumnName="param42" />
+                <ScalarProperty Name="param41" ColumnName="param41" />
+                <ScalarProperty Name="vid4" ColumnName="vid4" />
+                <ScalarProperty Name="param33" ColumnName="param33" />
+                <ScalarProperty Name="param32" ColumnName="param32" />
+                <ScalarProperty Name="param31" ColumnName="param31" />
+                <ScalarProperty Name="vid3" ColumnName="vid3" />
+                <ScalarProperty Name="param23" ColumnName="param23" />
+                <ScalarProperty Name="param22" ColumnName="param22" />
+                <ScalarProperty Name="param21" ColumnName="param21" />
+                <ScalarProperty Name="vid2" ColumnName="vid2" />
+                <ScalarProperty Name="param13" ColumnName="param13" />
+                <ScalarProperty Name="param12" ColumnName="param12" />
+                <ScalarProperty Name="param11" ColumnName="param11" />
+                <ScalarProperty Name="vid1" ColumnName="vid1" />
+                <ScalarProperty Name="kolvoMest" ColumnName="kolvoMest" />
+                <ScalarProperty Name="cebest" ColumnName="cebest" />
+                <ScalarProperty Name="ssilk" ColumnName="ssilk" />
+                <ScalarProperty Name="tiraz" ColumnName="tiraz" />
+                <ScalarProperty Name="tipProd" ColumnName="tipProd" />
+                <ScalarProperty Name="listId" ColumnName="listId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Price">
+            <EntityTypeMapping TypeName="kvotaModel.Price">
+              <MappingFragment StoreEntitySet="Price">
+                <ScalarProperty Name="cena" ColumnName="cena" />
+                <ScalarProperty Name="tiraz" ColumnName="tiraz" />
+                <ScalarProperty Name="subtip" ColumnName="subtip" />
+                <ScalarProperty Name="catId" ColumnName="catId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rabotnik">
+            <EntityTypeMapping TypeName="kvotaModel.Rabotnik">
+              <MappingFragment StoreEntitySet="Rabotnik">
+                <ScalarProperty Name="uroven" ColumnName="uroven" />
+                <ScalarProperty Name="passw" ColumnName="passw" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Zakaz">
+            <EntityTypeMapping TypeName="kvotaModel.Zakaz">
+              <MappingFragment StoreEntitySet="Zakaz">
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="dat" ColumnName="dat" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="dopTrat" ColumnName="dopTrat" />
+                <ScalarProperty Name="nacenValue" ColumnName="nacenValue" />
+                <ScalarProperty Name="nacenTip" ColumnName="nacenTip" />
+                <ScalarProperty Name="dopUslMaket" ColumnName="dopUslMaket" />
+                <ScalarProperty Name="dopUslDost" ColumnName="dopUslDost" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="num" ColumnName="num" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

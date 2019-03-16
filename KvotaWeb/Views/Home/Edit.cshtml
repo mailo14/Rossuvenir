@@ -1,0 +1,256 @@
+﻿@model KvotaWeb.Models.Zakaz
+@Scripts.Render("~/scripts/jquery.validate.min.js")
+<form id="myform"  method="post" action="/Home/Edit">
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        <h4>Заказ № @Model.id</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.dat)
+        @Html.HiddenFor(model => model.userId)
+        @Html.HiddenFor(model => model.userName)
+        @Html.HiddenFor(model => model.comment)
+
+
+                @Html.HiddenFor(model => model.dopUslDost)
+                @Html.HiddenFor(model => model.dopUslMaket)
+        @*<div class="form-group">
+        <label class="control-label col-sm-5">Доп.услуги:</label>
+        <div class="col-sm-7 " style="display:inline-block;padding-top:7px;">
+            <label style="margin-right:10px;">
+                @Html.EditorFor(model => model.dopUslDost, new { htmlAttributes = new { @onclick = "OnChangeEvent();" } })
+                доставка до клиента
+            </label>
+            @Html.ValidationMessageFor(model => model.dopUslDost, "", new { @class = "text-danger" })
+
+            <label >
+                @Html.EditorFor(model => model.dopUslMaket, new { htmlAttributes = new {  @onclick = "OnChangeEvent();" } })
+                макетирование
+            </label>
+            @Html.ValidationMessageFor(model => model.dopUslMaket, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+
+    @*input type="checkbox" id="dopUslMaket" name="dopUslMaket" value="@Model.dopUslMaket" checked="@Model.dopUslMaket" onclick = "OnChangeEvent()"/*@
+
+        @*<div class="form-group">
+            <label class="control-label col-sm-5">Доп.услуги:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.dopUslDost, new { htmlAttributes = new {id= "dopUslDost", @class = "control-label", @onclick = "OnChangeEvent();" } })
+                <label class="control-label" style="margin:0px 15px 0px 3px">доставка до клиента</label>
+                @Html.EditorFor(model => model.dopUslMaket, new { htmlAttributes = new { @class = "control-label", @onclick = "OnChangeEvent();" } })
+                <label class="control-label">макетирование</label>
+            </div>
+        </div>*@
+
+        @*$('#liTableDiv').load('@Url.Action("fillLitable", "Home")?zId=' + @Model.id);*@
+        @*<script type="text/javascript">
+    $(document).ready(function () {
+        $('#dopUslDost').click(function (e) {
+            $('#liTableDiv').load('@Url.Action("fillLitable", "Home")?zId=' + @Model.id);
+        });
+    });
+        </script>*@
+
+        <div class="form-group">
+            <label class="control-label col-sm-5">Наценка:</label>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.nacenTip, @ViewBag.nacenks as SelectList, new { @id = "nacenTip", @class = "form-control", @onchange = "NacenkTipChanged();", onfocus = "down(this);", onblur = "up(this);" })
+                @Html.ValidationMessageFor(model => model.nacenTip, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="nacenValueDiv" style=@ViewData["nacenValueDivStyle"]>
+            <label class="control-label col-sm-5">Значение наценки:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.nacenValue, new { htmlAttributes = new { @id = "nacenValue", @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.nacenValue, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-5">Дополнительные траты:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.dopTrat, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.dopTrat, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-5">Добавить вид продукции:</label>
+            <div class="col-sm-7">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        (не выбрано) <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=1">Нанесение логотипа</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры и ПВХ</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=4">Закатные значки</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=16">Запись дисков </a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=5">Квартальные календари</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=6">Кружки с сублимацией</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=7">Ленты для бейджей (ланъярды)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=8">Открытки </a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=9">Пакеты бумажные</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=10">Пакеты ПВД</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=11">Прочая полиграфия</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=12">Силиконовые браслеты</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=13">Слэп браслеты</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=14">Футболка с сублимацией</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=15">Шары с логотипом</a></li>
+
+                        @*<li><a href="/Home/AddLi?zId=@Model.id&tipProd=1">Сувениры</a></li>
+        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=2">Полиграфия</a></li>
+        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры</a></li>
+        @*<li class="divider"></li>*@
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="liTableDiv">
+            @Html.Action("fillLitable",new {zId=@Model.id })
+        </div>
+        
+
+        <div class="form-group">
+            <hr class="divider" />
+            <label class="control-label col-sm-5">Итого:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.total, new { htmlAttributes = new { @class = "form-control", @id = "total", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.total, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-5 col-sm-7">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        // <select> element displays its options on mousedown, not click.
+        showDropdown = function (element) {
+            var event;
+            event = document.createEvent('MouseEvents');
+            event.initMouseEvent('mousedown', true, true, window);
+            element.dispatchEvent(event);
+        };
+
+        // This isn't magic.
+        //window.runThis = function () {
+        function dropdown() {
+            var dropdown = document.getElementById('dropdowntipo');
+            showDropdown(dropdown);
+        }
+
+        function down(what) {
+            return;
+            pos = $(what).offset();  // remember position
+            $(what).css("position", "absolute");
+            $(what).offset(pos);   // reset position
+            $(what).attr("size", "10"); // open dropdown
+        }
+
+        function up(what) {
+            return;
+            $(what).css("position", "static");
+            $(what).attr("size", "1");  // close dropdown
+        }
+
+
+        function NacenkTipChanged() {
+            var stateId = $('#nacenTip').val();
+            //alert(stateId);
+            if (stateId == 3) {
+                document.getElementById('nacenValueDiv').style.display = "block";
+                document.getElementById('nacenValue').focus();
+            }
+            else document.getElementById('nacenValueDiv').style.display = "none";
+            OnChangeEvent();
+        }
+       @* function getProdName(tipProd)
+        {
+            switch (tipProd) {
+                case 1: return 'Нанесение логотипа';
+                case 3: return 'Баннеры и ПВХ';
+                case 4: return 'Закатные значки';
+                case 5: return 'Квартальные календари';
+                case 6: return 'Кружки с сублимацией';
+                case 7: return 'Ленты для бейджей (ланъярды)';
+                case 8: return 'Открытки ';
+                case 9: return 'Пакеты бумажные';
+                case 10: return 'Пакеты ПВД';
+                case 11: return 'Прочая полиграфия';
+                case 12: return 'Силиконовые браслеты';
+                case 13: return 'Слэп браслеты';
+                case 14: return 'Футболка с сублимацией';
+                case 15: return 'Шары с логотипом';
+            }           
+        }*@
+
+        @*$(function () {
+            $('#dopUslDost').change(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: "/Home/refillTotals",
+                    data: $('#myform').serialize(),
+                    UpdateTargetId: "#liTableDiv",
+                    success: function () {
+                $('#liTableDiv').load('@Url.Action("fillLitable")?zId=' + @Model.id);
+                    }
+                    ,
+                    error: function () {
+                        //$("#commentList").append($("#name").val() + "<br />" + $("#body").val());
+                        alert("There was an error submitting comment");
+                    }
+                });
+$('#liTableDiv').load('@Url.Action("fillLitable")?zId=' + @Model.id);
+            });
+
+        });*@
+            function OnChangeEvent()
+            {
+                $("body").css("cursor", "progress");
+               // alert(document.getElementById('liTableDiv') != null );
+                //alert($('#liTableDiv').innerHTML);
+                @*$('#liTableDiv').load('@Url.Action("fillLitable", "Home")?zId=' + @Model.id);*@
+                
+                $.ajax({
+                    type: 'POST',
+                    url: "/Home/refillTotals",
+                    data: $('#myform').serialize(),
+                    success: function (data) {
+                            @*document.getElementById('total').value = data.total;
+                    window.location.href = '/Home/Edit/@Model.id';*@
+                            @*@Html.Action("fillLitable", new { zId = @Model.id })*@
+
+                     
+                        $('#liTableDiv').load('@Url.Action("fillLitable", "Home")?zId=' + encodeURIComponent(@Model.id));
+                        document.getElementById('total').value = data.total;
+                        $("body").css("cursor", "default");
+                        }
+                    ,
+                    error: function () {
+                        //$("#commentList").append($("#name").val() + "<br />" + $("#body").val());
+                        alert("There was an error submitting comment");
+                        $("body").css("cursor", "default");
+                    }
+                });
+            }
+        /*   $("#drop").change(function () {
+            var end = this.value;
+            var firstDropVal = $('#pick').val();
+        });*/
+
+    </script>
+
+</form>
+
+
+<div>
+    @Html.ActionLink("К списку заказов", "Index", "Home")
+</div>
