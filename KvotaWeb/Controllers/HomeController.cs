@@ -110,6 +110,7 @@ namespace KvotaWeb.Controllers
                 case 14: li.vid1 = 218; break;
                 case 15: li.vid1 = 219; break;
                 case 16: li.vid1 = 269; break;
+                case 17: return RedirectToAction("EditБлокнот", "Product", new { id = 0 });
             }            
             li.listId = zId;
             db.ListItem.Add(li);
