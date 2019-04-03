@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using KvotaWeb.Models;
 using WebMatrix.WebData;
 using System.Web.Security;
+using KvotaWeb.Models.Items;
 
 namespace KvotaWeb.Controllers
 {
@@ -94,9 +95,17 @@ namespace KvotaWeb.Controllers
                 //int tipProd = SelectedIndex++;
                var li = new ListItem();
             li.tipProd = tipProd;
+            li.listId = zId;
             switch (tipProd)
             {
-                case 4: li.vid1 = 201;break;
+                // case 4: li.vid1 = 201;break;
+                case 4:
+            db.ListItem.Add(li);
+            db.SaveChanges();
+                   // var ii=ItemBase.Create(li);
+                    return RedirectToAction("EditЗначки", "Product", new { id = li.id });
+
+                    break;
                 case 6: li.vid1 = 25; break;
                 case 10: li.vid1 = 29; break;
 
@@ -112,7 +121,6 @@ namespace KvotaWeb.Controllers
                 case 16: li.vid1 = 269; break;
                 case 17: return RedirectToAction("EditБлокнот", "Product", new { id = 0 });
             }            
-            li.listId = zId;
             db.ListItem.Add(li);
             db.SaveChanges();
 
@@ -131,7 +139,7 @@ namespace KvotaWeb.Controllers
         public ActionResult EditLi(int id ,int tipProd)
         {              
             switch (tipProd)
-            {
+            { case 4:return RedirectToAction("EditЗначки", "Product", new { id = id });
                 case 1:return RedirectToAction("EditSuvenir", "Product", new { id = id });
              //   case 2: return RedirectToAction("EditPoligrafiya", "Product", new { id = id });
                 case 3: return RedirectToAction("EditBanner", "Product", new { id = id });

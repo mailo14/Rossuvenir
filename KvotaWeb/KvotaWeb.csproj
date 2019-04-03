@@ -186,6 +186,7 @@
     <Compile Include="Models\Category.cs">
       <DependentUpon>KvotaDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Items\Znachok.cs" />
     <Compile Include="Models\Items\Blocknot.cs" />
     <Compile Include="Models\KvotaDB.Context.cs">
       <AutoGen>True</AutoGen>
@@ -298,6 +299,7 @@
     <Content Include="Views\Product\EditФутболки.cshtml" />
     <Content Include="Views\Product\EditДиски.cshtml" />
     <Content Include="Views\Product\EditБлокнот.cshtml" />
+    <Content Include="Views\Product\EditЗначки.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

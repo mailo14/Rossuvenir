@@ -874,7 +874,94 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
             return RedirectToAction("Edit", "Home");//, new { id = li.listId });
         }
         #endregion
+ #region Блокноты
+        public ActionResult EditЗначки(int id)
+        {
+            var li = db.ListItem.FirstOrDefault(pp => pp.id == id);
+            var item = ItemBase.Create(li);
+            ViewData = item.ViewData;
+            return View(item);
 
+            ViewData["askBetterPriceDivStyle"] = "display:none;";
+
+            //var li = db.ListItem.FirstOrDefault(pp => pp.id == id);
+
+            var empty = new SelectList(new List<Category>(), "id", "tip"); //Enumerable.Empty<SelectListItem>();
+            var nullObj = new Category() { tip = "(не выбрано)" };
+            ViewData["paramLabel11"] = "тип диска:";
+            ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentId == 425 select pp), "id", "tip");
+
+            ViewData["paramLabel12"] = "параметры:";
+            ViewData["paramBag12"] = new SelectList(new List<Category>(), "id", "tip");
+            ViewData["paramLabel21"] = "упаковка:";
+            ViewData["paramBag21"] = new SelectList(new List<Category>(), "id", "tip");
+            var catId = li.param11 ?? 0;
+            if (catId > 0)
+            {
+                if (catId == 270)
+                    ViewData["paramBag12"] = new SelectList(
+                   new[] {
+                     new { id=272, tip= "диск, печать" },
+                     new { id=273, tip= "диск, печать, запись" },
+                     new { id=274, tip= "диск, печать, запись, лакировка" },
+                   }
+               , "id", "tip");
+                else
+                    ViewData["paramBag12"] = new SelectList(
+                   new[] {
+                     new { id=275, tip= "диск, печать" },
+                     new { id=276, tip= "диск, печать, запись" },
+                     new { id=277, tip= "диск, печать, лакировка" },
+                     new { id=278, tip= "диск, печать, запись, лакировка" },
+                   }
+               , "id", "tip");
+
+                if (catId == 270)
+                    ViewData["paramBag21"] = new SelectList(
+                   new[] {
+                     new { id=4, tip= "Slim box черный тонкий" },
+                     new { id=5, tip= "Slim box прозрачный" },
+                     new { id=6, tip= "CD box прозрачный" },
+                     new { id=7, tip= "CD box чёрный" },
+                     new { id=8, tip= "CD box на 2 диска" },
+                     new { id=9, tip= "Конверт" },
+                     new { id=10, tip= "Пакетик для CD, DVD box" },
+                   }
+               , "id", "tip");
+                else
+                    ViewData["paramBag21"] = new SelectList(
+                   new[] {
+                     new { id=1, tip= "DVD box черный" },
+                     new { id=2, tip= "DVD box прозрачный" },
+                     new { id=3, tip= "DVD box (по размеру диска)" },
+                     new { id=4, tip= "Slim box черный тонкий" },
+                     new { id=5, tip= "Slim box прозрачный" },
+                     new { id=9, tip= "Конверт" },
+                     new { id=10, tip= "Пакетик для CD, DVD box" },
+                   }
+               , "id", "tip");
+            }
+
+            ViewData["paramLabel22"] = "раскладка:";
+            ViewData["paramBag22"] = new SelectList(
+                new[] {
+                     new { id=1, tip= "Укладка диска в конверт" },
+                     new { id=2, tip= "Укладка диска и полиграфии в Slim-box" },
+                     new { id=3, tip= "Укладка диска и полиграфии в DVD-box" },
+                }
+            , "id", "tip");
+            return View(li);
+        }
+
+        [HttpPost]
+        public ActionResult EditЗначки(Znachok item)
+        {
+            var li = item.ToListItem();
+             db.Entry(li).State = System.Data.Entity.EntityState.Modified;
+             db.SaveChanges();
+            return RedirectToAction("Edit", "Home", new { id = li.listId });
+        }
+        #endregion
         [HttpPost]
         public JsonResult Recalc(ListItem li)
         {
@@ -890,11 +977,31 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
                 case 3: reCalcBanner(li); break;
                 case 1: reCalcSuvenir(li); break;
             }*/
-            Calc.recalcLi(li);
-            var data = new { total = li.total, totalLabel = li.totalLabel, askBetterPrice = li.askBetterPrice };
+            //   Calc.recalcLi(li);
+            //   var data = new { total = li.total, totalLabel = li.totalLabel, askBetterPrice = li.askBetterPrice };
+            var data = new { total = 10, totalLabel = "10", askBetterPrice = false};
             return Json(data);
         }
 
-
+    [HttpPost]
+        public JsonResult RecalcZnachok(Znachok li)
+        {
+            double sum = 0;
+            // if (li.dopUslDost) sum += 400;
+            //if (li.dopUslMaket) sum += 400;
+            // db.Zakaz.
+            //  var z = db.Zakaz.FirstOrDefault(pp => pp.id == id);
+            //string.Format("{0} of {1}",sum/z.)
+            /*switch (li.tipProd)
+            {
+                case 2:  reCalcPoligrafiya(li); break;
+                case 3: reCalcBanner(li); break;
+                case 1: reCalcSuvenir(li); break;
+            }*/
+            //   Calc.recalcLi(li);
+            //   var data = new { total = li.total, totalLabel = li.totalLabel, askBetterPrice = li.askBetterPrice };
+            var data = new { total = 10, totalLabel = "10", askBetterPrice = false};
+            return Json(data);
+        }
     }
 }
