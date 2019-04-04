@@ -19,5 +19,6 @@ namespace KvotaWeb.Models
         public string subtip { get; set; }
         public int tiraz { get; set; }
         public double cena { get; set; }
+        public double firma { get; set; }
     }
 }

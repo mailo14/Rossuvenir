@@ -986,6 +986,7 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
     [HttpPost]
         public JsonResult RecalcZnachok(Znachok li)
         {
+            var sss = li.Calc();
             double sum = 0;
             // if (li.dopUslDost) sum += 400;
             //if (li.dopUslMaket) sum += 400;

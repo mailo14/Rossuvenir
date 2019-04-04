@@ -7,15 +7,24 @@ using System.Web.Mvc;
 
 namespace KvotaWeb.Models.Items
 {
-    public class Znachok: ItemBase
+    public class Shelkografiya : ItemBase
     {
          public int Id { get; set; }
         public int TipProd { get; set; } = 4;
 
         public int? ZakazId { get; set; } 
 
-        [Display(Name = "Размер")]
-         public int? Razmer { get; set; }
+        [Display(Name = "Цвет основы")]
+         public int? Tcvet { get; set; }
+
+        [Display(Name = "Количество цветов")]
+         public int? KolichestvoTcvetov { get; set; }
+
+        [Display(Name = "печать на синтетических тканях (сумки, плащевки, зонты)")]
+         public bool Sintetika { get; set; }
+
+        [Display(Name = "печать более формата А4 или площади 600 кв. см.")]
+        public bool FormatA3 { get; set; }
 
         public string TotalLabel { get; set; }
         
@@ -26,7 +35,8 @@ namespace KvotaWeb.Models.Items
                 vid1=201,tipProd= TipProd,
                 listId=ZakazId,
                 id=Id,
-                 param11= Razmer,  tiraz= Tiraz
+                // param11= Razmer,
+                tiraz = Tiraz
             };
         }
 
@@ -39,21 +49,21 @@ namespace KvotaWeb.Models.Items
             {
                 var line = new CalcLine() { Postav = i };
                 ret.Add(line);
-                if (Razmer == 0 || Tiraz == 0) continue;
+                if (KolichestvoTcvetov == 0 || Tiraz == 0) continue;
 
                 double cena = 0;
-                var minTiraz = (from p in db.Price where p.firma == (int)i && p.catId == Razmer orderby p.tiraz select (int?)p.tiraz).FirstOrDefault();
+                var minTiraz = (from p in db.Price where p.firma == (int)i && p.catId == KolichestvoTcvetov orderby p.tiraz select (int?)p.tiraz).FirstOrDefault();
                 if (!minTiraz.HasValue) continue;
 
-                var maxTirazi = (from p in db.Price where p.firma == (int)i && p.catId == Razmer orderby p.tiraz descending select p.tiraz).Take(2).ToArray();
+                var maxTirazi = (from p in db.Price where p.firma == (int)i && p.catId == KolichestvoTcvetov orderby p.tiraz descending select p.tiraz).Take(2).ToArray();
                 if (Tiraz > 2 * maxTirazi[0] - maxTirazi[1]) askBetterPrice = true;
                 if (Tiraz < minTiraz)
                 {
-                    cena = (from p in db.Price where p.firma == (int)i && p.catId == Razmer && p.tiraz == minTiraz select p.cena).First();
+                    cena = (from p in db.Price where p.firma == (int)i && p.catId == KolichestvoTcvetov && p.tiraz == minTiraz select p.cena).First();
                     cena = cena * minTiraz.Value / Tiraz.Value;
                 }
                 else
-                    cena = (from p in db.Price where p.firma == (int)i && p.catId == Razmer && p.tiraz <= Tiraz orderby p.tiraz descending select p.cena).First();
+                    cena = (from p in db.Price where p.firma == (int)i && p.catId == KolichestvoTcvetov && p.tiraz <= Tiraz orderby p.tiraz descending select p.cena).First();
                 line.Cena = cena * Tiraz.Value;
             }
             return ret;
@@ -71,32 +81,4 @@ namespace KvotaWeb.Models.Items
         }
     }
 
-    public class CalcLine
-    {
-        public Postavs Postav { get; set; }
-        public double? Cena { get; set; }
-    }
-    public enum Postavs:int { РРЦ_1_5=1, АртСувенир=2, ААА=3, Плановая_СС=10};
-    public abstract class ItemBase
-    {public bool askBetterPrice { get; set; }
-        public ViewDataDictionary ViewData { get; set; }
-
-        [Display(Name = "Тираж")]
-        public double? Tiraz { get; set; }
-
-        public abstract ListItem ToListItem();
-
-        public abstract List<CalcLine> Calc();
-
-        public static ItemBase Create(ListItem li)
-        {
-            switch (li.tipProd)
-            {
-                case 4:
-                    return new Znachok() {Id=li.id,ZakazId= li.listId,  Razmer = li.param11, Tiraz = li.tiraz };
-                default:
-                    return null;
-            }
-        }
-    }
 }

@@ -79,6 +79,7 @@
           <Property Name="subtip" Type="nvarchar(max)" />
           <Property Name="tiraz" Type="int" Nullable="false" />
           <Property Name="cena" Type="float" Nullable="false" />
+          <Property Name="firma" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="Rabotnik">
           <Key>
@@ -198,6 +199,7 @@
           <Property Name="subtip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="tiraz" Type="Int32" Nullable="false" />
           <Property Name="cena" Type="Double" Nullable="false" />
+          <Property Name="firma" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="Rabotnik">
           <Key>
@@ -301,6 +303,7 @@
           <EntitySetMapping Name="Price">
             <EntityTypeMapping TypeName="kvotaModel.Price">
               <MappingFragment StoreEntitySet="Price">
+                <ScalarProperty Name="firma" ColumnName="firma" />
                 <ScalarProperty Name="cena" ColumnName="cena" />
                 <ScalarProperty Name="tiraz" ColumnName="tiraz" />
                 <ScalarProperty Name="subtip" ColumnName="subtip" />
