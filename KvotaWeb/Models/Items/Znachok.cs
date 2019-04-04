@@ -9,58 +9,40 @@ namespace KvotaWeb.Models.Items
 {
     public class Znachok: ItemBase
     {
-         public int Id { get; set; }
-        public int TipProd { get; set; } = 4;
 
-        public int? ZakazId { get; set; } 
-
-        [Display(Name = "Размер")]
+        [Display(Name = "Размер:")]
          public int? Razmer { get; set; }
-
-        public string TotalLabel { get; set; }
-        
         
         public override ListItem ToListItem()
         {
-            return new ListItem() {
-                vid1=201,tipProd= TipProd,
-                listId=ZakazId,
-                id=Id,
-                 param11= Razmer,  tiraz= Tiraz
-            };
+            var rr = base.ToListItem();
+            rr.param11 = Razmer;
+            return rr;
         }
 
         public override List<CalcLine> Calc()
 
         {
-            kvotaEntities db = new kvotaEntities();
             var ret = new List<CalcLine>();
+            askBetterPrice = false;
             foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
             {
                 var line = new CalcLine() { Postav = i };
                 ret.Add(line);
-                if (Razmer == 0 || Tiraz == 0) continue;
+                if (Razmer == null || Tiraz == null) continue;
 
-                double cena = 0;
-                var minTiraz = (from p in db.Price where p.firma == (int)i && p.catId == Razmer orderby p.tiraz select (int?)p.tiraz).FirstOrDefault();
-                if (!minTiraz.HasValue) continue;
+                double cena ;
+                if (TryGetPrice( i,Tiraz,Razmer,out cena) == false) continue;
 
-                var maxTirazi = (from p in db.Price where p.firma == (int)i && p.catId == Razmer orderby p.tiraz descending select p.tiraz).Take(2).ToArray();
-                if (Tiraz > 2 * maxTirazi[0] - maxTirazi[1]) askBetterPrice = true;
-                if (Tiraz < minTiraz)
-                {
-                    cena = (from p in db.Price where p.firma == (int)i && p.catId == Razmer && p.tiraz == minTiraz select p.cena).First();
-                    cena = cena * minTiraz.Value / Tiraz.Value;
-                }
-                else
-                    cena = (from p in db.Price where p.firma == (int)i && p.catId == Razmer && p.tiraz <= Tiraz orderby p.tiraz descending select p.cena).First();
+                
                 line.Cena = cena * Tiraz.Value;
             }
             return ret;
 
         }
 
-        public Znachok()
+
+        public Znachok():base( TipProds.Znachok, "EditЗначки")
         {
             var empty = new SelectList(new List<Category>(), "id", "tip"); //Enumerable.Empty<SelectListItem>();
             var nullObj = new Category() { tip = "(не выбрано)" };
@@ -77,23 +59,75 @@ namespace KvotaWeb.Models.Items
         public double? Cena { get; set; }
     }
     public enum Postavs:int { РРЦ_1_5=1, АртСувенир=2, ААА=3, Плановая_СС=10};
+    public enum TipProds:int { Znachok = 4, Shelkografiya = 23};
     public abstract class ItemBase
-    {public bool askBetterPrice { get; set; }
+    {
+        private TipProds shelkografiya;
+
+        public int? ZakazId { get; set; }
+        public string TotalLabel { get; set; }
+
+        protected ItemBase(TipProds tipProd,string viewName)
+        {
+            TipProd = tipProd;
+            ViewName = viewName;
+        }
+
+        public int Id { get; set; }
+        public TipProds TipProd { get; set; }
+
+        public bool askBetterPrice { get; set; }
         public ViewDataDictionary ViewData { get; set; }
 
-        [Display(Name = "Тираж")]
+        [Display(Name = "Тираж:")]
         public double? Tiraz { get; set; }
+        public string ViewName { get; internal set; }
 
-        public abstract ListItem ToListItem();
+        public virtual ListItem ToListItem()
+        {
+            return new ListItem()
+            {
+                vid1 = (int)TipProd,
+                tipProd = (int)TipProd,
+                id = Id,
+                tiraz = Tiraz,
+                    listId = ZakazId,
+        };
+        }
+
+
+        public bool TryGetPrice(Postavs firma, double? tiraz, int? catId, out double cena)
+        {
+            kvotaEntities db = new kvotaEntities();
+            cena = 0;
+            var minTiraz = (from p in db.Price where p.firma == (int)firma && p.catId == catId orderby p.tiraz select (int?)p.tiraz).FirstOrDefault();
+            if (!minTiraz.HasValue) return false;
+
+            var maxTirazi = (from p in db.Price where p.firma == (int)firma && p.catId == catId orderby p.tiraz descending select p.tiraz).Take(2).ToArray();
+            if (tiraz > 2 * maxTirazi[0] - maxTirazi[1]) askBetterPrice = true;
+            if (tiraz < minTiraz)
+            {
+                cena = (from p in db.Price where p.firma == (int)firma && p.catId == catId && p.tiraz == minTiraz select p.cena).First();
+                cena = cena * minTiraz.Value / tiraz.Value;
+            }
+            else
+                cena = (from p in db.Price where p.firma == (int)firma && p.catId == catId && p.tiraz <= tiraz orderby p.tiraz descending select p.cena).First();
+
+            return true;
+        }
 
         public abstract List<CalcLine> Calc();
 
         public static ItemBase Create(ListItem li)
         {
-            switch (li.tipProd)
+            switch ((TipProds)li.tipProd)
             {
-                case 4:
-                    return new Znachok() {Id=li.id,ZakazId= li.listId,  Razmer = li.param11, Tiraz = li.tiraz };
+                case TipProds.Znachok:
+                    return new Znachok() {Id=li.id,ZakazId= li.listId, Tiraz = li.tiraz,  Razmer = li.param11 };
+                case TipProds.Shelkografiya:
+                    return new Shelkografiya() {Id=li.id,ZakazId= li.listId, Tiraz = li.tiraz,  Tcvet = li.param11,  KolichestvoTcvetov = li.param12
+                    ,Sintetika=li.param14,FormatA3=li.param15};                    
+
                 default:
                     return null;
             }

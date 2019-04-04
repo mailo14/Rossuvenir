@@ -880,7 +880,7 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
             var li = db.ListItem.FirstOrDefault(pp => pp.id == id);
             var item = ItemBase.Create(li);
             ViewData = item.ViewData;
-            return View(item);
+            return View(item.ViewName,item);
 
             ViewData["askBetterPriceDivStyle"] = "display:none;";
 
@@ -962,7 +962,7 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
             return RedirectToAction("Edit", "Home", new { id = li.listId });
         }
         #endregion
-        [HttpPost]
+       /* [HttpPost]
         public JsonResult Recalc(ListItem li)
         {
             double sum = 0;
@@ -971,22 +971,31 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
             // db.Zakaz.
             //  var z = db.Zakaz.FirstOrDefault(pp => pp.id == id);
             //string.Format("{0} of {1}",sum/z.)
-            /*switch (li.tipProd)
+            switch (li.tipProd)
             {
                 case 2:  reCalcPoligrafiya(li); break;
                 case 3: reCalcBanner(li); break;
                 case 1: reCalcSuvenir(li); break;
-            }*/
+            }
             //   Calc.recalcLi(li);
             //   var data = new { total = li.total, totalLabel = li.totalLabel, askBetterPrice = li.askBetterPrice };
             var data = new { total = 10, totalLabel = "10", askBetterPrice = false};
             return Json(data);
-        }
+        }*/
 
     [HttpPost]
-        public JsonResult RecalcZnachok(Znachok li)
+        public JsonResult Recalc(FormCollection collection)
         {
-            var sss = li.Calc();
+            TipProds tipProd = (TipProds)Enum.Parse(typeof(TipProds), collection["TipProd"]) ; 
+           // var tipProd = (TipProds)int.Parse(collection["TipProd"]);
+            ItemBase model=null;
+            switch (tipProd)
+            {
+                case TipProds.Znachok: var model0 = new Znachok(); TryUpdateModel(model0, collection); model = model0; break;
+                case TipProds.Shelkografiya: var model1 = new Shelkografiya(); TryUpdateModel(model1, collection); model = model1; break;
+            }
+               
+            var sss = model.Calc();
             double sum = 0;
             // if (li.dopUslDost) sum += 400;
             //if (li.dopUslMaket) sum += 400;
@@ -1001,7 +1010,7 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
             }*/
             //   Calc.recalcLi(li);
             //   var data = new { total = li.total, totalLabel = li.totalLabel, askBetterPrice = li.askBetterPrice };
-            var data = new { total = 10, totalLabel = "10", askBetterPrice = false};
+            var data = new { total = 10, totalLabel = string.Join(";",sss.Select(pp=>pp.Cena)), askBetterPrice = model.askBetterPrice};
             return Json(data);
         }
     }

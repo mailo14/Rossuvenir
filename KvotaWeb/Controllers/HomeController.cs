@@ -99,7 +99,14 @@ namespace KvotaWeb.Controllers
             switch (tipProd)
             {
                 // case 4: li.vid1 = 201;break;
-                case 4:
+                case 4:    
+            db.ListItem.Add(li);
+            db.SaveChanges();
+                   // var ii=ItemBase.Create(li);
+                    return RedirectToAction("EditЗначки", "Product", new { id = li.id });
+
+                    break;
+                case 23:
             db.ListItem.Add(li);
             db.SaveChanges();
                    // var ii=ItemBase.Create(li);
@@ -139,7 +146,7 @@ namespace KvotaWeb.Controllers
         public ActionResult EditLi(int id ,int tipProd)
         {              
             switch (tipProd)
-            { case 4:return RedirectToAction("EditЗначки", "Product", new { id = id });
+            { case 4:case 23:return RedirectToAction("EditЗначки", "Product", new { id = id });
                 case 1:return RedirectToAction("EditSuvenir", "Product", new { id = id });
              //   case 2: return RedirectToAction("EditPoligrafiya", "Product", new { id = id });
                 case 3: return RedirectToAction("EditBanner", "Product", new { id = id });
@@ -226,9 +233,11 @@ namespace KvotaWeb.Models
             {
                 switch (tipProd)
                 {
+                    case 4: return "Закатные значки";
+                    case 23: return "Шелкография";
+
                     case 1: return "Нанесение логотипа";
                     case 3: return "Баннеры и ПВХ";
-                    case 4: return "Закатные значки";
                     case 5: return "Квартальные календари";
                     case 6: return "Кружки с сублимацией";
                     case 7: return "Ленты для бейджей (ланъярды)";

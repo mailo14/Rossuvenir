@@ -300,6 +300,7 @@
     <Content Include="Views\Product\EditДиски.cshtml" />
     <Content Include="Views\Product\EditБлокнот.cshtml" />
     <Content Include="Views\Product\EditЗначки.cshtml" />
+    <Content Include="Views\Product\EditШелкография.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

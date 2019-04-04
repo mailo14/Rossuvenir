@@ -9,15 +9,23 @@ namespace KvotaWeb.Models.Items
 {
     public class Shelkografiya : ItemBase
     {
-         public int Id { get; set; }
-        public int TipProd { get; set; } = 4;
 
-        public int? ZakazId { get; set; } 
 
-        [Display(Name = "Цвет основы")]
-         public int? Tcvet { get; set; }
+        int? _Tcvet = null;
+        [Display(Name = "Цвет основы:")]
+         public int? Tcvet { get { return _Tcvet; } set {
+                if (value != _Tcvet)
+                {
+                    _Tcvet = value;
+                }
+                var empty = new SelectList(new List<Category>(), "id", "tip");
 
-        [Display(Name = "Количество цветов")]
+                kvotaEntities db = new kvotaEntities();
+                if (value == null) ViewData["params2"] = empty;
+                else ViewData["params2"] = new SelectList((from pp in db.Category where pp.parentId == value select pp), "id", "tip");
+            } }
+
+        [Display(Name = "Количество цветов:")]
          public int? KolichestvoTcvetov { get; set; }
 
         [Display(Name = "печать на синтетических тканях (сумки, плащевки, зонты)")]
@@ -26,58 +34,48 @@ namespace KvotaWeb.Models.Items
         [Display(Name = "печать более формата А4 или площади 600 кв. см.")]
         public bool FormatA3 { get; set; }
 
-        public string TotalLabel { get; set; }
-        
-        
+
+
         public override ListItem ToListItem()
         {
-            return new ListItem() {
-                vid1=201,tipProd= TipProd,
-                listId=ZakazId,
-                id=Id,
-                // param11= Razmer,
-                tiraz = Tiraz
-            };
+            var rr = base.ToListItem();
+            rr.param11 = Tcvet;
+            rr.param12 = KolichestvoTcvetov;
+            rr.param14 = Sintetika;
+            rr.param15 = FormatA3;
+            return rr;
         }
 
         public override List<CalcLine> Calc()
 
         {
-            kvotaEntities db = new kvotaEntities();
             var ret = new List<CalcLine>();
+            askBetterPrice = false;
             foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
             {
                 var line = new CalcLine() { Postav = i };
                 ret.Add(line);
-                if (KolichestvoTcvetov == 0 || Tiraz == 0) continue;
+                if (KolichestvoTcvetov == null || Tiraz == null) continue;
 
-                double cena = 0;
-                var minTiraz = (from p in db.Price where p.firma == (int)i && p.catId == KolichestvoTcvetov orderby p.tiraz select (int?)p.tiraz).FirstOrDefault();
-                if (!minTiraz.HasValue) continue;
+                double cena;
+                if (TryGetPrice(i, Tiraz, KolichestvoTcvetov, out cena) == false) continue;
 
-                var maxTirazi = (from p in db.Price where p.firma == (int)i && p.catId == KolichestvoTcvetov orderby p.tiraz descending select p.tiraz).Take(2).ToArray();
-                if (Tiraz > 2 * maxTirazi[0] - maxTirazi[1]) askBetterPrice = true;
-                if (Tiraz < minTiraz)
-                {
-                    cena = (from p in db.Price where p.firma == (int)i && p.catId == KolichestvoTcvetov && p.tiraz == minTiraz select p.cena).First();
-                    cena = cena * minTiraz.Value / Tiraz.Value;
-                }
-                else
-                    cena = (from p in db.Price where p.firma == (int)i && p.catId == KolichestvoTcvetov && p.tiraz <= Tiraz orderby p.tiraz descending select p.cena).First();
+                cena = cena * (Sintetika ? 1.5 : 1) * (FormatA3 ? 1.2 : 1);
                 line.Cena = cena * Tiraz.Value;
             }
             return ret;
 
         }
 
-        public Znachok()
+        public Shelkografiya(): base(TipProds.Shelkografiya, "EditШелкография")
         {
             var empty = new SelectList(new List<Category>(), "id", "tip"); //Enumerable.Empty<SelectListItem>();
             var nullObj = new Category() { tip = "(не выбрано)" };
 
             kvotaEntities db = new kvotaEntities();
             ViewData = new ViewDataDictionary();
-            ViewData["params1"] = new SelectList((from pp in db.Category where pp.parentId == 414 select pp), "id", "tip");
+            ViewData["params1"] = new SelectList((from pp in db.Category where pp.parentId == 403 select pp), "id", "tip");
+            
         }
     }
 

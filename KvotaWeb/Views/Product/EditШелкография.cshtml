@@ -1,41 +1,65 @@
-﻿@model KvotaWeb.Models.Items.Znachok
+﻿@model KvotaWeb.Models.Items.Shelkografiya
 
-<form id="myform" method="post" action="/Product/EditЗначки">
-    @Html.AntiForgeryToken()
+    <form id="myform" method="post" action="/Product/EditЗначки">
+        @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <hr />
-        <h4>Элемент заказа № @Model.ZakazId</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.ZakazId)
-        @Html.HiddenFor(model => model.TipProd)
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+        <div class="form-horizontal">
+            <hr />
+            <h4>Элемент заказа № @Model.ZakazId</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.ZakazId)
+            @Html.HiddenFor(model => model.TipProd)
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
 
-        <div class="form-group">
-            <div class="control-label col-sm-5">
-                @Html.LabelFor(model => model.Tiraz)
+            <div class="form-group">
+                <div class="control-label col-sm-5">
+                    @Html.LabelFor(model => model.Tiraz)
+                </div>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.Tiraz, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                    @Html.ValidationMessageFor(model => model.Tiraz, "", new { @class = "text-danger" })
+                </div>
             </div>
-            <div class="col-sm-7">
-                @Html.EditorFor(model => model.Tiraz, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
-                @Html.ValidationMessageFor(model => model.Tiraz, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            <div class="control-label col-sm-5">
-                @Html.LabelFor(model => model.Razmer)
+            <div class="form-group">
+                <div class="control-label col-sm-5">
+                    @Html.LabelFor(model => model.Tcvet)
+                </div>
+                <div class="col-sm-7">
+                    @Html.DropDownListFor(model => model.Tcvet, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param1", @class = "form-control", @onchange = "OnChangeParam1Event();" })
+                    @Html.ValidationMessageFor(model => model.Tcvet, "", new { @class = "text-danger" })
+                </div>
             </div>
-            <div class="col-sm-7">
-                @Html.DropDownListFor(model => model.Razmer, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param11", @class = "form-control", @onchange = "OnChangeEvent();" })
-                @Html.ValidationMessageFor(model => model.Razmer, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        @*        <div class="form-group" id="paramDiv12" style=@ViewData["paramDivStyle12"]>
+            <div class="form-group">
+                <div class="control-label col-sm-5">
+                    @Html.LabelFor(model => model.KolichestvoTcvetov)
+                </div>
+                <div class="col-sm-7">
+                    @Html.DropDownListFor(model => model.KolichestvoTcvetov, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param2", @class = "form-control", @onchange = "OnChangeEvent();" })
+                    @Html.ValidationMessageFor(model => model.KolichestvoTcvetov, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group" id="paramDiv4" style=@ViewData["paramDivStyle4"] align="left">
+                <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                    @Html.EditorFor(model => model.Sintetika, new { htmlAttributes = new { @id = "param4", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
+                    <label for="param4" id="paramLabel4">@Html.LabelFor(model => model.Sintetika)</label>
+                </label>
+            </div>
+
+            <div class="form-group" id="paramDiv5" style=@ViewData["paramDivStyle5"] align="left">
+                <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                    @Html.EditorFor(model => model.FormatA3, new { htmlAttributes = new { @id = "param5", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
+                    <label for="param5" id="paramLabel5">@Html.LabelFor(model => model.FormatA3)</label>
+                </label>
+            </div>
+            @*        <div class="form-group" id="paramDiv12" style=@ViewData["paramDivStyle12"]>
                 <label id="paramLabel12" class="control-label col-sm-5">@ViewData["paramLabel12"]</label>
                 <div class="col-sm-7">
                     @Html.DropDownListFor(model => model.param12, @ViewData["paramBag12"] as SelectList, "(не выбрано)", new { @id = "param12", @class = "form-control", @onchange = "OnChangeEvent();" })
@@ -209,172 +233,162 @@
         </div>*@
 
 
-        <div class="form-group">
-            <hr class="divider" />
-            <label class="control-label col-sm-5">Итого:</label>
-            <div class="col-sm-7">
-                @Html.EditorFor(model => model.TotalLabel, new { htmlAttributes = new { @class = "form-control", @id = "totalLabel", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.TotalLabel, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <hr class="divider" />
+                <label class="control-label col-sm-5">Итого:</label>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.TotalLabel, new { htmlAttributes = new { @class = "form-control", @id = "totalLabel", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.TotalLabel, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" id="askBetterPriceDiv" style=@ViewData["askBetterPriceDivStyle"] align="left">
+                <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                    *Для получения лучшей цены обратитесь в Отдел реализации
+                </label>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-5 col-sm-7">
+                    <input type="submit" value="Сохранить" class="btn btn-primary" />
+                </div>
             </div>
         </div>
-
-        <div class="form-group" id="askBetterPriceDiv" style=@ViewData["askBetterPriceDivStyle"] align="left">
-            <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
-                *Для получения лучшей цены обратитесь в Отдел реализации
-            </label>
-        </div>
-
-        <div class="form-group">
-            <div class="col-sm-offset-5 col-sm-7">
-                <input type="submit" value="Сохранить" class="btn btn-primary" />
-            </div>
-        </div>
-    </div>
-</form>
-<script type="text/javascript">
-    function OnChangeParam1Event(vidNum) {
-        //var catId = $(this).val();
-       // alert(OnChangeParam1Event);
-        catId = $('#param' + vidNum.toString()+1).val();
-        //alert(catId);
-        var vidId=$('#vid' + vidNum).val();
-        if (vidId != 201 && vidId != 205 && vidId != 29) {
-            var url = '@Url.Action("fillParam2", "Product")';
-            $.getJSON(url, { catId: catId }, function (result) {
-          //      alert(catId);
-                var ddl = $('#param' + vidNum.toString() + 2);
-                ddl.empty();
-                $(result).each(function () {
-                    $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
+    </form>
+    <script type="text/javascript">
+        function OnChangeParam1Event() {
+            //var catId = $(this).val();
+            // alert(OnChangeParam1Event);
+            var catId = $('#param1').val();
+           // if (vidId != 201 && vidId != 205 && vidId != 29) {
+                var url = '@Url.Action("fillParam2", "Product")';
+                $.getJSON(url, { catId: catId }, function (result) {
+                    //      alert(catId);
+                    var ddl = $('#param2');
+                    ddl.empty();
+                    $(result).each(function () {
+                        $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
+                    });
+                    OnChangeEvent();
+                    $('#param2').focus();
                 });
-                OnChangeEvent();
-                $('#param' + vidNum + 2).focus();
-            });
         }
-        else {
-           // alert('else');
-            $('#param' + vidNum + 3).focus();
-            OnChangeEvent();
-        }
-    }
-    function OnChangeVidEvent(vidNum)
-    {
-        var p1 = document.getElementById('param' + vidNum.toString() + 1);
-        var p2 = document.getElementById('param' + vidNum.toString() + 2);
-        var p3 = document.getElementById('param' + vidNum.toString() + 3);
-        var p4 = document.getElementById('param' + vidNum.toString() + 4);
-        var p4 = document.getElementById('param' + vidNum.toString() + 5);
-        $('#param' + vidNum.toString() + 1).val("");
-        $('#param' + vidNum.toString() + 2).val("");
-        $('#param' + vidNum.toString() + 3).val("");
-        $('#param' + vidNum.toString() + 4).prop("checked", false);
-        $('#param' + vidNum.toString() + 5).prop("checked", false);
+        function OnChangeVidEvent(vidNum) {
+            var p1 = document.getElementById('param' + vidNum.toString() + 1);
+            var p2 = document.getElementById('param' + vidNum.toString() + 2);
+            var p3 = document.getElementById('param' + vidNum.toString() + 3);
+            var p4 = document.getElementById('param' + vidNum.toString() + 4);
+            var p4 = document.getElementById('param' + vidNum.toString() + 5);
+            $('#param' + vidNum.toString() + 1).val("");
+            $('#param' + vidNum.toString() + 2).val("");
+            $('#param' + vidNum.toString() + 3).val("");
+            $('#param' + vidNum.toString() + 4).prop("checked", false);
+            $('#param' + vidNum.toString() + 5).prop("checked", false);
 
-        var vidId = $('#vid' + vidNum).val();
-        if (vidId > 0) {
-            if (vidId == 28) document.getElementById('paramDiv' + vidNum + 1).style.display = "none";
-            else document.getElementById('paramDiv' + vidNum + 1).style.display = "block";
-            var url = '@Url.Action("fillParam1", "Product")';
-            $.getJSON(url, { catId: vidId }, function (data) {
-                var pair = data[0];
-                //+param1 name=pair.Key
-                document.getElementById('paramLabel' + vidNum.toString() + 1).innerHTML = pair.Key;
-                var values = pair.Value
-                var ddl = $('#param' + vidNum.toString() + 1);
-                ddl.empty();
-                for (var j in values) {
-                    var el = values[j];
-                    $(document.createElement('option')).attr('value', el.id).text(el.tip).appendTo(ddl);
-                }
-                //alert(i[0].tip);
-                pair = data[1];
-                //alert(pair.Key);
-                if (pair.Key != "") {
-                    document.getElementById('paramLabel' + vidNum.toString() + 2).innerHTML = pair.Key;
-                    // if(vidId!=29){//not pockets
+            var vidId = $('#vid' + vidNum).val();
+            if (vidId > 0) {
+                if (vidId == 28) document.getElementById('paramDiv' + vidNum + 1).style.display = "none";
+                else document.getElementById('paramDiv' + vidNum + 1).style.display = "block";
+                var url = '@Url.Action("fillParam1", "Product")';
+                $.getJSON(url, { catId: vidId }, function (data) {
+                    var pair = data[0];
+                    //+param1 name=pair.Key
+                    document.getElementById('paramLabel' + vidNum.toString() + 1).innerHTML = pair.Key;
                     var values = pair.Value
-                    ddl = $('#param' + vidNum.toString() + 2);
+                    var ddl = $('#param' + vidNum.toString() + 1);
                     ddl.empty();
                     for (var j in values) {
                         var el = values[j];
-                        //alert(j);
                         $(document.createElement('option')).attr('value', el.id).text(el.tip).appendTo(ddl);
                     }
-                    // }
-                    $('#param' + vidNum.toString() + 3).val("");
-                    //+param2 name=pair.Key
-                    //+hide param3
-                    document.getElementById('paramDiv' + vidNum + 2).style.display = "block";
-                    document.getElementById('paramDiv' + vidNum + 3).style.display = "none";
-                } else {
-                    $('#param' + vidNum.toString() + 2).val("");
-                    document.getElementById('paramDiv' + vidNum + 3).style.display = "block";
-                    document.getElementById('paramDiv' + vidNum + 2).style.display = "none";
-                    //+hide param2
-                    //+param3 name=pair.Key
-                }
-                pair = data[2];
-                if (pair.Key != "") {document.getElementById('paramLabel' + vidNum.toString() + 3).innerHTML = pair.Key;
-                document.getElementById('paramDiv' + vidNum + 3).style.display = "block";
+                    //alert(i[0].tip);
+                    pair = data[1];
+                    //alert(pair.Key);
+                    if (pair.Key != "") {
+                        document.getElementById('paramLabel' + vidNum.toString() + 2).innerHTML = pair.Key;
+                        // if(vidId!=29){//not pockets
+                        var values = pair.Value
+                        ddl = $('#param' + vidNum.toString() + 2);
+                        ddl.empty();
+                        for (var j in values) {
+                            var el = values[j];
+                            //alert(j);
+                            $(document.createElement('option')).attr('value', el.id).text(el.tip).appendTo(ddl);
+                        }
+                        // }
+                        $('#param' + vidNum.toString() + 3).val("");
+                        //+param2 name=pair.Key
+                        //+hide param3
+                        document.getElementById('paramDiv' + vidNum + 2).style.display = "block";
+                        document.getElementById('paramDiv' + vidNum + 3).style.display = "none";
+                    } else {
+                        $('#param' + vidNum.toString() + 2).val("");
+                        document.getElementById('paramDiv' + vidNum + 3).style.display = "block";
+                        document.getElementById('paramDiv' + vidNum + 2).style.display = "none";
+                        //+hide param2
+                        //+param3 name=pair.Key
+                    }
+                    pair = data[2];
+                    if (pair.Key != "") {
+                        document.getElementById('paramLabel' + vidNum.toString() + 3).innerHTML = pair.Key;
+                        document.getElementById('paramDiv' + vidNum + 3).style.display = "block";
+                    }
+                    else document.getElementById('paramDiv' + vidNum + 3).style.display = "none";
+
+                    pair = data[3];
+                    if (pair.Key != "") {
+                        document.getElementById('paramLabel' + vidNum.toString() + 4).innerHTML = pair.Key;
+                        document.getElementById('paramDiv' + vidNum + 4).style.display = "block";
+                    }
+                    else document.getElementById('paramDiv' + vidNum + 4).style.display = "none";
+
+                    pair = data[4];
+                    if (pair.Key != "") {
+                        document.getElementById('paramLabel' + vidNum.toString() + 5).innerHTML = pair.Key;
+                        document.getElementById('paramDiv' + vidNum + 5).style.display = "block";
+                    }
+                    else document.getElementById('paramDiv' + vidNum + 5).style.display = "none";
+
+
+                    //}
+                    OnChangeEvent();
+                    $('#param' + vidNum.toString() + 1).focus()
+                });
             }
-                else document.getElementById('paramDiv' + vidNum + 3).style.display = "none";
-
-                pair = data[3];
-                if (pair.Key != "") {
-                    document.getElementById('paramLabel' + vidNum.toString() + 4).innerHTML = pair.Key;
-                    document.getElementById('paramDiv' + vidNum + 4).style.display = "block";
-                }
-                else document.getElementById('paramDiv' + vidNum + 4).style.display = "none";
-
-                pair = data[4];
-                if (pair.Key != "") {
-                    document.getElementById('paramLabel' + vidNum.toString() + 5).innerHTML = pair.Key;
-                    document.getElementById('paramDiv' + vidNum + 5).style.display = "block";
-                }
-                else document.getElementById('paramDiv' + vidNum + 5).style.display = "none";
-
-
-                //}
+            else {
+                document.getElementById('paramDiv' + vidNum + 1).style.display = "none";
+                document.getElementById('paramDiv' + vidNum + 2).style.display = "none";
+                document.getElementById('paramDiv' + vidNum + 3).style.display = "none";
+                document.getElementById('paramDiv' + vidNum + 4).style.display = "none";
+                document.getElementById('paramDiv' + vidNum + 5).style.display = "none";
                 OnChangeEvent();
-                $('#param' + vidNum.toString() + 1).focus()
-            });
-        }
-        else {
-            document.getElementById('paramDiv' + vidNum + 1).style.display = "none";
-            document.getElementById('paramDiv' + vidNum + 2).style.display = "none";
-            document.getElementById('paramDiv' + vidNum + 3).style.display = "none";
-            document.getElementById('paramDiv' + vidNum + 4).style.display = "none";
-            document.getElementById('paramDiv' + vidNum + 5).style.display = "none";
-            OnChangeEvent();
-        }
+            }
 
-       @* var existPocket = false;
-        if ($('#vid1').val() == 29 || $('#vid2').val() == 29 || $('#vid3').val() == 29 || $('#vid4').val() == 29) {
-            document.getElementById('cebestDiv').style.display = "none";
-            $('#cebestBag').val(0);
-        }
-       else document.getElementById('cebestDiv').style.display = "block";*@
+            @* var existPocket = false;
+            if ($('#vid1').val() == 29 || $('#vid2').val() == 29 || $('#vid3').val() == 29 || $('#vid4').val() == 29) {
+                document.getElementById('cebestDiv').style.display = "none";
+                $('#cebestBag').val(0);
+            }
+            else document.getElementById('cebestDiv').style.display = "block";*@
 
- }
- function OnChangeKolvoMestEvent()
-    {
-    }
-    function OnChangeEvent()
-    {
-        $("body").css("cursor", "progress");
-       // var test = '<%= new JavaScriptSerializer().Serialize(ViewData["labelByVid"])) %>';
-       // alert(test);
-       // alert(test[24][1]);
-        //test = '<%= new JavaScriptSerializer().Serialize(ViewData["labelByVid"][24][1])) %>';
-       // alert("upd");
-        //return;
+     }
+        function OnChangeKolvoMestEvent() {
+        }
+        function OnChangeEvent() {
+            $("body").css("cursor", "progress");
+            // var test = '<%= new JavaScriptSerializer().Serialize(ViewData["labelByVid"])) %>';
+            // alert(test);
+            // alert(test[24][1]);
+            //test = '<%= new JavaScriptSerializer().Serialize(ViewData["labelByVid"][24][1])) %>';
+            // alert("upd");
+            //return;
             $.ajax({
                 type: 'POST',
                 url: "/Product/Recalc",
                 data: $('#myform').serialize(),
                 success: function (data, res) {
-               //     alert(data.totalLabel);
-                 //   document.getElementById('total').value = data.total;
+                    //     alert(data.totalLabel);
+                    //   document.getElementById('total').value = data.total;
                     document.getElementById('totalLabel').value = data.totalLabel;
                     if (data.askBetterPrice)
                         document.getElementById('askBetterPriceDiv').style.display = "block";
@@ -388,17 +402,17 @@
                     $("body").css("cursor", "default");
                 }
             });
-}
-</script>
-<script type='text/javascript'>
-        //alert("Stop that parsing!");.style.display = "block";
-        //$('#param' + vidNum + 2)
-        //elem.style.display = "none";
-        /* OnChangeVidEvent(1);
-       OnChangeVidEvent(2);
-        OnChangeVidEvent(3);
-        OnChangeVidEvent(4);*/
-</script>
-@* <div>
-    @Html.ActionLink("К заказу", "Edit", "Home",new { id = @Model.listId }, null)
-        </div>*@
+        }
+    </script>
+    <script type='text/javascript'>
+                //alert("Stop that parsing!");.style.display = "block";
+                //$('#param' + vidNum + 2)
+                //elem.style.display = "none";
+                /* OnChangeVidEvent(1);
+               OnChangeVidEvent(2);
+                OnChangeVidEvent(3);
+                OnChangeVidEvent(4);*/
+    </script>
+    @* <div>
+        @Html.ActionLink("К заказу", "Edit", "Home",new { id = @Model.listId }, null)
+    </div>*@
