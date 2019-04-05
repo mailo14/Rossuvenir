@@ -185,7 +185,12 @@
     <Compile Include="Models\Category.cs">
       <DependentUpon>KvotaDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Items\PaketPvd.cs" />
+    <Compile Include="Models\Items\Gravirovka.cs" />
+    <Compile Include="Models\Items\Tisnenie.cs" />
+    <Compile Include="Models\Items\Tampopechat.cs" />
     <Compile Include="Models\Items\Shelkografiya.cs" />
+    <Compile Include="Models\Items\DTG.cs" />
     <Compile Include="Models\Items\Znachok.cs" />
     <Compile Include="Models\Items\Blocknot.cs" />
     <Compile Include="Models\KvotaDB.Context.cs">
@@ -301,6 +306,11 @@
     <Content Include="Views\Product\EditБлокнот.cshtml" />
     <Content Include="Views\Product\EditЗначки.cshtml" />
     <Content Include="Views\Product\EditШелкография.cshtml" />
+    <Content Include="Views\Product\EditТампопечать.cshtml" />
+    <Content Include="Views\Product\EditПакетыПВД.cshtml" />
+    <Content Include="Views\Product\EditТиснение.cshtml" />
+    <Content Include="Views\Product\EditDTG.cshtml" />
+    <Content Include="Views\Product\EditГравировка.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

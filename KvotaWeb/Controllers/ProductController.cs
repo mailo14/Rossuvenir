@@ -993,6 +993,11 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
             {
                 case TipProds.Znachok: var model0 = new Znachok(); TryUpdateModel(model0, collection); model = model0; break;
                 case TipProds.Shelkografiya: var model1 = new Shelkografiya(); TryUpdateModel(model1, collection); model = model1; break;
+                case TipProds.Tampopechat: var model2 = new Tampopechat(); TryUpdateModel(model2, collection); model = model2; break;
+                case TipProds.PaketPvd: var model3 = new PaketPvd(); TryUpdateModel(model3, collection); model = model3; break;
+                case TipProds.Tisnenie: var model4 = new Tisnenie(); TryUpdateModel(model4, collection); model = model4; break;
+                case TipProds.DTG: var model5 = new DTG(); TryUpdateModel(model5, collection); model = model5; break;
+                case TipProds.Gravirovka: var model6 = new Gravirovka(); TryUpdateModel(model6, collection); model = model6; break;
             }
                
             var sss = model.Calc();

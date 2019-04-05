@@ -106,7 +106,7 @@ namespace KvotaWeb.Controllers
                     return RedirectToAction("EditЗначки", "Product", new { id = li.id });
 
                     break;
-                case 23:
+                case 23:  case 24: case 29:case 30:case 18:case 28:
             db.ListItem.Add(li);
             db.SaveChanges();
                    // var ii=ItemBase.Create(li);
@@ -146,7 +146,7 @@ namespace KvotaWeb.Controllers
         public ActionResult EditLi(int id ,int tipProd)
         {              
             switch (tipProd)
-            { case 4:case 23:return RedirectToAction("EditЗначки", "Product", new { id = id });
+            { case 4:case 23:case 24:case 29:case 30:case 18:case 28:return RedirectToAction("EditЗначки", "Product", new { id = id });
                 case 1:return RedirectToAction("EditSuvenir", "Product", new { id = id });
              //   case 2: return RedirectToAction("EditPoligrafiya", "Product", new { id = id });
                 case 3: return RedirectToAction("EditBanner", "Product", new { id = id });
@@ -235,6 +235,11 @@ namespace KvotaWeb.Models
                 {
                     case 4: return "Закатные значки";
                     case 23: return "Шелкография";
+                    case 24: return "Тампопечать";
+                    case 29: return "Пакеты ПВД";
+                    case 30: return "Тиснение";
+                    case 18: return "DTG";
+                    case 28: return "Гравировка";
 
                     case 1: return "Нанесение логотипа";
                     case 3: return "Баннеры и ПВХ";
@@ -243,7 +248,6 @@ namespace KvotaWeb.Models
                     case 7: return "Ленты для бейджей (ланъярды)";
                     case 8: return "Открытки ";
                     case 9: return "Пакеты бумажные";
-                    case 10: return "Пакеты ПВД";
                     case 11: return "Прочая полиграфия";
                     case 12: return "Силиконовые браслеты";
                     case 13: return "Слэп браслеты";

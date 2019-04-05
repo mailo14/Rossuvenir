@@ -59,11 +59,9 @@ namespace KvotaWeb.Models.Items
         public double? Cena { get; set; }
     }
     public enum Postavs:int { РРЦ_1_5=1, АртСувенир=2, ААА=3, Плановая_СС=10};
-    public enum TipProds:int { Znachok = 4, Shelkografiya = 23};
+    public enum TipProds:int { Znachok = 4, Shelkografiya = 23, Tampopechat = 24, PaketPvd = 29, Tisnenie = 30, DTG = 18, Gravirovka = 28 };
     public abstract class ItemBase
     {
-        private TipProds shelkografiya;
-
         public int? ZakazId { get; set; }
         public string TotalLabel { get; set; }
 
@@ -127,7 +125,42 @@ namespace KvotaWeb.Models.Items
                 case TipProds.Shelkografiya:
                     return new Shelkografiya() {Id=li.id,ZakazId= li.listId, Tiraz = li.tiraz,  Tcvet = li.param11,  KolichestvoTcvetov = li.param12
                     ,Sintetika=li.param14,FormatA3=li.param15};                    
-
+  case TipProds.Tampopechat:
+                    return new Tampopechat()
+                    {
+                        Id = li.id,
+                        ZakazId = li.listId,
+                        Tiraz = li.tiraz,
+                        Osnova = li.param11,
+                        KolichestvoTcvetov = li.param12
+                    };
+                case TipProds.PaketPvd:                    return new PaketPvd()
+                    {
+                        Id = li.id,
+                        ZakazId = li.listId,
+                        Tiraz = li.tiraz,
+                        Paket= li.param11,
+                        KolichestvoTcvetov = li.param12,
+                        PoleZapechatki=li.param14
+                    };   
+                case TipProds.Tisnenie:                    return new Tisnenie()
+                    {
+                        Id = li.id,
+                        ZakazId = li.listId,
+                        Tiraz = li.tiraz,
+                        Vid= li.param11,
+                        Ploshad = li.param13,                        KlisheExists=li.param14
+                    }; 
+                case TipProds.DTG:
+                    return new DTG() {Id=li.id,ZakazId= li.listId, Tiraz = li.tiraz,  Razmer = li.param11 };
+                case TipProds.Gravirovka:                    return new Gravirovka()
+                    {
+                        Id = li.id,
+                        ZakazId = li.listId,
+                        Tiraz = li.tiraz,
+                        Vid= li.param11,
+                        Ploshad = li.param13,                        
+                    }; 
                 default:
                     return null;
             }
