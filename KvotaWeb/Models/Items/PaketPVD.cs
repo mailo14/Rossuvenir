@@ -32,7 +32,7 @@ namespace KvotaWeb.Models.Items
 
         {
             var ret = new List<CalcLine>();
-            askBetterPrice = false;
+            InnerMessageIds.Add(InnerMessages.AskBetterPrice);
             foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
             {
                 var line = new CalcLine() { Postav = i };

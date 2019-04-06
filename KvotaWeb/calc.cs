@@ -8,6 +8,7 @@ namespace KvotaWeb
 {
     public class Calc
     {
+
         //public static kvotaEntities db = new kvotaEntities();
         public static double? recalcLi(ListItem li)
         {

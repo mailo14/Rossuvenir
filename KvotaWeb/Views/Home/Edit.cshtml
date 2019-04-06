@@ -15,26 +15,26 @@
         @Html.HiddenFor(model => model.comment)
 
 
-                @Html.HiddenFor(model => model.dopUslDost)
-                @Html.HiddenFor(model => model.dopUslMaket)
+        @Html.HiddenFor(model => model.dopUslDost)
+        @Html.HiddenFor(model => model.dopUslMaket)
         @*<div class="form-group">
-        <label class="control-label col-sm-5">Доп.услуги:</label>
-        <div class="col-sm-7 " style="display:inline-block;padding-top:7px;">
-            <label style="margin-right:10px;">
-                @Html.EditorFor(model => model.dopUslDost, new { htmlAttributes = new { @onclick = "OnChangeEvent();" } })
-                доставка до клиента
-            </label>
-            @Html.ValidationMessageFor(model => model.dopUslDost, "", new { @class = "text-danger" })
+            <label class="control-label col-sm-5">Доп.услуги:</label>
+            <div class="col-sm-7 " style="display:inline-block;padding-top:7px;">
+                <label style="margin-right:10px;">
+                    @Html.EditorFor(model => model.dopUslDost, new { htmlAttributes = new { @onclick = "OnChangeEvent();" } })
+                    доставка до клиента
+                </label>
+                @Html.ValidationMessageFor(model => model.dopUslDost, "", new { @class = "text-danger" })
 
-            <label >
-                @Html.EditorFor(model => model.dopUslMaket, new { htmlAttributes = new {  @onclick = "OnChangeEvent();" } })
-                макетирование
-            </label>
-            @Html.ValidationMessageFor(model => model.dopUslMaket, "", new { @class = "text-danger" })
-        </div>
-    </div>*@
+                <label >
+                    @Html.EditorFor(model => model.dopUslMaket, new { htmlAttributes = new {  @onclick = "OnChangeEvent();" } })
+                    макетирование
+                </label>
+                @Html.ValidationMessageFor(model => model.dopUslMaket, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
 
-    @*input type="checkbox" id="dopUslMaket" name="dopUslMaket" value="@Model.dopUslMaket" checked="@Model.dopUslMaket" onclick = "OnChangeEvent()"/*@
+        @*input type="checkbox" id="dopUslMaket" name="dopUslMaket" value="@Model.dopUslMaket" checked="@Model.dopUslMaket" onclick = "OnChangeEvent()"/*@
 
         @*<div class="form-group">
             <label class="control-label col-sm-5">Доп.услуги:</label>
@@ -48,12 +48,12 @@
 
         @*$('#liTableDiv').load('@Url.Action("fillLitable", "Home")?zId=' + @Model.id);*@
         @*<script type="text/javascript">
-    $(document).ready(function () {
-        $('#dopUslDost').click(function (e) {
-            $('#liTableDiv').load('@Url.Action("fillLitable", "Home")?zId=' + @Model.id);
+        $(document).ready(function () {
+            $('#dopUslDost').click(function (e) {
+                $('#liTableDiv').load('@Url.Action("fillLitable", "Home")?zId=' + @Model.id);
+            });
         });
-    });
-        </script>*@
+            </script>*@
 
         <div class="form-group">
             <label class="control-label col-sm-5">Наценка:</label>
@@ -93,6 +93,9 @@
                         <li><a href="/Home/AddLi?zId=@Model.id&tipProd=30">Тиснение</a></li>
                         <li><a href="/Home/AddLi?zId=@Model.id&tipProd=18">DTG</a></li>
                         <li><a href="/Home/AddLi?zId=@Model.id&tipProd=28">Гравировка</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=31">УФ (качество)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=32">УФ (стандарт)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=33">Деколь</a></li>
 
                         <li><a href="/Home/AddLi?zId=@Model.id&tipProd=1">Нанесение логотипа</a></li>
                         <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры и ПВХ</a></li>
@@ -119,8 +122,9 @@
         </div>
 
         <div id="liTableDiv">
-            @Html.Action("fillLitable",new {zId=@Model.id })
+            @Html.Action("fillLitable", new { zId = @Model.id })
         </div>
+
         
 
         <div class="form-group">

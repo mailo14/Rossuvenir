@@ -20,11 +20,15 @@ namespace KvotaWeb.Models.Items
             return rr;
         }
 
+        public static ItemBase CreateItem(ListItem li)
+        {
+            return new Znachok() { Id = li.id, ZakazId = li.listId, Tiraz = li.tiraz, Razmer = li.param11 };
+        }
+
         public override List<CalcLine> Calc()
 
         {
             var ret = new List<CalcLine>();
-            askBetterPrice = false;
             foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
             {
                 var line = new CalcLine() { Postav = i };
@@ -58,8 +62,21 @@ namespace KvotaWeb.Models.Items
         public Postavs Postav { get; set; }
         public double? Cena { get; set; }
     }
+    public class TotalCalcLine
+    {
+        public string Postav { get; set; }
+        public string EdCena { get; set; }
+        public string Cena { get; set; }
+        public string Marza { get; set; }
+    }
+  public class TotalResultsModel
+    {
+        public List<TotalCalcLine> Lines { get; set; }
+        public string Message { get; set; }
+    }
+
     public enum Postavs:int { РРЦ_1_5=1, АртСувенир=2, ААА=3, Плановая_СС=10};
-    public enum TipProds:int { Znachok = 4, Shelkografiya = 23, Tampopechat = 24, PaketPvd = 29, Tisnenie = 30, DTG = 18, Gravirovka = 28 };
+    public enum TipProds:int { Znachok = 4, Shelkografiya = 23, Tampopechat = 24, PaketPvd = 29, Tisnenie = 30, DTG = 18, Gravirovka = 28, UFkachestvo = 31, UFstandart = 32, Decol = 33 };
     public abstract class ItemBase
     {
         public int? ZakazId { get; set; }
@@ -74,7 +91,6 @@ namespace KvotaWeb.Models.Items
         public int Id { get; set; }
         public TipProds TipProd { get; set; }
 
-        public bool askBetterPrice { get; set; }
         public ViewDataDictionary ViewData { get; set; }
 
         [Display(Name = "Тираж:")]
@@ -102,7 +118,7 @@ namespace KvotaWeb.Models.Items
             if (!minTiraz.HasValue) return false;
 
             var maxTirazi = (from p in db.Price where p.firma == (int)firma && p.catId == catId orderby p.tiraz descending select p.tiraz).Take(2).ToArray();
-            if (tiraz > 2 * maxTirazi[0] - maxTirazi[1]) askBetterPrice = true;
+            if (tiraz > 2 * maxTirazi[0] - maxTirazi[1]) InnerMessageIds.Add(InnerMessages.AskBetterPrice);
             if (tiraz < minTiraz)
             {
                 cena = (from p in db.Price where p.firma == (int)firma && p.catId == catId && p.tiraz == minTiraz select p.cena).First();
@@ -114,14 +130,75 @@ namespace KvotaWeb.Models.Items
             return true;
         }
 
+        public enum InnerMessages
+        {
+            AskBetterPrice,
+            IndividPrice
+        }
+        public HashSet<InnerMessages> InnerMessageIds = new HashSet<InnerMessages>();
+        public string Message
+        {
+            get
+            {
+                return
+                    string.Join(Environment.NewLine,
+                    InnerMessageIds.Select(pp =>
+                    {
+                        switch (pp)
+                        {
+                            case InnerMessages.AskBetterPrice: return @"*Для получения лучшей цены обратитесь в Отдел реализации";
+                            case InnerMessages.IndividPrice: return @"*Расчет цены индивидуально по макету";
+                            default: return null;
+                        };
+                    }
+                ));
+            }
+        }
         public abstract List<CalcLine> Calc();
+        public  TotalResultsModel GetTotal()
+        {
+            InnerMessageIds.Clear();
+            //List<CalcLine> initlines,double tiraz
+            var lines = Calc();//initlines.ToList();
+            var baseLine = lines.First(pp => pp.Postav == Postavs.Плановая_СС);
 
+            var ret = new TotalResultsModel()
+            {
+                Lines = new List<TotalCalcLine>(),
+                Message = Message
+            };
+            foreach (var line in lines)
+            {
+                var tLine = new TotalCalcLine();
+                ret.Lines.Add(tLine);
+                switch (line.Postav)
+                {
+                    case Postavs.РРЦ_1_5:
+                        tLine.Postav = "РРЦ 1,5";break;
+                    case Postavs.АртСувенир:
+                        tLine.Postav = "АртСУВЕНИР"; break;
+                    case Postavs.ААА:
+                        tLine.Postav = "ААА"; break;
+                    case Postavs.Плановая_СС:
+                        tLine.Postav = "Плановая СС"; break;
+                }
+                if (line.Cena.HasValue)
+                {
+                    tLine.EdCena = (line.Cena / Tiraz).Value.ToString("f2");
+                    tLine.Cena = line.Cena.Value.ToString("f2");
+                    if (line != baseLine)
+                        tLine.Marza = ((line.Cena - baseLine.Cena) / line.Cena * 100).Value.ToString("f2") + @"%";
+                }
+                else tLine.EdCena = tLine.Cena = tLine.Marza = "-";
+            }
+            return ret;
+        }
         public static ItemBase Create(ListItem li)
         {
             switch ((TipProds)li.tipProd)
             {
                 case TipProds.Znachok:
-                    return new Znachok() {Id=li.id,ZakazId= li.listId, Tiraz = li.tiraz,  Razmer = li.param11 };
+                    return Znachok.CreateItem(li);
                 case TipProds.Shelkografiya:
                     return new Shelkografiya() {Id=li.id,ZakazId= li.listId, Tiraz = li.tiraz,  Tcvet = li.param11,  KolichestvoTcvetov = li.param12
                     ,Sintetika=li.param14,FormatA3=li.param15};                    
@@ -160,7 +237,14 @@ namespace KvotaWeb.Models.Items
                         Tiraz = li.tiraz,
                         Vid= li.param11,
                         Ploshad = li.param13,                        
-                    }; 
+                    };
+                case TipProds.UFkachestvo:
+                    return UFkachestvo.CreateItem(li);
+                case TipProds.UFstandart:
+                    return UFstandart.CreateItem(li);
+                case TipProds.Decol:
+                    return Decol.CreateItem(li);
+                    
                 default:
                     return null;
             }

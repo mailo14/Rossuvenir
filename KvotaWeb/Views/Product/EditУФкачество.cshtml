@@ -1,4 +1,4 @@
-﻿@model KvotaWeb.Models.Items.Shelkografiya
+﻿@model KvotaWeb.Models.Items.UFkachestvo
 
 <form id="myform" method="post" action="/Product/EditЗначки">
     @Html.AntiForgeryToken()
@@ -27,36 +27,29 @@
 
         <div class="form-group">
             <div class="control-label col-sm-5">
-                @Html.LabelFor(model => model.Tcvet)
+                @Html.LabelFor(model => model.Izdelie)
             </div>
             <div class="col-sm-7">
-                @Html.DropDownListFor(model => model.Tcvet, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param1", @class = "form-control", @onchange = "OnChangeParam1Event();" })
-                @Html.ValidationMessageFor(model => model.Tcvet, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.Izdelie, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param1", @class = "form-control", @onchange = "OnChangeParam1Event();" })
+                @Html.ValidationMessageFor(model => model.Izdelie, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="RazmerZapechatkiParamDiv">
             <div class="control-label col-sm-5">
-                @Html.LabelFor(model => model.KolichestvoTcvetov)
+                @Html.LabelFor(model => model.RazmerZapechatki)
             </div>
             <div class="col-sm-7">
-                @Html.DropDownListFor(model => model.KolichestvoTcvetov, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param2", @class = "form-control", @onchange = "OnChangeEvent();" })
-                @Html.ValidationMessageFor(model => model.KolichestvoTcvetov, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.RazmerZapechatki, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param2", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.RazmerZapechatki, "", new { @class = "text-danger" })
             </div>
         </div>
 
 
-        <div class="form-group" id="paramDiv4" style=@ViewData["paramDivStyle4"] align="left">
+        <div class="form-group" id="IndividPersParamDiv" style=@ViewData["paramDivStyle4"] align="left">
             <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
-                @Html.EditorFor(model => model.Sintetika, new { htmlAttributes = new { @id = "param4", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
-                <label for="param4" id="paramLabel4">@Html.LabelFor(model => model.Sintetika)</label>
-            </label>
-        </div>
-
-        <div class="form-group" id="paramDiv5" style=@ViewData["paramDivStyle5"] align="left">
-            <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
-                @Html.EditorFor(model => model.FormatA3, new { htmlAttributes = new { @id = "param5", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
-                <label for="param5" id="paramLabel5">@Html.LabelFor(model => model.FormatA3)</label>
+                @Html.EditorFor(model => model.IndividPers, new { htmlAttributes = new { @id = "param4", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
+                <label for="param4" id="paramLabel4">@Html.LabelFor(model => model.IndividPers)</label>
             </label>
         </div>
 
@@ -74,6 +67,9 @@
         function OnChangeParam1Event() {
             //var catId = $(this).val();
             var catId = $('#param1').val();
+            if (catId == 172) {
+                document.getElementById('RazmerZapechatkiParamDiv').style.display = "block";
+                document.getElementById('IndividPersParamDiv').style.display = "none";
                 var url = '@Url.Action("fillParam2", "Product")';
                 $.getJSON(url, { catId: catId }, function (result) {
                     var ddl = $('#param2');
@@ -81,9 +77,15 @@
                     $(result).each(function () {
                         $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
                     });
-                    OnChangeEvent();
+
                     $('#param2').focus();
                 });
+            }
+            else {
+                document.getElementById('RazmerZapechatkiParamDiv').style.display = "none";
+                document.getElementById('IndividPersParamDiv').style.display = "block";
+            }
+            OnChangeEvent();
         }
         function OnChangeEvent() {
             $("body").css("cursor", "progress");

@@ -983,8 +983,13 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
             return Json(data);
         }*/
 
-    [HttpPost]
-        public JsonResult Recalc(FormCollection collection)
+        public ActionResult Recalc(TotalResultsModel totals)
+        {
+            return PartialView("TotalResults", totals);
+
+        }
+        [HttpPost]
+        public ActionResult Recalc(FormCollection collection)
         {
             TipProds tipProd = (TipProds)Enum.Parse(typeof(TipProds), collection["TipProd"]) ; 
            // var tipProd = (TipProds)int.Parse(collection["TipProd"]);
@@ -998,9 +1003,14 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
                 case TipProds.Tisnenie: var model4 = new Tisnenie(); TryUpdateModel(model4, collection); model = model4; break;
                 case TipProds.DTG: var model5 = new DTG(); TryUpdateModel(model5, collection); model = model5; break;
                 case TipProds.Gravirovka: var model6 = new Gravirovka(); TryUpdateModel(model6, collection); model = model6; break;
+                case TipProds.UFkachestvo: var model7 = new UFkachestvo(); TryUpdateModel(model7, collection); model = model7; break;
+                case TipProds.UFstandart: var model8 = new UFstandart(); TryUpdateModel(model8, collection); model = model8; break;
+                case TipProds.Decol: var model9= new Decol(); TryUpdateModel(model9, collection); model = model9; break;
             }
                
             var sss = model.Calc();
+            var totals = model.GetTotal();
+
             double sum = 0;
             // if (li.dopUslDost) sum += 400;
             //if (li.dopUslMaket) sum += 400;
@@ -1015,8 +1025,10 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
             }*/
             //   Calc.recalcLi(li);
             //   var data = new { total = li.total, totalLabel = li.totalLabel, askBetterPrice = li.askBetterPrice };
-            var data = new { total = 10, totalLabel = string.Join(";",sss.Select(pp=>pp.Cena)), askBetterPrice = model.askBetterPrice};
-            return Json(data);
+            return PartialView("TotalResults", totals);
+
+            //var data = new { total = 10, totalLabel = string.Join(";",sss.Select(pp=>pp.Cena)), askBetterPrice = model.askBetterPrice};
+            //return Json(data);
         }
     }
 }

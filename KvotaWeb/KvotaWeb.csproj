@@ -187,6 +187,9 @@
     </Compile>
     <Compile Include="Models\Items\PaketPvd.cs" />
     <Compile Include="Models\Items\Gravirovka.cs" />
+    <Compile Include="Models\Items\Decol.cs" />
+    <Compile Include="Models\Items\UFstandart.cs" />
+    <Compile Include="Models\Items\UFkachestvo.cs" />
     <Compile Include="Models\Items\Tisnenie.cs" />
     <Compile Include="Models\Items\Tampopechat.cs" />
     <Compile Include="Models\Items\Shelkografiya.cs" />
@@ -311,6 +314,10 @@
     <Content Include="Views\Product\EditТиснение.cshtml" />
     <Content Include="Views\Product\EditDTG.cshtml" />
     <Content Include="Views\Product\EditГравировка.cshtml" />
+    <Content Include="Views\Product\TotalResults.cshtml" />
+    <Content Include="Views\Product\EditУФкачество.cshtml" />
+    <Content Include="Views\Product\EditУФстандарт.cshtml" />
+    <Content Include="Views\Product\EditДеколь.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

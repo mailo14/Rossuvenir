@@ -1,4 +1,4 @@
-﻿@model KvotaWeb.Models.Items.Znachok
+﻿@model KvotaWeb.Models.Items.UFstandart
 
 <form id="myform" method="post" action="/Product/EditЗначки">
     @Html.AntiForgeryToken()
@@ -27,14 +27,24 @@
 
         <div class="form-group">
             <div class="control-label col-sm-5">
-                @Html.LabelFor(model => model.Razmer)
+                @Html.LabelFor(model => model.Izdelie)
             </div>
             <div class="col-sm-7">
-                @Html.DropDownListFor(model => model.Razmer, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param11", @class = "form-control", @onchange = "OnChangeEvent();" })
-                @Html.ValidationMessageFor(model => model.Razmer, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.Izdelie, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param1", @class = "form-control", @onchange = "OnChangeParam1Event();" })
+                @Html.ValidationMessageFor(model => model.Izdelie, "", new { @class = "text-danger" })
             </div>
         </div>
-       
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Tcvet)
+            </div>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.Tcvet, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param2", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.Tcvet, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
         <div id="totalResultsDiv">
             @Html.Action("Recalc", "Product", new { totals = @Model.GetTotal() })
         </div>
@@ -45,10 +55,24 @@
         </div>
     </div>
 </form>
+
 <script type="text/javascript">
-    function OnChangeEvent()
-    {
-        $("body").css("cursor", "progress");
+        function OnChangeParam1Event() {
+            //var catId = $(this).val();
+            var catId = $('#param1').val();
+                var url = '@Url.Action("fillParam2", "Product")';
+                $.getJSON(url, { catId: catId }, function (result) {
+                    var ddl = $('#param2');
+                    ddl.empty();
+                    $(result).each(function () {
+                        $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
+                    });
+                    OnChangeEvent();
+                    $('#param2').focus();
+                });
+        }
+        function OnChangeEvent() {
+            $("body").css("cursor", "progress");
             $.ajax({
                 type: 'POST',
                 url: "/Product/Recalc",
@@ -62,6 +86,5 @@
                     $("body").css("cursor", "default");
                 }
             });
-}
+        }
 </script>
-

@@ -1,4 +1,4 @@
-﻿@model KvotaWeb.Models.Items.Shelkografiya
+﻿@model KvotaWeb.Models.Items.Decol
 
 <form id="myform" method="post" action="/Product/EditЗначки">
     @Html.AntiForgeryToken()
@@ -27,11 +27,11 @@
 
         <div class="form-group">
             <div class="control-label col-sm-5">
-                @Html.LabelFor(model => model.Tcvet)
+                @Html.LabelFor(model => model.Vid)
             </div>
             <div class="col-sm-7">
-                @Html.DropDownListFor(model => model.Tcvet, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param1", @class = "form-control", @onchange = "OnChangeParam1Event();" })
-                @Html.ValidationMessageFor(model => model.Tcvet, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.Vid, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param1", @class = "form-control", @onchange = "OnChangeParam1Event();" })
+                @Html.ValidationMessageFor(model => model.Vid, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -45,20 +45,33 @@
             </div>
         </div>
 
+        <div class="form-group" id="DiametrParamDiv">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Diametr)
+            </div>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.Diametr, @ViewData["params21"] as SelectList, "(не выбрано)", new { @id = "param21", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.Diametr, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Ploshad)
+            </div>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.Ploshad, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.Ploshad, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group" id="paramDiv4" style=@ViewData["paramDivStyle4"] align="left">
             <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
-                @Html.EditorFor(model => model.Sintetika, new { htmlAttributes = new { @id = "param4", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
-                <label for="param4" id="paramLabel4">@Html.LabelFor(model => model.Sintetika)</label>
+                @Html.EditorFor(model => model.Zolotoi, new { htmlAttributes = new { @id = "param4", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
+                <label for="param4" id="paramLabel4">@Html.LabelFor(model => model.Zolotoi)</label>
             </label>
         </div>
 
-        <div class="form-group" id="paramDiv5" style=@ViewData["paramDivStyle5"] align="left">
-            <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
-                @Html.EditorFor(model => model.FormatA3, new { htmlAttributes = new { @id = "param5", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
-                <label for="param5" id="paramLabel5">@Html.LabelFor(model => model.FormatA3)</label>
-            </label>
-        </div>
 
         <div id="totalResultsDiv">
             @Html.Action("Recalc", "Product", new { totals = @Model.GetTotal() })
@@ -83,7 +96,11 @@
                     });
                     OnChangeEvent();
                     $('#param2').focus();
-                });
+            });
+            if (catId == 307) 
+                document.getElementById('DiametrParamDiv').style.display = "none";
+            else 
+                document.getElementById('DiametrParamDiv').style.display = "block";
         }
         function OnChangeEvent() {
             $("body").css("cursor", "progress");
