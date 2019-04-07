@@ -236,6 +236,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\edit.png" />
+    <Content Include="Images\logo3.png" />
     <Content Include="Images\upd.png" />
     <Content Include="Images\logo2.png" />
     <Content Include="Models\KvotaDB.Context.tt">
@@ -318,6 +319,7 @@
     <Content Include="Views\Product\EditУФкачество.cshtml" />
     <Content Include="Views\Product\EditУФстандарт.cshtml" />
     <Content Include="Views\Product\EditДеколь.cshtml" />
+    <Content Include="Views\Product\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

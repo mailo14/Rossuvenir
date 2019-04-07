@@ -9,6 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class Gravirovka : ItemBase
     {
+        public override string Srok { get; set; } = "от 2-х рабочих дней";
         [Display(Name = "Вид:")]
         public int? Vid { get; set; }
 
@@ -30,14 +31,13 @@ namespace KvotaWeb.Models.Items
 
         {
             var ret = new List<CalcLine>();
-            InnerMessageIds.Add(InnerMessages.AskBetterPrice);
             foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
             {
                 var line = new CalcLine() { Postav = i };
                 ret.Add(line);
                 if (Vid == null || Tiraz == null || Ploshad ==null) continue;
 
-                var ploshad = Math.Max(2.5, Ploshad.Value);
+                var ploshad = Math.Max(2, Ploshad.Value);
                 double? cena= GetCena(i, Vid.Value, ploshad);
                 if (cena == null) continue;
 

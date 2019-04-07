@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class Decol : ItemBase
     {
-
+        public override string Srok { get; set; } = "от 5-ти рабочих дней";
 
         int? _Vid = null;
         [Display(Name = "Вид посуды:")]
@@ -21,9 +21,20 @@ namespace KvotaWeb.Models.Items
                 var empty = new SelectList(new List<Category>(), "id", "tip");
 
                 kvotaEntities db = new kvotaEntities();
-                if (value == null) ViewData["params2"] = empty;
-                else ViewData["params2"] = new SelectList((from pp in db.Category where pp.parentId == value select pp), "id", "tip");
-            } }
+                if (value == null)
+                {
+                    ViewData["params2"] = empty;
+                        ViewData["DiametrParamDivStyle"] = "display:none;";
+                }
+                else
+                {
+                    ViewData["params2"] = new SelectList((from pp in db.Category where pp.parentId == value select pp), "id", "tip");
+
+                    if (value == 307)
+                        ViewData["DiametrParamDivStyle"] = "display:none;";
+                    else ViewData["DiametrParamDivStyle"] = "display:block;";
+                }
+                } }
 
         [Display(Name = "Количество цветов:")]
          public int? KolichestvoTcvetov { get; set; }
@@ -44,6 +55,7 @@ namespace KvotaWeb.Models.Items
             var rr = base.ToListItem();
             rr.param11 = Vid;
             rr.param12 = KolichestvoTcvetov;
+            rr.param13 = Ploshad;
             rr.param14 = Zolotoi;
             rr.param21 = Diametr;
             return rr;
@@ -58,6 +70,7 @@ namespace KvotaWeb.Models.Items
                 Tiraz = li.tiraz,
                 Vid = li.param11,
                 KolichestvoTcvetov = li.param12,
+                Ploshad=li.param13,
            Zolotoi= li.param14,
             Diametr= li.param21
             };
@@ -67,12 +80,11 @@ namespace KvotaWeb.Models.Items
 
         {
             var ret = new List<CalcLine>();
-            InnerMessageIds.Add(InnerMessages.AskBetterPrice);
             foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
             {
                 var line = new CalcLine() { Postav = i };
                 ret.Add(line);
-                if (Vid == null|| KolichestvoTcvetov == null || Tiraz == null || Ploshad==null || KolichestvoTcvetov==308 && Diametr==null) continue;
+                if (Vid == null|| KolichestvoTcvetov == null || Tiraz == null || Ploshad==null || Vid == 308 && Diametr==null) continue;
 
                 double cena;
                 if (TryGetPrice(i, Tiraz, KolichestvoTcvetov, out cena) == false) continue;
@@ -106,7 +118,7 @@ namespace KvotaWeb.Models.Items
             ViewData = new ViewDataDictionary();
             ViewData["params1"] = new SelectList((from pp in db.Category where pp.parentId == 410 select pp), "id", "tip");
             ViewData["params21"] = new SelectList((from pp in db.Category where pp.parentId == 427 select pp), "id", "tip");
-            
+        
         }
     }
 

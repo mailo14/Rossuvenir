@@ -9,6 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class DTG : ItemBase
     {
+        public override string Srok { get; set; } = "от 3-х рабочих дней";
 
         [Display(Name = "Размер:")]
          public int? Razmer { get; set; }
@@ -24,7 +25,6 @@ namespace KvotaWeb.Models.Items
 
         {
             var ret = new List<CalcLine>();
-            InnerMessageIds.Add(InnerMessages.AskBetterPrice);
             foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
             {
                 var line = new CalcLine() { Postav = i };
@@ -32,7 +32,8 @@ namespace KvotaWeb.Models.Items
                 if (Razmer == null || Tiraz == null) continue;
 
                 kvotaEntities db = new kvotaEntities();
-                double cena = (from p in db.Price where p.firma == (int)i && p.catId == Razmer select p.cena).First();
+                double? cena = (from p in db.Price where p.firma == (int)i && p.catId == Razmer select (double ?)p.cena).FirstOrDefault();
+                if (cena == null) continue;
 
                 line.Cena = cena * Tiraz.Value;
             }

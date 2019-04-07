@@ -66,7 +66,7 @@ namespace KvotaWeb.Controllers
         public ActionResult Add(int userId)
         {
             
-               var z = new Zakaz() { nacenTip = 1, dat = DateTime.Now, comment = "", dopUslDost = true, dopUslMaket = true,
+               var z = new Zakaz() { nacenTip = 1, dat = DateTime.Now, comment = "Новый заказ", dopUslDost = true, dopUslMaket = true,
                userId = WebSecurity.GetUserId(User.Identity.Name), userName = User.Identity.Name
                };
             db.Zakaz.Add(z);
@@ -226,51 +226,59 @@ namespace KvotaWeb.Controllers
    
 }
 namespace KvotaWeb.Models
-{ public partial class ListItem
+{
+    public partial class ListItem
     {
         public string tipProdName
         {
             get
             {
-                switch (tipProd)
-                {
-                    case 4: return "Закатные значки";
-                    case 23: return "Шелкография";
-                    case 24: return "Тампопечать";
-                    case 29: return "Пакеты ПВД";
-                    case 30: return "Тиснение";
-                    case 18: return "DTG";
-                    case 28: return "Гравировка";
-                    case 31: return "УФ (качество)";
-                    case 32: return "УФ (стандарт)";
-                    case 33: return "Деколь";
-
-                    case 1: return "Нанесение логотипа";
-                    case 3: return "Баннеры и ПВХ";
-                    case 5: return "Квартальные календари";
-                    case 6: return "Кружки с сублимацией";
-                    case 7: return "Ленты для бейджей (ланъярды)";
-                    case 8: return "Открытки ";
-                    case 9: return "Пакеты бумажные";
-                    case 11: return "Прочая полиграфия";
-                    case 12: return "Силиконовые браслеты";
-                    case 13: return "Слэп браслеты";
-                    case 14: return "Футболка с сублимацией";
-                    case 15: return "Шары с логотипом";
-                    case 16: return "Запись дисков";
-                    default: return null;
-                }
+                return GetTipProdName(tipProd);
             }
         }
-        public bool askBetterPrice=false;
+        public static string GetTipProdName(int tipProd)
+        {
+            switch (tipProd)
+            {
+                case 4: return "Закатные значки";
+                case 23: return "Шелкография";
+                case 24: return "Тампопечать";
+                case 29: return "Пакеты ПВД";
+                case 30: return "Тиснение";
+                case 18: return "DTG";
+                case 28: return "Гравировка";
+                case 31: return "УФ (качество)";
+                case 32: return "УФ (стандарт)";
+                case 33: return "Деколь";
+
+                case 1: return "Нанесение логотипа";
+                case 3: return "Баннеры и ПВХ";
+                case 5: return "Квартальные календари";
+                case 6: return "Кружки с сублимацией";
+                case 7: return "Ленты для бейджей (ланъярды)";
+                case 8: return "Открытки ";
+                case 9: return "Пакеты бумажные";
+                case 11: return "Прочая полиграфия";
+                case 12: return "Силиконовые браслеты";
+                case 13: return "Слэп браслеты";
+                case 14: return "Футболка с сублимацией";
+                case 15: return "Шары с логотипом";
+                case 16: return "Запись дисков";
+                default: return null;
+            }
+        }
+        public bool askBetterPrice = false;
     }
-public partial class Rabotnik
+    public partial class Rabotnik
     {
-        public string Role{
-            get {
+        public string Role
+        {
+            get
+            {
                 if (uroven == 1) return "Администратор";
-                        return "Менеджер";
-            } }
-        
+                return "Менеджер";
+            }
+        }
+
     }
 }

@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class UFkachestvo : ItemBase
     {
-
+        public override string Srok { get; set; } = "от 2-х рабочих дней";
 
         int? _Izdelie = null;
         [Display(Name = "Изделие:")]
@@ -21,11 +21,27 @@ namespace KvotaWeb.Models.Items
                 var empty = new SelectList(new List<Category>(), "id", "tip");
 
                 kvotaEntities db = new kvotaEntities();
-                if (value == null) ViewData["params2"] = empty;
+                if (value == null)
+                {
+                    ViewData["params2"] = empty;
+                        ViewData["IndividPersParamDivStyle"] = "display:none;";
+                        ViewData["RazmerZapechatkiParamDivStyle"] = "display:none;";
+                }
                 else
                 {
                     if (value == 172)
+                    {
                         ViewData["params2"] = new SelectList((from pp in db.Category where pp.parentId == value select pp), "id", "tip");
+
+                        ViewData["RazmerZapechatkiParamDivStyle"] = "display:block;";
+                        ViewData["IndividPersParamDivStyle"] = "display:none;";
+                    }
+                    else
+                    {ViewData["params2"] =empty;
+
+                        ViewData["RazmerZapechatkiParamDivStyle"] = "display:none;";
+                        ViewData["IndividPersParamDivStyle"] = "display:block;";
+                    }
                 }
             } }
 
@@ -97,7 +113,9 @@ namespace KvotaWeb.Models.Items
 
             kvotaEntities db = new kvotaEntities();
             ViewData = new ViewDataDictionary();
-            ViewData["params1"] = new SelectList((from pp in db.Category where pp.parentId == 408 select pp), "id", "tip");            
+            ViewData["params1"] = new SelectList((from pp in db.Category where pp.parentId == 408 select pp), "id", "tip");
+          
+            
         }
 
         

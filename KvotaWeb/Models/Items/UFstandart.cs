@@ -9,6 +9,8 @@ namespace KvotaWeb.Models.Items
 {
     public class UFstandart : ItemBase
     {
+        public override string Srok { get; set; } = "от 5-ти рабочих дней";
+
         int? _Izdelie = null;
         [Display(Name = "Изделие:")]
          public int? Izdelie { get { return _Izdelie; } set {
@@ -48,7 +50,6 @@ namespace KvotaWeb.Models.Items
         public override List<CalcLine> Calc()
         {
             var ret = new List<CalcLine>();
-            InnerMessageIds.Add(InnerMessages.AskBetterPrice);
             foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
             {
                 var line = new CalcLine() { Postav = i };

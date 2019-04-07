@@ -11,9 +11,10 @@ namespace KvotaWeb.Controllers
     [Authorize]
     public class ProductController : Controller
     {
-        kvotaEntities db = new kvotaEntities();
+        
         public ActionResult Index()
         {
+            kvotaEntities db = new kvotaEntities();
             IEnumerable<Zakaz> zakazi = db.Zakaz;
             ViewBag.zz = zakazi;
             return View();
@@ -27,6 +28,7 @@ namespace KvotaWeb.Controllers
         #region Banner
         public ActionResult EditBanner(int id)
         {
+            kvotaEntities db = new kvotaEntities();
             //catComboBox.ItemsSource = MainPage.;
             ViewBag.empty = Enumerable.Empty<SelectListItem>();
             ViewBag.vidi = new SelectList((from pp in db.Category where pp.parentId == 101 select pp),//new { Name = pp.id, Value = pp.tip }));
@@ -42,6 +44,7 @@ namespace KvotaWeb.Controllers
         }
         public JsonResult fillBMats(int id) // its a GET, not a POST
         {
+            kvotaEntities db = new kvotaEntities();
             var nullObj = new Category() { tip = "(не выбрано)" };
             List<Category> list = new List<Category>() { nullObj };
             list.AddRange(db.Category.Where(pp => pp.parentId == id));
@@ -52,6 +55,7 @@ namespace KvotaWeb.Controllers
         }
         public JsonResult fillBdpis(int id) // its a GET, not a POST
         {
+            kvotaEntities db = new kvotaEntities();
             var nullObj = new Category() { tip = "(не выбрано)" };
             List<Category> list = new List<Category>() { nullObj };
             if (id == 2) list.AddRange(db.Category.Where(pp => pp.parentId == 501));
@@ -65,6 +69,7 @@ namespace KvotaWeb.Controllers
         [HttpPost]
         public ActionResult EditBanner(ListItem li)
         {
+            kvotaEntities db = new kvotaEntities();
             db.Entry(li).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Edit", "Home", new { id = li.listId });
@@ -74,6 +79,7 @@ namespace KvotaWeb.Controllers
         #region Poligrafiya
         public ActionResult EditPoligrafiya(int id)
         {
+            kvotaEntities db = new kvotaEntities();
             ViewBag.razm = new SelectList((from pp in db.Category where pp.parentId == 201 select pp), "id", "tip");
             ViewBag.cvet = new SelectList((from pp in db.Category where pp.parentId == 202 select pp), "id", "tip");
             ViewBag.plotn = new SelectList((from pp in db.Category where pp.parentId == 203 select pp), "id", "tip");
@@ -88,6 +94,7 @@ namespace KvotaWeb.Controllers
         [HttpPost]
         public ActionResult EditPoligrafiya(ListItem li)
         {
+            kvotaEntities db = new kvotaEntities();
             db.Entry(li).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Edit", "Home", new { id = li.listId });
@@ -105,6 +112,7 @@ namespace KvotaWeb.Controllers
         }
         public ActionResult EditSuvenir(int id)
         {
+            kvotaEntities db = new kvotaEntities();
             ViewBag.vidi = new SelectList((from pp in db.Category
                                            where pp.parentId == 301
                                            //  && pp.id != 27//деколь 
@@ -232,6 +240,7 @@ namespace KvotaWeb.Controllers
         }
         public JsonResult fillParam2(int catId)
         {
+            kvotaEntities db = new kvotaEntities();
             //if (new int[] { 30,27, 28, 29 }.Contains((t.Item1.SelectedItem as Category).id))
             /*if (cat.parentId == 407) t.Item4.ItemsSource = MainPage.db.Categories.Where(pp => pp.parentId == cat.id);
             if (cat.parentId == 403) t.Item4.ItemsSource = MainPage.db.Categories.Where(pp => pp.parentId == cat.id);
@@ -255,6 +264,7 @@ namespace KvotaWeb.Controllers
         }
         public JsonResult fillParam1(int catId)
         {
+            kvotaEntities db = new kvotaEntities();
             var nullObj = new Category() { tip = "(не выбрано)" };
             List<Category> list = new List<Category>() { nullObj };
             var data = new List<KeyValuePair<string, IEnumerable<Category>>>();
@@ -526,6 +536,7 @@ namespace KvotaWeb.Controllers
         [HttpPost]
         public ActionResult EditSuvenir(ListItem li)
         {
+            kvotaEntities db = new kvotaEntities();
             db.Entry(li).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Edit", "Home", new { id = li.listId });
@@ -543,6 +554,7 @@ namespace KvotaWeb.Controllers
         }*/
         public ActionResult EditПакетыЗначкиСублимация(int id)
         {
+            kvotaEntities db = new kvotaEntities();
             Dictionary<int, string[]> labelByVid = new Dictionary<int, string[]>() {
             { 25, new string[]{ null, null, null, null, null, null, null, null } },
             { 29, new string[]{ "   пакет:", "   цвет шелкографии:", null, null, null, null, null, null } },
@@ -669,6 +681,7 @@ namespace KvotaWeb.Controllers
         [HttpPost]
         public ActionResult EditПакетыЗначкиСублимация(ListItem li)
         {
+            kvotaEntities db = new kvotaEntities();
             db.Entry(li).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Edit", "Home", new { id = li.listId });
@@ -678,6 +691,7 @@ namespace KvotaWeb.Controllers
         #region Футболки
         public ActionResult EditФутболки(int id)
         {
+            kvotaEntities db = new kvotaEntities();
             ViewData["askBetterPriceDivStyle"] = "display:none;";
             
             var li = db.ListItem.FirstOrDefault(pp => pp.id == id);
@@ -700,6 +714,7 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
         [HttpPost]
         public ActionResult EditФутболки(ListItem li)
         {
+            kvotaEntities db = new kvotaEntities();
             db.Entry(li).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Edit", "Home", new { id = li.listId });
@@ -709,6 +724,7 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
         #region Диски
         public ActionResult EditДиски(int id)
         {
+            kvotaEntities db = new kvotaEntities();
             ViewData["askBetterPriceDivStyle"] = "display:none;";
 
             var li = db.ListItem.FirstOrDefault(pp => pp.id == id);
@@ -783,6 +799,7 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
         [HttpPost]
         public ActionResult EditДиски(ListItem li)
         {
+            kvotaEntities db = new kvotaEntities();
             db.Entry(li).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Edit", "Home", new { id = li.listId });
@@ -792,6 +809,7 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
         #region Блокноты
         public ActionResult EditБлокнот(int id)
         {
+            kvotaEntities db = new kvotaEntities();
             var item = new Blocknot() { Tiraz = 30 };
             return View(item);
 
@@ -877,6 +895,7 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
  #region Блокноты
         public ActionResult EditЗначки(int id)
         {
+            kvotaEntities db = new kvotaEntities();
             var li = db.ListItem.FirstOrDefault(pp => pp.id == id);
             var item = ItemBase.Create(li);
             ViewData = item.ViewData;
@@ -956,6 +975,8 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
         [HttpPost]
         public ActionResult EditЗначки(Znachok item)
         {
+            kvotaEntities db = new kvotaEntities();
+            return null;
             var li = item.ToListItem();
              db.Entry(li).State = System.Data.Entity.EntityState.Modified;
              db.SaveChanges();
@@ -986,7 +1007,6 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
         public ActionResult Recalc(TotalResultsModel totals)
         {
             return PartialView("TotalResults", totals);
-
         }
         [HttpPost]
         public ActionResult Recalc(FormCollection collection)
@@ -1007,8 +1027,10 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
                 case TipProds.UFstandart: var model8 = new UFstandart(); TryUpdateModel(model8, collection); model = model8; break;
                 case TipProds.Decol: var model9= new Decol(); TryUpdateModel(model9, collection); model = model9; break;
             }
-               
-            var sss = model.Calc();
+          
+                var li = model.ToListItem();
+            SaveLi(li);
+            //var sss = model.Calc();
             var totals = model.GetTotal();
 
             double sum = 0;
@@ -1029,6 +1051,38 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
 
             //var data = new { total = 10, totalLabel = string.Join(";",sss.Select(pp=>pp.Cena)), askBetterPrice = model.askBetterPrice};
             //return Json(data);
+        }
+        public void SaveLi(ListItem li)
+        {
+            kvotaEntities db = new kvotaEntities();
+            db.Entry(li).State = System.Data.Entity.EntityState.Modified;
+
+            var z = db.Zakaz.FirstOrDefault(pp => pp.id == li.listId);
+            z.comment = string.Join(", ",
+            db.ListItem.Where(pp => pp.listId == z.id).Select(pp => pp.tipProd).ToList()
+            .Select(pp => ListItem.GetTipProdName(pp)));
+            db.SaveChanges();
+        }
+        [HttpPost]
+        public ActionResult RecalcOld(ListItem li)
+        {
+            double sum = 0;
+            // if (li.dopUslDost) sum += 400;
+            //if (li.dopUslMaket) sum += 400;
+            // db.Zakaz.
+            //  var z = db.Zakaz.FirstOrDefault(pp => pp.id == id);
+            //string.Format("{0} of {1}",sum/z.)
+            /*switch (li.tipProd)
+            {
+                case 2:  reCalcPoligrafiya(li); break;
+                case 3: reCalcBanner(li); break;
+                case 1: reCalcSuvenir(li); break;
+            }*/
+               Calc.recalcLi(li);
+            SaveLi(li);
+
+            var data = new { total = li.total, totalLabel = li.totalLabel, askBetterPrice = li.askBetterPrice };
+            return Json(data);
         }
     }
 }

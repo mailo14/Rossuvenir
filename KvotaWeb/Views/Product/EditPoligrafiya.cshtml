@@ -93,7 +93,7 @@
         {
             $.ajax({
                 type: 'POST',
-                url: "/Product/Recalc",
+                url: "/Product/RecalcOld",
                 data: $('#myform').serialize(),
                 success: function (data, res) {
                     document.getElementById('total').value = data.total;

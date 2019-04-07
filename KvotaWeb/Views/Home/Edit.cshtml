@@ -3,9 +3,9 @@
 <form id="myform"  method="post" action="/Home/Edit">
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
+    <div class="form-horizontal col-sm-8 col-sm-push-2">
         <hr />
-        <h4>Заказ № @Model.id</h4>
+        <h4 >Заказ № @Model.id @Html.ActionLink(" (обратно к списку)", "Index")</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.id)
@@ -55,7 +55,7 @@
         });
             </script>*@
 
-        <div class="form-group">
+        <div class="form-group" style="display:none;">
             <label class="control-label col-sm-5">Наценка:</label>
             <div class="col-sm-7">
                 @Html.DropDownListFor(model => model.nacenTip, @ViewBag.nacenks as SelectList, new { @id = "nacenTip", @class = "form-control", @onchange = "NacenkTipChanged();", onfocus = "down(this);", onblur = "up(this);" })
@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="display:none;">
             <label class="control-label col-sm-5">Дополнительные траты:</label>
             <div class="col-sm-7">
                 @Html.EditorFor(model => model.dopTrat, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
@@ -86,63 +86,72 @@
                         (не выбрано) <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=4">Закатные значки</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=24">Тампопечать</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=23">Шелкография</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=29">Пакеты ПВД</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=30">Тиснение</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=18">DTG</a></li>
+                        <li><label style="padding-left:3px;">Нанесение логотипа:</label> </li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=18">DTG (прямая печать на ткани)</a></li>
                         <li><a href="/Home/AddLi?zId=@Model.id&tipProd=28">Гравировка</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=31">УФ (качество)</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=32">УФ (стандарт)</a></li>
                         <li><a href="/Home/AddLi?zId=@Model.id&tipProd=33">Деколь</a></li>
 
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=1">Нанесение логотипа</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры и ПВХ</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=16">Запись дисков </a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=5">Квартальные календари</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=6">Кружки с сублимацией</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=7">Ленты для бейджей (ланъярды)</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=8">Открытки </a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=9">Пакеты бумажные</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=11">Прочая полиграфия</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=12">Силиконовые браслеты</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=13">Слэп браслеты</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=14">Футболка с сублимацией</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=15">Шары с логотипом</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=17">Блокноты</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=24">Тампопечать</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=30">Тиснение</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=31">УФ (качество)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=32">УФ (стандарт)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=23">Шелкография</a></li>
+                        <li>
+                            <a style="padding-left:3px;" href="/Home/AddLi?zId=@Model.id&tipProd=3">
+                                <label>Широкоформатная и интерьерная печать </label>
+                            </a>
+                        </li>
+                        <li><label style="padding-left:3px;">Готовая продукция:</label> </li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=4">Закатные значки</a></li>
+                        <li><label style="padding-left:3px;">Пакеты:</label> </li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=29">Пакеты ПВД с шелкографией</a></li>
+                        <li><label style="padding-left:3px;">Полиграфия (оперативка):</label> </li>
 
-                        @*<li><a href="/Home/AddLi?zId=@Model.id&tipProd=1">Сувениры</a></li>
-        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=2">Полиграфия</a></li>
-        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры</a></li>
-        @*<li class="divider"></li>*@
+                        @*   <li><a href="/Home/AddLi?zId=@Model.id&tipProd=1">Нанесение логотипа</a></li>
+                                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры и ПВХ</a></li>
+                                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=16">Запись дисков </a></li>
+                                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=5">Квартальные календари</a></li>
+                                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=6">Кружки с сублимацией</a></li>
+                                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=7">Ленты для бейджей (ланъярды)</a></li>
+                                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=8">Открытки </a></li>
+                                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=9">Пакеты бумажные</a></li>
+                                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=11">Прочая полиграфия</a></li>
+                                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=12">Силиконовые браслеты</a></li>
+                                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=13">Слэп браслеты</a></li>
+                                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=14">Футболка с сублимацией</a></li>
+                                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=15">Шары с логотипом</a></li>
+                                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=17">Блокноты</a></li>
+
+                                       <li><a href="/Home/AddLi?zId=@Model.id&tipProd=1">Сувениры</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=2">Полиграфия</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры</a></li>
+                        @*<li class="divider"></li>*@
                     </ul>
                 </div>
             </div>
         </div>
 
-        <div id="liTableDiv">
-            @Html.Action("fillLitable", new { zId = @Model.id })
-        </div>
-
-        
-
-        <div class="form-group">
-            <hr class="divider" />
-            <label class="control-label col-sm-5">Итого:</label>
-            <div class="col-sm-7">
-                @Html.EditorFor(model => model.total, new { htmlAttributes = new { @class = "form-control", @id = "total", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.total, "", new { @class = "text-danger" })
+            <div id="liTableDiv" >
+                @Html.Action("fillLitable", new { zId = @Model.id })
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-5 col-sm-7">
-                <input type="submit" value="Сохранить" class="btn btn-primary" />
+
+                <!--div class="form-group">
+                <hr class="divider" />
+                <label class="control-label col-sm-5">Итого:</label>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.total, new { htmlAttributes = new { @class = "form-control", @id = "total", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.total, "", new { @class = "text-danger" })
+                </div>
+            </!--div>
+
+            <div class="form-group">
+                <div class="col-md-offset-5 col-sm-7">
+                    <input type="submit" value="Сохранить" class="btn btn-primary" />
+                </div>
+            </div-->
             </div>
-        </div>
-    </div>
-    <script type="text/javascript">
+            <script type="text/javascript">
         // <select> element displays its options on mousedown, not click.
         showDropdown = function (element) {
             var event;
@@ -200,7 +209,7 @@
                 case 13: return 'Слэп браслеты';
                 case 14: return 'Футболка с сублимацией';
                 case 15: return 'Шары с логотипом';
-            }           
+            }
         }*@
 
         @*$(function () {
@@ -229,7 +238,7 @@ $('#liTableDiv').load('@Url.Action("fillLitable")?zId=' + @Model.id);
                // alert(document.getElementById('liTableDiv') != null );
                 //alert($('#liTableDiv').innerHTML);
                 @*$('#liTableDiv').load('@Url.Action("fillLitable", "Home")?zId=' + @Model.id);*@
-                
+
                 $.ajax({
                     type: 'POST',
                     url: "/Home/refillTotals",
@@ -239,7 +248,7 @@ $('#liTableDiv').load('@Url.Action("fillLitable")?zId=' + @Model.id);
                     window.location.href = '/Home/Edit/@Model.id';*@
                             @*@Html.Action("fillLitable", new { zId = @Model.id })*@
 
-                     
+
                         $('#liTableDiv').load('@Url.Action("fillLitable", "Home")?zId=' + encodeURIComponent(@Model.id));
                         document.getElementById('total').value = data.total;
                         $("body").css("cursor", "default");
@@ -257,11 +266,12 @@ $('#liTableDiv').load('@Url.Action("fillLitable")?zId=' + @Model.id);
             var firstDropVal = $('#pick').val();
         });*/
 
-    </script>
+            </script>
 
 </form>
 
-
+@*
 <div>
     @Html.ActionLink("К списку заказов", "Index", "Home")
 </div>
+*@

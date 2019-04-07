@@ -12,7 +12,8 @@ namespace KvotaWeb.Models.Items
 
         [Display(Name = "Размер:")]
          public int? Razmer { get; set; }
-        
+        public override string Srok { get; set; } = "от 3-х рабочих дней";
+
         public override ListItem ToListItem()
         {
             var rr = base.ToListItem();
@@ -95,7 +96,8 @@ namespace KvotaWeb.Models.Items
 
         [Display(Name = "Тираж:")]
         public double? Tiraz { get; set; }
-        public string ViewName { get; internal set; }
+        public string ViewName { get; set; }
+        public abstract string Srok { get; set; }
 
         public virtual ListItem ToListItem()
         {
@@ -155,11 +157,39 @@ namespace KvotaWeb.Models.Items
             }
         }
         public abstract List<CalcLine> Calc();
+        public  List<CalcLine> CalcWithNacenkaAndRounded()
+        {
+var lines = Calc();
+            var nacenk = GetNacenk(ZakazId, (int)TipProd);
+            foreach (var line in lines)
+            if (line.Cena!=null) line.Cena= Math.Ceiling(line.Cena.Value*nacenk / Tiraz.Value) * Tiraz.Value;
+            return lines;
+        }
+        public double GetNacenk(int? listId, int tipProd)
+            {
+                var db = new kvotaEntities();
+                var z = db.Zakaz.First(pp => pp.id == listId);
+                //+доп.услуги+доп.траты)*наценка
+                //if (z.dopUslDost) sum += 400;
+                //if (z.dopUslMaket) sum += 400;
+                //if (z.dopTrat.HasValue) sum += z.dopTrat.Value;
+                switch (z.nacenTip)
+                {
+                    case 1://стандарт
+                        if (tipProd == 3) return 1.4;
+                    break;
+                    //    else return 1.0;
+                    case 3://своя
+                        if (z.nacenValue.HasValue) return z.nacenValue.Value;
+                    break;
+                }
+                return 1;
+            }
         public  TotalResultsModel GetTotal()
         {
             InnerMessageIds.Clear();
             //List<CalcLine> initlines,double tiraz
-            var lines = Calc();//initlines.ToList();
+            var lines = CalcWithNacenkaAndRounded();//initlines.ToList();
             var baseLine = lines.First(pp => pp.Postav == Postavs.Плановая_СС);
 
             var ret = new TotalResultsModel()
@@ -186,8 +216,9 @@ namespace KvotaWeb.Models.Items
                 {
                     tLine.EdCena = (line.Cena / Tiraz).Value.ToString("f2");
                     tLine.Cena = line.Cena.Value.ToString("f2");
-                    if (line != baseLine)
+                    if (line != baseLine && baseLine.Cena!=null)
                         tLine.Marza = ((line.Cena - baseLine.Cena) / line.Cena * 100).Value.ToString("f2") + @"%";
+                    else tLine.Marza = "-";
                 }
                 else tLine.EdCena = tLine.Cena = tLine.Marza = "-";
             }
