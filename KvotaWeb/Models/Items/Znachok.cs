@@ -248,7 +248,8 @@ var lines = Calc();
                         ZakazId = li.listId,
                         Tiraz = li.tiraz,
                         Paket= li.param11,
-                        KolichestvoTcvetov = li.param12,
+                        KolichestvoTcvetov1 = li.param12,
+                        KolichestvoTcvetov2 = li.param21,
                         PoleZapechatki=li.param14
                     };   
                 case TipProds.Tisnenie:                    return new Tisnenie()

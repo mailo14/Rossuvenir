@@ -14,8 +14,11 @@ namespace KvotaWeb.Models.Items
         [Display(Name = "Пакет:")]
         public int? Paket { get; set; }
 
-        [Display(Name = "Цвет шелкографии:")]
-        public int? KolichestvoTcvetov { get; set; }
+        [Display(Name = "Цвет шелкографии (1 сторона):")]
+        public int? KolichestvoTcvetov1 { get; set; }
+
+        [Display(Name = "Цвет шелкографии (2 сторона):")]
+        public int? KolichestvoTcvetov2 { get; set; }
 
         [Display(Name = "поле запечатки более 30%")]
         public bool PoleZapechatki { get; set; }
@@ -25,7 +28,8 @@ namespace KvotaWeb.Models.Items
         {
             var rr = base.ToListItem();
             rr.param11 = Paket;
-            rr.param12 = KolichestvoTcvetov;
+            rr.param12 = KolichestvoTcvetov1;
+            rr.param21 = KolichestvoTcvetov2;
             rr.param14 = PoleZapechatki;
             return rr;
         }
@@ -38,10 +42,17 @@ namespace KvotaWeb.Models.Items
             {
                 var line = new CalcLine() { Postav = i };
                 ret.Add(line);
-                if (KolichestvoTcvetov == null || Paket == null || Tiraz == null) continue;
+                if (KolichestvoTcvetov1 == null || Paket == null || Tiraz == null) continue;
 
                 double cena;
-                if (TryGetPrice(i, Tiraz, KolichestvoTcvetov, out cena) == false) continue;
+                if (TryGetPrice(i, Tiraz, KolichestvoTcvetov1, out cena) == false) continue;
+
+                if (KolichestvoTcvetov2 != null)
+                {
+                    double cena2;
+                    if (TryGetPrice(i, Tiraz, KolichestvoTcvetov2, out cena2) == false) continue;
+                    cena += cena2;
+                }
 
                 kvotaEntities db = new kvotaEntities();
                 
@@ -65,7 +76,7 @@ namespace KvotaWeb.Models.Items
             ViewData = new ViewDataDictionary();
             ViewData["params1"] = new SelectList((from pp in db.Category where pp.parentId == 412 select pp), "id", "tip");
             ViewData["params2"] = new SelectList((from pp in db.Category where pp.parentId == 413 select pp), "id", "tip");
-            
+           // ViewData["params3"] = new SelectList((from pp in db.Category where pp.parentId == 413 select pp), "id", "tip");            
         }
     }
 

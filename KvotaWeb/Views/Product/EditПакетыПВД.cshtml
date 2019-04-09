@@ -5,7 +5,7 @@
 
         <div class="form-horizontal col-sm-8 col-sm-push-2">
             <hr />
-            <h4>Элемент @Html.ActionLink(" заказа № " + @Model.ZakazId, "Edit", "Home", new { id = @Model.ZakazId }, null)</h4>
+            <h4>Элемент @Html.ActionLink(" заказа № " + @Model.ZakazId, "Edit", "Home", new { id = @Model.ZakazId }, null)  -  @KvotaWeb.Models.ListItem.GetTipProdName((int)@Model.TipProd)</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.Id)
@@ -36,11 +36,21 @@
 
             <div class="form-group">
                 <div class="control-label col-sm-5">
-                    @Html.LabelFor(model => model.KolichestvoTcvetov)
+                    @Html.LabelFor(model => model.KolichestvoTcvetov1)
                 </div>
                 <div class="col-sm-7">
-                    @Html.DropDownListFor(model => model.KolichestvoTcvetov, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param2", @class = "form-control", @onchange = "OnChangeEvent();" })
-                    @Html.ValidationMessageFor(model => model.KolichestvoTcvetov, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(model => model.KolichestvoTcvetov1, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param2", @class = "form-control", @onchange = "OnChangeEvent();" })
+                    @Html.ValidationMessageFor(model => model.KolichestvoTcvetov1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="control-label col-sm-5">
+                    @Html.LabelFor(model => model.KolichestvoTcvetov2)
+                </div>
+                <div class="col-sm-7">
+                    @Html.DropDownListFor(model => model.KolichestvoTcvetov2, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param3", @class = "form-control", @onchange = "OnChangeEvent();" })
+                    @Html.ValidationMessageFor(model => model.KolichestvoTcvetov2, "", new { @class = "text-danger" })
                 </div>
             </div>
 
