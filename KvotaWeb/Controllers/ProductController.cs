@@ -1026,6 +1026,8 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
                 case TipProds.UFkachestvo: var model7 = new UFkachestvo(); TryUpdateModel(model7, collection); model = model7; break;
                 case TipProds.UFstandart: var model8 = new UFstandart(); TryUpdateModel(model8, collection); model = model8; break;
                 case TipProds.Decol: var model9= new Decol(); TryUpdateModel(model9, collection); model = model9; break;
+                case TipProds.BumajniiPaket: var model10= new BumajniiPaket(); TryUpdateModel(model10, collection); model = model10; break;
+                case TipProds.Flag: var model11= new Flag(); TryUpdateModel(model11, collection); model = model11; break;
             }
           
                 var li = model.ToListItem();

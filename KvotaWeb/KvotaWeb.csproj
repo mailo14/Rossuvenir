@@ -185,6 +185,8 @@
     <Compile Include="Models\Category.cs">
       <DependentUpon>KvotaDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Items\Flag.cs" />
+    <Compile Include="Models\Items\BumajniiPaket.cs" />
     <Compile Include="Models\Items\PaketPvd.cs" />
     <Compile Include="Models\Items\Gravirovka.cs" />
     <Compile Include="Models\Items\Decol.cs" />
@@ -320,6 +322,9 @@
     <Content Include="Views\Product\EditУФстандарт.cshtml" />
     <Content Include="Views\Product\EditДеколь.cshtml" />
     <Content Include="Views\Product\View.cshtml" />
+    <Content Include="Views\Product\EditBumajniiPaket.cshtml" />
+    <Content Include="Views\Shared\_ProductLayout.cshtml" />
+    <Content Include="Views\Product\EditFlag.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

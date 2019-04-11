@@ -77,7 +77,7 @@ namespace KvotaWeb.Models.Items
     }
 
     public enum Postavs:int { РРЦ_1_5=1, АртСувенир=2, ААА=3, Плановая_СС=10};
-    public enum TipProds:int { Znachok = 4, Shelkografiya = 23, Tampopechat = 24, PaketPvd = 29, Tisnenie = 30, DTG = 18, Gravirovka = 28, UFkachestvo = 31, UFstandart = 32, Decol = 33 };
+    public enum TipProds:int { Znachok = 4, Shelkografiya = 23, Tampopechat = 24, PaketPvd = 29, Tisnenie = 30, DTG = 18, Gravirovka = 28, UFkachestvo = 31, UFstandart = 32, Decol = 33, BumajniiPaket = 9, Flag = 34 };
     public abstract class ItemBase
     {
         public int? ZakazId { get; set; }
@@ -98,6 +98,7 @@ namespace KvotaWeb.Models.Items
         public double? Tiraz { get; set; }
         public string ViewName { get; set; }
         public abstract string Srok { get; set; }
+        public virtual string Description { get; set; }
 
         public virtual ListItem ToListItem()
         {
@@ -276,7 +277,12 @@ var lines = Calc();
                     return UFstandart.CreateItem(li);
                 case TipProds.Decol:
                     return Decol.CreateItem(li);
-                    
+
+                case TipProds.BumajniiPaket:
+                    return BumajniiPaket.Create(li);
+                case TipProds.Flag:
+                    return Flag.Create(li);
+
                 default:
                     return null;
             }

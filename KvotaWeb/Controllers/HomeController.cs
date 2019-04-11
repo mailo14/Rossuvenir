@@ -107,7 +107,8 @@ namespace KvotaWeb.Controllers
 
                     break;
                 case 23:  case 24: case 29:case 30:case 18:case 28:case 31:case 32:
-                case 33:
+                case 33:    case 9:
+                case 34:
                     db.ListItem.Add(li);
             db.SaveChanges();
                    // var ii=ItemBase.Create(li);
@@ -120,7 +121,6 @@ namespace KvotaWeb.Controllers
                 case 5: li.vid1 = 211; li.param12 = 0; break;
                 case 7: li.vid1 = 212; break;
                 case 8: li.vid1 = 213; break;
-                case 9: li.vid1 = 214; break;
                 case 11: li.vid1 = 215; break;
                 case 12: li.vid1 = 216; break;
                 case 13: li.vid1 = 217; break;
@@ -147,7 +147,7 @@ namespace KvotaWeb.Controllers
         public ActionResult EditLi(int id ,int tipProd)
         {              
             switch (tipProd)
-            { case 4:case 23:case 24:case 29:case 30:case 18:case 28: case 31: case 32:  case 33: return RedirectToAction("EditЗначки", "Product", new { id = id });
+            { case 4:case 23:case 24:case 29:case 30:case 18:case 28: case 31: case 32:  case 33:case 9: case 34:return RedirectToAction("EditЗначки", "Product", new { id = id });
                 case 1:return RedirectToAction("EditSuvenir", "Product", new { id = id });
              //   case 2: return RedirectToAction("EditPoligrafiya", "Product", new { id = id });
                 case 3: return RedirectToAction("EditBanner", "Product", new { id = id });
@@ -250,6 +250,8 @@ namespace KvotaWeb.Models
                 case 31: return "УФ (качество)";
                 case 32: return "УФ (стандарт)";
                 case 33: return "Деколь";
+                case 9: return "Пакеты бумажные";
+                case 34: return "Флаги и растяжки";
 
                 case 1: return "Нанесение логотипа";
                 case 3: return "Баннеры и ПВХ";
@@ -257,7 +259,6 @@ namespace KvotaWeb.Models
                 case 6: return "Кружки с сублимацией";
                 case 7: return "Ленты для бейджей (ланъярды)";
                 case 8: return "Открытки ";
-                case 9: return "Пакеты бумажные";
                 case 11: return "Прочая полиграфия";
                 case 12: return "Силиконовые браслеты";
                 case 13: return "Слэп браслеты";

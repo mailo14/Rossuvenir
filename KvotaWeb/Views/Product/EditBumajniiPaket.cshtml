@@ -1,0 +1,67 @@
+﻿@{
+    Layout = "~/Views/Shared/_ProductLayout.cshtml";
+}
+@model KvotaWeb.Models.Items.BumajniiPaket
+
+<form id="myform" method="post" action="/Product/EditЗначки">
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal col-sm-8 col-sm-push-2">
+        <hr />
+        <h4>Элемент @Html.ActionLink(" заказа № " + @Model.ZakazId, "Edit", "Home", new { id = @Model.ZakazId }, null)  -  @KvotaWeb.Models.ListItem.GetTipProdName((int)@Model.TipProd)</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.ZakazId)
+        @Html.HiddenFor(model => model.TipProd)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Tiraz)
+            </div>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.Tiraz, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.Tiraz, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Razmer)
+            </div>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.Razmer, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param11", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.Razmer, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div id="totalResultsDiv">
+            @Html.Action("Recalc", "Product", new { totals = @Model.GetTotal() })
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-5">Срок изготовления:</label>
+            <label class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    function OnChangeEvent() {
+        $("body").css("cursor", "progress");
+        $.ajax({
+            type: 'POST',
+            url: "/Product/Recalc",
+            data: $('#myform').serialize(),
+            success: function (data, res) {
+                $("#totalResultsDiv").html(data);
+                $("body").css("cursor", "default");
+            },
+            error: function () {
+                alert("There was an error submitting comment");
+                $("body").css("cursor", "default");
+            }
+        });
+    }
+</script>
