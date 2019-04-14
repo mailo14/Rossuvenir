@@ -38,44 +38,44 @@ namespace KvotaWeb.Models.Items
                 if (Vid == null || Tiraz == null || Ploshad ==null) continue;
 
                 var ploshad = Math.Max(2, Ploshad.Value);
-                double? cena= GetCena(i, Vid.Value, ploshad);
+                decimal? cena= GetCena(i, Vid.Value, (decimal)ploshad);
                 if (cena == null) continue;
 
-                double? cenaPriladki = GetCenaPriladki(i, Vid.Value);
+                decimal? cenaPriladki = GetCenaPriladki(i, Vid.Value);
                 if (cenaPriladki == null) continue;
 
-                line.Cena = cena.Value * Tiraz.Value+ cenaPriladki.Value;
+                line.Cena = cena.Value * (decimal)Tiraz.Value+ cenaPriladki.Value;
             }
             return ret;
 
         }
 
-        private double? GetCenaPriladki(Postavs firma, int vid)
+        private decimal? GetCenaPriladki(Postavs firma, int vid)
         {
-            if (firma == Postavs.РРЦ_1_5) return 450;
-            if (firma == Postavs.ААА) return 350;
-            if (firma == Postavs.Плановая_СС) return 300;
+            if (firma == Postavs.РРЦ_1_5) return 450m;
+            if (firma == Postavs.ААА) return 350m;
+            if (firma == Postavs.Плановая_СС) return 300m;
             return null;
         }
 
-        private double? GetCena(Postavs firma, int vid, double ploshad)
+        private decimal? GetCena(Postavs firma, int vid, decimal ploshad)
         {
             if (firma == Postavs.РРЦ_1_5)
             {
-                if (vid == 66) return 7.5 * ploshad;
-                if (vid == 67) return 11 * ploshad;
+                if (vid == 66) return 7.5m * ploshad;
+                if (vid == 67) return 11m * ploshad;
             }
 
             if (firma == Postavs.ААА)
             {
-                if (vid == 66) return 7 * ploshad;
-                if (vid == 67) return 10.5 * ploshad;
+                if (vid == 66) return 7m * ploshad;
+                if (vid == 67) return 10.5m * ploshad;
             }
 
             if (firma == Postavs.Плановая_СС)
             {
-                if (vid == 66) return 5 * ploshad;
-                if (vid == 67) return 7 * ploshad;
+                if (vid == 66) return 5m * ploshad;
+                if (vid == 67) return 7m * ploshad;
             }
             return null;
         }

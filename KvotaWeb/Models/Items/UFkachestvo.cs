@@ -82,7 +82,7 @@ namespace KvotaWeb.Models.Items
                     || (Izdelie==172 && RazmerZapechatki == null)
                     ) continue;
 
-                double cena;
+                decimal cena;
                 if (Izdelie == 172)
                 {
                     if (Tiraz >= 200)
@@ -95,12 +95,12 @@ namespace KvotaWeb.Models.Items
                 else
                 {
                     if (TryGetPrice(i, Tiraz, Izdelie, out cena) == false) continue;
-                    cena = cena * (IndividPers ? 1.3 : 1);
+                    cena = cena * (IndividPers ? 1.3m : 1m);
                 }
                 if (new int[]{ 170,171,172}.Contains(Izdelie.Value) && Tiraz<10)
                     line.Cena = cena ;
                 else
-                    line.Cena = cena * Tiraz.Value;
+                    line.Cena = cena * (decimal)Tiraz.Value;
             }
             return ret;
 

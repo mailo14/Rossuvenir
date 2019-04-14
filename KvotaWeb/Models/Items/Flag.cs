@@ -10,7 +10,7 @@ namespace KvotaWeb.Models.Items
     public class Flag : ItemBase
     {
         public override string Srok { get; set; } = "1-3 рабочих дня";
-        public override string Description { get; set; } = "В стоимость включена обработка флага двойной строкой, карман, петли, завязки.По желанию заказчика допольнительно можно сделать глухой карман, петлю в карман снизу + 0руб. Двухсторонний сшивной флаг из двух слоев запечатанной ткани, с тканевой прослойкой внутри. Подробнее:  sgrafika.ru Люверсы и лента крепления включена в стоимость флага";
+        public override string Description { get; set; } = "В стоимость включена обработка флага двойной строкой, карман, петли, завязки.По желанию заказчика допольнительно можно сделать глухой карман, петлю в карман снизу + 0руб. Двухсторонний сшивной флаг - из двух слоев запечатанной ткани, с тканевой прослойкой внутри. Подробнее:  sgrafika.ru Люверсы и лента крепления включена в стоимость флага";
 
         [Display(Name = "Размер:")]
          public int? Razmer { get; set; }
@@ -63,21 +63,22 @@ public override List<CalcLine> Calc()
                 if ( Tiraz == null || Razmer == null  && (SvoiRazmerH == null || SvoiRazmerL == null)) continue;
 
                 kvotaEntities db = new kvotaEntities();
-                double cena;
-                if (Razmer != null)
+                decimal cena;
+                if (Razmer != null && SvoiRazmerH==null && SvoiRazmerL==null)
                 {
                     if (TryGetPrice(i, Tiraz, Razmer, out cena) == false) continue;
                 }
                 else
                 {
-                    cena = SvoiRazmerH.Value * SvoiRazmerL.Value / 100 / 100 * (Tiraz > 3 ? 500 : 530);                     
+                    if( SvoiRazmerH == null || SvoiRazmerL == null) continue;
+                    cena = (decimal)SvoiRazmerH.Value * (decimal)SvoiRazmerL.Value / 100 / 100 * (Tiraz > 3 ? 500 : 530);                     
                 }
-                double nacenk=0;
-                if (Material == 1) nacenk += 0.15;
-                else if (Material == 2) nacenk += 0.20;
-                if (Dvustoronnii) nacenk += 1.20;
+                decimal nacenk=0;
+                if (Material == 1) nacenk += 0.15m;
+                else if (Material == 2) nacenk += 0.20m;
+                if (Dvustoronnii) nacenk += 1.20m;
 
-                 line.Cena = cena *(1+nacenk)* Tiraz.Value;
+                 line.Cena = cena *(1m+nacenk)* (decimal)Tiraz.Value;
             }
             return ret;
 

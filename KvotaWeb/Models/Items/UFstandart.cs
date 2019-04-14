@@ -57,10 +57,10 @@ namespace KvotaWeb.Models.Items
                 if (Izdelie== null || Tiraz == null
                     || Tcvet == null                    ) continue;
 
-                double cena;
+                decimal cena;
                
                     if (TryGetPrice(i, Tiraz, Tcvet, out cena) == false) continue;
-                    line.Cena = cena * Tiraz.Value;
+                    line.Cena = cena * (decimal)Tiraz.Value;
             }
             return ret;
         }

@@ -56,11 +56,11 @@ namespace KvotaWeb.Models.Items
                 ret.Add(line);
                 if (KolichestvoTcvetov == null || Tiraz == null) continue;
 
-                double cena;
+                decimal cena;
                 if (TryGetPrice(i, Tiraz, KolichestvoTcvetov, out cena) == false) continue;
 
-                cena = cena * (Sintetika ? 1.5 : 1) * (FormatA3 ? 1.2 : 1);
-                line.Cena = cena * Tiraz.Value;
+                cena = cena * (Sintetika ? 1.5m : 1m) * (FormatA3 ? 1.2m : 1m);
+                line.Cena = cena * (decimal)Tiraz.Value;
             }
             return ret;
 

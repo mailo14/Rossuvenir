@@ -39,7 +39,7 @@ namespace KvotaWeb.Controllers
             {
                 sum += li.total??0;
                 if (s.Length > 0) s += ", ";
-                s += li.tipProdName;
+                s += li.TipProdName;
                 /*switch (li.tipProd)
                 {
                     case 2: s += "полиграфия"; break;
@@ -90,13 +90,18 @@ namespace KvotaWeb.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult AddLi(int zId, int tipProd)
+        public ActionResult AddLi(int zId, TipProds tipProd)
         {
                 //int tipProd = SelectedIndex++;
                var li = new ListItem();
-            li.tipProd = tipProd;
+            li.tipProd = (int)tipProd;
             li.listId = zId;
-            switch (tipProd)
+
+            db.ListItem.Add(li);
+            db.SaveChanges();
+            int id = li.id;
+            return EditLi(id, tipProd);
+            /*switch (tipProd)
             {
                 // case 4: li.vid1 = 201;break;
                 case 4:    
@@ -133,10 +138,10 @@ namespace KvotaWeb.Controllers
             db.SaveChanges();
 
             int id = li.id;
-            return EditLi(id, tipProd);
-           /* if (tipProd == 1) return RedirectToAction("EditSuvenir", "Product", new { id = id });  
-            if (tipProd == 2) return RedirectToAction("EditPoligrafiya", "Product", new { id = id });
-            return RedirectToAction("EditBanner", "Product", new { id = id });*/
+            return EditLi(id, tipProd);*/
+            /* if (tipProd == 1) return RedirectToAction("EditSuvenir", "Product", new { id = id });  
+             if (tipProd == 2) return RedirectToAction("EditPoligrafiya", "Product", new { id = id });
+             return RedirectToAction("EditBanner", "Product", new { id = id });*/
         }
         /*public RedirectToRouteResult EditProductRedirectAction(int liId, tipProd)
         {
@@ -144,18 +149,22 @@ namespace KvotaWeb.Controllers
             if (tipProd == 2) return RedirectToAction("EditPoligrafiya", "Product", new { id = id });
             return RedirectToAction("EditBanner", "Product", new { id = id });
         }*/
-        public ActionResult EditLi(int id ,int tipProd)
+        public ActionResult EditLi(int id ,TipProds tipProd)
         {              
             switch (tipProd)
-            { case 4:case 23:case 24:case 29:case 30:case 18:case 28: case 31: case 32:  case 33:case 9: case 34:return RedirectToAction("EditЗначки", "Product", new { id = id });
-                case 1:return RedirectToAction("EditSuvenir", "Product", new { id = id });
+            {
+                case TipProds.Banner: return RedirectToAction("EditBanner", "Product", new { id = id });
+                //case 4:case 23:case 24:case 29:case 30:case 18:case 28: case 31: case 32:  case 33:case 9: case 34:
+                default:
+                    return RedirectToAction("EditЗначки", "Product", new { id = id });
+             /*   case 1:return RedirectToAction("EditSuvenir", "Product", new { id = id });
              //   case 2: return RedirectToAction("EditPoligrafiya", "Product", new { id = id });
-                case 3: return RedirectToAction("EditBanner", "Product", new { id = id });
+               
                 case 14: return RedirectToAction("EditФутболки", "Product", new { id = id });
                 case 16: return RedirectToAction("EditДиски", "Product", new { id = id });
                 //              case 4: case 6: case 10:
                 default: return RedirectToAction("EditПакетыЗначкиСублимация", "Product", new { id = id });
-               
+               */
   
   //              default:return RedirectToAction("Index", "Home");
             }
@@ -229,32 +238,34 @@ namespace KvotaWeb.Models
 {
     public partial class ListItem
     {
-        public string tipProdName
+        public string TipProdName
         {
             get
             {
-                return GetTipProdName(tipProd);
+                return GetTipProdName((TipProds)tipProd);
             }
         }
-        public static string GetTipProdName(int tipProd)
+        public static string GetTipProdName(TipProds tipProd)
         {
             switch (tipProd)
             {
-                case 4: return "Закатные значки";
-                case 23: return "Шелкография";
-                case 24: return "Тампопечать";
-                case 29: return "Пакеты ПВД";
-                case 30: return "Тиснение";
-                case 18: return "DTG";
-                case 28: return "Гравировка";
-                case 31: return "УФ (качество)";
-                case 32: return "УФ (стандарт)";
-                case 33: return "Деколь";
-                case 9: return "Пакеты бумажные";
-                case 34: return "Флаги и растяжки";
+                case TipProds.Znachok: return "Закатные значки";
+                case TipProds.Shelkografiya: return "Шелкография";
+                case TipProds.Tampopechat: return "Тампопечать";
+                case TipProds.PaketPvd: return "Пакеты ПВД";
+                case TipProds.Tisnenie: return "Тиснение";
+                case TipProds.DTG: return "DTG";
+                case TipProds.Gravirovka: return "Гравировка";
+                case TipProds.UFkachestvo: return "УФ (качество)";
+                case TipProds.UFstandart: return "УФ (стандарт)";
+                case TipProds.Decol: return "Деколь";
+                case TipProds.BumajniiPaket: return "Пакеты бумажные";
+                case TipProds.Flag: return "Флаги и растяжки";
 
+                case TipProds.Banner: return "Баннеры и ПВХ";
+                    /*
                 case 1: return "Нанесение логотипа";
-                case 3: return "Баннеры и ПВХ";
+                
                 case 5: return "Квартальные календари";
                 case 6: return "Кружки с сублимацией";
                 case 7: return "Ленты для бейджей (ланъярды)";
@@ -264,7 +275,7 @@ namespace KvotaWeb.Models
                 case 13: return "Слэп браслеты";
                 case 14: return "Футболка с сублимацией";
                 case 15: return "Шары с логотипом";
-                case 16: return "Запись дисков";
+                case 16: return "Запись дисков";*/
                 default: return null;
             }
         }

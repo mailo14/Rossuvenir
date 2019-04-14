@@ -44,12 +44,12 @@ namespace KvotaWeb.Models.Items
                 ret.Add(line);
                 if (KolichestvoTcvetov1 == null || Paket == null || Tiraz == null) continue;
 
-                double cena;
+                decimal cena;
                 if (TryGetPrice(i, Tiraz, KolichestvoTcvetov1, out cena) == false) continue;
 
                 if (KolichestvoTcvetov2 != null)
                 {
-                    double cena2;
+                    decimal cena2;
                     if (TryGetPrice(i, Tiraz, KolichestvoTcvetov2, out cena2) == false) continue;
                     cena += cena2;
                 }
@@ -60,8 +60,8 @@ namespace KvotaWeb.Models.Items
 
 
 
-                cena = cena * (PoleZapechatki? 1.25 : 1) + cenaPaketa;
-                line.Cena = cena * Tiraz.Value;
+                cena = cena * (PoleZapechatki? 1.25m : 1m) + (decimal)cenaPaketa;
+                line.Cena = cena * (decimal)Tiraz.Value;
             }
             return ret;
 

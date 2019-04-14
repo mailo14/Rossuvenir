@@ -86,7 +86,7 @@ namespace KvotaWeb.Models.Items
                 ret.Add(line);
                 if (Vid == null|| KolichestvoTcvetov == null || Tiraz == null || Ploshad==null || Vid == 308 && Diametr==null) continue;
 
-                double cena;
+                decimal cena;
                 if (TryGetPrice(i, Tiraz, KolichestvoTcvetov, out cena) == false) continue;
 
                 double koef = 1;
@@ -101,9 +101,9 @@ namespace KvotaWeb.Models.Items
                     if (Diametr == 319) koef = 0.8;
                     else if (Diametr == 321) koef = 1.1;
                 }
-                if (Zolotoi) cena += Ploshad.Value * 4;
-                cena = cena * koef;
-                line.Cena = cena * Tiraz.Value;
+                if (Zolotoi) cena += (decimal)Ploshad.Value * 4;
+                cena = cena * (decimal)koef;
+                line.Cena = cena * (decimal)Tiraz.Value;
             }
             return ret;
 

@@ -42,25 +42,25 @@ namespace KvotaWeb.Models.Items
                 ret.Add(line);
                 if (Vid == null || Tiraz == null || !KlisheExists && Ploshad==null) continue;
 
-                double cena;
+                decimal cena;
                 if (TryGetPrice(i, Tiraz, Vid, out cena) == false) continue;
 
-                double cenaKlishe = 0;
+                decimal cenaKlishe = 0;
                 if (!KlisheExists) cenaKlishe = GetCenaKlishe(i, Ploshad.Value);
-                line.Cena = cena * Tiraz.Value+ cenaKlishe;
+                line.Cena = cena * (decimal)Tiraz.Value+ cenaKlishe;
             }
             return ret;
 
         }
 
-        private double GetCenaKlishe(Postavs firma, double ploshad)
+        private decimal GetCenaKlishe(Postavs firma, double ploshad)
         {
             if (firma==Postavs.РРЦ_1_5 || firma == Postavs.ААА)
             {
                 if (ploshad < 31) return 850;
                 if (ploshad < 41) return 1000;
                 if (ploshad <= 50) return 1300;
-                return 1300+Math.Ceiling(ploshad-50)*18;
+                return 1300+ Math.Ceiling((decimal)ploshad -50)*18;
             }
             if (firma == Postavs.АртСувенир)
              return 1000;

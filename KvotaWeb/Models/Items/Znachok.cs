@@ -36,11 +36,11 @@ namespace KvotaWeb.Models.Items
                 ret.Add(line);
                 if (Razmer == null || Tiraz == null) continue;
 
-                double cena ;
+                decimal cena;
                 if (TryGetPrice( i,Tiraz,Razmer,out cena) == false) continue;
 
                 
-                line.Cena = cena * Tiraz.Value;
+                line.Cena = cena * (decimal)Tiraz.Value;
             }
             return ret;
 
@@ -61,7 +61,7 @@ namespace KvotaWeb.Models.Items
     public class CalcLine
     {
         public Postavs Postav { get; set; }
-        public double? Cena { get; set; }
+        public decimal? Cena { get; set; }
     }
     public class TotalCalcLine
     {
@@ -77,7 +77,8 @@ namespace KvotaWeb.Models.Items
     }
 
     public enum Postavs:int { РРЦ_1_5=1, АртСувенир=2, ААА=3, Плановая_СС=10};
-    public enum TipProds:int { Znachok = 4, Shelkografiya = 23, Tampopechat = 24, PaketPvd = 29, Tisnenie = 30, DTG = 18, Gravirovka = 28, UFkachestvo = 31, UFstandart = 32, Decol = 33, BumajniiPaket = 9, Flag = 34 };
+    public enum TipProds:int { Znachok = 4, Shelkografiya = 23, Tampopechat = 24, PaketPvd = 29, Tisnenie = 30, DTG = 18, Gravirovka = 28, UFkachestvo = 31, UFstandart = 32, Decol = 33, BumajniiPaket = 9, Flag = 34
+            , Banner = 3 };
     public abstract class ItemBase
     {
         public int? ZakazId { get; set; }
@@ -113,8 +114,9 @@ namespace KvotaWeb.Models.Items
         }
 
 
-        public bool TryGetPrice(Postavs firma, double? tiraz, int? catId, out double cena)
+        public bool TryGetPrice(Postavs firma, double? dTiraz, int? catId, out decimal cena)
         {
+            var tiraz = (decimal)dTiraz;
             kvotaEntities db = new kvotaEntities();
             cena = 0;
             var minTiraz = (from p in db.Price where p.firma == (int)firma && p.catId == catId orderby p.tiraz select (int?)p.tiraz).FirstOrDefault();
@@ -124,11 +126,11 @@ namespace KvotaWeb.Models.Items
             if (tiraz > 2 * maxTirazi[0] - maxTirazi[1]) InnerMessageIds.Add(InnerMessages.AskBetterPrice);
             if (tiraz < minTiraz)
             {
-                cena = (from p in db.Price where p.firma == (int)firma && p.catId == catId && p.tiraz == minTiraz select p.cena).First();
-                cena = cena * minTiraz.Value / tiraz.Value;
+                cena = (decimal)(from p in db.Price where p.firma == (int)firma && p.catId == catId && p.tiraz == minTiraz select p.cena).First();
+                cena = cena * minTiraz.Value / tiraz;
             }
             else
-                cena = (from p in db.Price where p.firma == (int)firma && p.catId == catId && p.tiraz <= tiraz orderby p.tiraz descending select p.cena).First();
+                cena = (decimal)(from p in db.Price where p.firma == (int)firma && p.catId == catId && p.tiraz <= tiraz orderby p.tiraz descending select p.cena).First();
 
             return true;
         }
@@ -162,11 +164,12 @@ namespace KvotaWeb.Models.Items
         {
 var lines = Calc();
             var nacenk = GetNacenk(ZakazId, (int)TipProd);
+
             foreach (var line in lines)
-            if (line.Cena!=null) line.Cena= Math.Ceiling(line.Cena.Value*nacenk / Tiraz.Value) * Tiraz.Value;
+            if (line.Cena!=null) line.Cena= Math.Ceiling(line.Cena.Value*nacenk / (decimal)Tiraz.Value) * (decimal)Tiraz.Value;
             return lines;
         }
-        public double GetNacenk(int? listId, int tipProd)
+        public decimal GetNacenk(int? listId, int tipProd)
             {
                 var db = new kvotaEntities();
                 var z = db.Zakaz.First(pp => pp.id == listId);
@@ -177,11 +180,11 @@ var lines = Calc();
                 switch (z.nacenTip)
                 {
                     case 1://стандарт
-                        if (tipProd == 3) return 1.4;
+                        if (tipProd == 3) return 1.4m;
                     break;
                     //    else return 1.0;
                     case 3://своя
-                        if (z.nacenValue.HasValue) return z.nacenValue.Value;
+                        if (z.nacenValue.HasValue) return (decimal)z.nacenValue.Value;
                     break;
                 }
                 return 1;
@@ -215,7 +218,7 @@ var lines = Calc();
                 }
                 if (line.Cena.HasValue)
                 {
-                    tLine.EdCena = (line.Cena / Tiraz).Value.ToString("f2");
+                    tLine.EdCena = (line.Cena.Value / (decimal)Tiraz.Value).ToString("f2");
                     tLine.Cena = line.Cena.Value.ToString("f2");
                     if (line != baseLine && baseLine.Cena!=null)
                         tLine.Marza = ((line.Cena - baseLine.Cena) / line.Cena * 100).Value.ToString("f2") + @"%";
@@ -279,9 +282,9 @@ var lines = Calc();
                     return Decol.CreateItem(li);
 
                 case TipProds.BumajniiPaket:
-                    return BumajniiPaket.Create(li);
+                    return BumajniiPaket.CreateItem(li);
                 case TipProds.Flag:
-                    return Flag.Create(li);
+                    return Flag.CreateItem(li);
 
                 default:
                     return null;

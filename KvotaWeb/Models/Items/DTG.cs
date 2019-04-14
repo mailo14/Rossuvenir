@@ -33,10 +33,10 @@ namespace KvotaWeb.Models.Items
                 if (Razmer == null || Tiraz == null) continue;
 
                 kvotaEntities db = new kvotaEntities();
-                double cena;
+                decimal cena;
                 if (TryGetPrice(i, Tiraz, Razmer, out cena) == false) continue;
 
-                line.Cena = cena * Tiraz.Value;
+                line.Cena = cena * (decimal)Tiraz.Value;
             }
             return ret;
 

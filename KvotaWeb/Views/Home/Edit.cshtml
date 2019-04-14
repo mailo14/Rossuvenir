@@ -1,11 +1,14 @@
-﻿@model KvotaWeb.Models.Zakaz
+﻿@using KvotaWeb.Models.Items
+
+@model KvotaWeb.Models.Zakaz
+
 @Scripts.Render("~/scripts/jquery.validate.min.js")
-<form id="myform"  method="post" action="/Home/Edit">
+<form id="myform" method="post" action="/Home/Edit">
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal col-sm-8 col-sm-push-2">
         <hr />
-        <h4 >Заказ № @Model.id @Html.ActionLink(" (обратно к списку)", "Index")</h4>
+        <h4>Заказ № @Model.id @Html.ActionLink(" (обратно к списку)", "Index")</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.id)
@@ -18,42 +21,42 @@
         @Html.HiddenFor(model => model.dopUslDost)
         @Html.HiddenFor(model => model.dopUslMaket)
         @*<div class="form-group">
-            <label class="control-label col-sm-5">Доп.услуги:</label>
-            <div class="col-sm-7 " style="display:inline-block;padding-top:7px;">
-                <label style="margin-right:10px;">
-                    @Html.EditorFor(model => model.dopUslDost, new { htmlAttributes = new { @onclick = "OnChangeEvent();" } })
-                    доставка до клиента
-                </label>
-                @Html.ValidationMessageFor(model => model.dopUslDost, "", new { @class = "text-danger" })
+                <label class="control-label col-sm-5">Доп.услуги:</label>
+                <div class="col-sm-7 " style="display:inline-block;padding-top:7px;">
+                    <label style="margin-right:10px;">
+                        @Html.EditorFor(model => model.dopUslDost, new { htmlAttributes = new { @onclick = "OnChangeEvent();" } })
+                        доставка до клиента
+                    </label>
+                    @Html.ValidationMessageFor(model => model.dopUslDost, "", new { @class = "text-danger" })
 
-                <label >
-                    @Html.EditorFor(model => model.dopUslMaket, new { htmlAttributes = new {  @onclick = "OnChangeEvent();" } })
-                    макетирование
-                </label>
-                @Html.ValidationMessageFor(model => model.dopUslMaket, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                    <label >
+                        @Html.EditorFor(model => model.dopUslMaket, new { htmlAttributes = new {  @onclick = "OnChangeEvent();" } })
+                        макетирование
+                    </label>
+                    @Html.ValidationMessageFor(model => model.dopUslMaket, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         @*input type="checkbox" id="dopUslMaket" name="dopUslMaket" value="@Model.dopUslMaket" checked="@Model.dopUslMaket" onclick = "OnChangeEvent()"/*@
 
         @*<div class="form-group">
-            <label class="control-label col-sm-5">Доп.услуги:</label>
-            <div class="col-sm-7">
-                @Html.EditorFor(model => model.dopUslDost, new { htmlAttributes = new {id= "dopUslDost", @class = "control-label", @onclick = "OnChangeEvent();" } })
-                <label class="control-label" style="margin:0px 15px 0px 3px">доставка до клиента</label>
-                @Html.EditorFor(model => model.dopUslMaket, new { htmlAttributes = new { @class = "control-label", @onclick = "OnChangeEvent();" } })
-                <label class="control-label">макетирование</label>
-            </div>
-        </div>*@
+                <label class="control-label col-sm-5">Доп.услуги:</label>
+                <div class="col-sm-7">
+                    @Html.EditorFor(model => model.dopUslDost, new { htmlAttributes = new {id= "dopUslDost", @class = "control-label", @onclick = "OnChangeEvent();" } })
+                    <label class="control-label" style="margin:0px 15px 0px 3px">доставка до клиента</label>
+                    @Html.EditorFor(model => model.dopUslMaket, new { htmlAttributes = new { @class = "control-label", @onclick = "OnChangeEvent();" } })
+                    <label class="control-label">макетирование</label>
+                </div>
+            </div>*@
 
         @*$('#liTableDiv').load('@Url.Action("fillLitable", "Home")?zId=' + @Model.id);*@
         @*<script type="text/javascript">
-        $(document).ready(function () {
-            $('#dopUslDost').click(function (e) {
-                $('#liTableDiv').load('@Url.Action("fillLitable", "Home")?zId=' + @Model.id);
+            $(document).ready(function () {
+                $('#dopUslDost').click(function (e) {
+                    $('#liTableDiv').load('@Url.Action("fillLitable", "Home")?zId=' + @Model.id);
+                });
             });
-        });
-            </script>*@
+                </script>*@
 
         <div class="form-group" style="display:none;">
             <label class="control-label col-sm-5">Наценка:</label>
@@ -104,55 +107,55 @@
                         <li><label style="padding-left:3px;">Готовая продукция:</label> </li>
                         <li><a href="/Home/AddLi?zId=@Model.id&tipProd=4">Закатные значки</a></li>
                         <li><a href="/Home/AddLi?zId=@Model.id&tipProd=9">Пакеты бумажные</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=34">Флаги и растяжки</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=@TipProds.Flag">@KvotaWeb.Models.ListItem.GetTipProdName(TipProds.Flag)</a></li>
                         <li><label style="padding-left:3px;">Пакеты:</label> </li>
                         <li><a href="/Home/AddLi?zId=@Model.id&tipProd=29">Пакеты ПВД с шелкографией</a></li>
                         <li><label style="padding-left:3px;">Полиграфия (оперативка):</label> </li>
 
                         @*   <li><a href="/Home/AddLi?zId=@Model.id&tipProd=1">Нанесение логотипа</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры и ПВХ</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=16">Запись дисков </a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=5">Квартальные календари</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=6">Кружки с сублимацией</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=7">Ленты для бейджей (ланъярды)</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=8">Открытки </a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=11">Прочая полиграфия</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=12">Силиконовые браслеты</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=13">Слэп браслеты</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=14">Футболка с сублимацией</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=15">Шары с логотипом</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=17">Блокноты</a></li>
+                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры и ПВХ</a></li>
+                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=16">Запись дисков </a></li>
+                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=5">Квартальные календари</a></li>
+                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=6">Кружки с сублимацией</a></li>
+                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=7">Ленты для бейджей (ланъярды)</a></li>
+                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=8">Открытки </a></li>
+                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=11">Прочая полиграфия</a></li>
+                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=12">Силиконовые браслеты</a></li>
+                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=13">Слэп браслеты</a></li>
+                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=14">Футболка с сублимацией</a></li>
+                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=15">Шары с логотипом</a></li>
+                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=17">Блокноты</a></li>
 
-                       <li><a href="/Home/AddLi?zId=@Model.id&tipProd=1">Сувениры</a></li>
-        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=2">Полиграфия</a></li>
-        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры</a></li>
-        @*<li class="divider"></li>*@
+                                           <li><a href="/Home/AddLi?zId=@Model.id&tipProd=1">Сувениры</a></li>
+                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=2">Полиграфия</a></li>
+                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры</a></li>
+                            @*<li class="divider"></li>*@
                     </ul>
                 </div>
             </div>
         </div>
 
-            <div id="liTableDiv" >
-                @Html.Action("fillLitable", new { zId = @Model.id })
+        <div id="liTableDiv">
+            @Html.Action("fillLitable", new { zId = @Model.id })
+        </div>
+
+
+        <!--div class="form-group">
+            <hr class="divider" />
+            <label class="control-label col-sm-5">Итого:</label>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.total, new { htmlAttributes = new { @class = "form-control", @id = "total", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.total, "", new { @class = "text-danger" })
             </div>
+        </!--div>
 
-
-                <!--div class="form-group">
-                <hr class="divider" />
-                <label class="control-label col-sm-5">Итого:</label>
-                <div class="col-sm-7">
-                    @Html.EditorFor(model => model.total, new { htmlAttributes = new { @class = "form-control", @id = "total", @readonly = "readonly" } })
-                    @Html.ValidationMessageFor(model => model.total, "", new { @class = "text-danger" })
-                </div>
-            </!--div>
-
-            <div class="form-group">
-                <div class="col-md-offset-5 col-sm-7">
-                    <input type="submit" value="Сохранить" class="btn btn-primary" />
-                </div>
-            </div-->
+        <div class="form-group">
+            <div class="col-md-offset-5 col-sm-7">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
-            <script type="text/javascript">
+        </div-->
+    </div>
+    <script type="text/javascript">
         // <select> element displays its options on mousedown, not click.
         showDropdown = function (element) {
             var event;
@@ -267,12 +270,12 @@ $('#liTableDiv').load('@Url.Action("fillLitable")?zId=' + @Model.id);
             var firstDropVal = $('#pick').val();
         });*/
 
-            </script>
+    </script>
 
 </form>
 
 @*
-<div>
-    @Html.ActionLink("К списку заказов", "Index", "Home")
-</div>
+    <div>
+        @Html.ActionLink("К списку заказов", "Index", "Home")
+    </div>
 *@

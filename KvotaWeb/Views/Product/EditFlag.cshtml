@@ -1,14 +1,11 @@
-﻿@{
-    Layout = "~/Views/Shared/_ProductLayout.cshtml";
-}
-@model KvotaWeb.Models.Items.Flag
+﻿@model KvotaWeb.Models.Items.Flag
 
 <form id="myform" method="post" action="/Product/EditЗначки">
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal col-sm-8 col-sm-push-2">
         <hr />
-        <h4>Элемент @Html.ActionLink(" заказа № " + @Model.ZakazId, "Edit", "Home", new { id = @Model.ZakazId }, null)  -  @KvotaWeb.Models.ListItem.GetTipProdName((int)@Model.TipProd)</h4>
+        <h4>Элемент @Html.ActionLink(" заказа № " + @Model.ZakazId, "Edit", "Home", new { id = @Model.ZakazId }, null)  -  @KvotaWeb.Models.ListItem.GetTipProdName(@Model.TipProd)</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -34,6 +31,50 @@
             <div class="col-sm-7">
                 @Html.DropDownListFor(model => model.Razmer, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param11", @class = "form-control", @onchange = "OnChangeEvent();" })
                 @Html.ValidationMessageFor(model => model.Razmer, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.SvoiRazmerH)
+            </div>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.SvoiRazmerH, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.SvoiRazmerH, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.SvoiRazmerL)
+            </div>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.SvoiRazmerL, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.SvoiRazmerL, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Material)
+            </div>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.Material, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param12", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.Material, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.Dvustoronnii, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.Dvustoronnii)
+            </div>
+        </div>
+
+        <div class="form-group" align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.Dorabotka, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.Dorabotka)
             </div>
         </div>
 

@@ -1008,6 +1008,14 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
         {
             return PartialView("TotalResults", totals);
         }
+        ItemBase GetModel<T>(FormCollection collection)
+            where T:ItemBase,new()
+        {
+            var model = new T();
+            TryUpdateModel(model, collection);
+            return model;
+        }
+
         [HttpPost]
         public ActionResult Recalc(FormCollection collection)
         {
@@ -1027,7 +1035,7 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
                 case TipProds.UFstandart: var model8 = new UFstandart(); TryUpdateModel(model8, collection); model = model8; break;
                 case TipProds.Decol: var model9= new Decol(); TryUpdateModel(model9, collection); model = model9; break;
                 case TipProds.BumajniiPaket: var model10= new BumajniiPaket(); TryUpdateModel(model10, collection); model = model10; break;
-                case TipProds.Flag: var model11= new Flag(); TryUpdateModel(model11, collection); model = model11; break;
+                case TipProds.Flag: model = GetModel<Flag>(collection);break; //var model11= new Flag(); TryUpdateModel(model11, collection); model = model11; break;
             }
           
                 var li = model.ToListItem();
@@ -1062,7 +1070,7 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
             var z = db.Zakaz.FirstOrDefault(pp => pp.id == li.listId);
             z.comment = string.Join(", ",
             db.ListItem.Where(pp => pp.listId == z.id).Select(pp => pp.tipProd).ToList()
-            .Select(pp => ListItem.GetTipProdName(pp)));
+            .Select(pp => ListItem.GetTipProdName((TipProds)pp)));
             db.SaveChanges();
         }
         [HttpPost]
