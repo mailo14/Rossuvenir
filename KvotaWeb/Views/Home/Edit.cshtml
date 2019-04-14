@@ -1,4 +1,5 @@
-﻿@using KvotaWeb.Models.Items
+﻿@using KvotaWeb.Models
+@using KvotaWeb.Models.Items
 
 @model KvotaWeb.Models.Zakaz
 
@@ -107,29 +108,38 @@
                         <li><label style="padding-left:3px;">Готовая продукция:</label> </li>
                         <li><a href="/Home/AddLi?zId=@Model.id&tipProd=4">Закатные значки</a></li>
                         <li><a href="/Home/AddLi?zId=@Model.id&tipProd=9">Пакеты бумажные</a></li>
-                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=@TipProds.Flag">@KvotaWeb.Models.ListItem.GetTipProdName(TipProds.Flag)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=@TipProds.Flag">@ListItem.GetTipProdName(TipProds.Flag)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=@TipProds.FlagPobedi">@ListItem.GetTipProdName(TipProds.FlagPobedi)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=@TipProds.FlagNSO">@ListItem.GetTipProdName(TipProds.FlagNSO)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=@TipProds.Vimpel">@ListItem.GetTipProdName(TipProds.Vimpel)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=@TipProds.Skatert">@ListItem.GetTipProdName(TipProds.Skatert)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=@TipProds.Sharf">@ListItem.GetTipProdName(TipProds.Sharf)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=@TipProds.Platok">@ListItem.GetTipProdName(TipProds.Platok)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=@TipProds.ReklNakidka">@ListItem.GetTipProdName(TipProds.ReklNakidka)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=@TipProds.SportNomer">@ListItem.GetTipProdName(TipProds.SportNomer)</a></li>
+
                         <li><label style="padding-left:3px;">Пакеты:</label> </li>
                         <li><a href="/Home/AddLi?zId=@Model.id&tipProd=29">Пакеты ПВД с шелкографией</a></li>
                         <li><label style="padding-left:3px;">Полиграфия (оперативка):</label> </li>
 
                         @*   <li><a href="/Home/AddLi?zId=@Model.id&tipProd=1">Нанесение логотипа</a></li>
-                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры и ПВХ</a></li>
-                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=16">Запись дисков </a></li>
-                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=5">Квартальные календари</a></li>
-                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=6">Кружки с сублимацией</a></li>
-                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=7">Ленты для бейджей (ланъярды)</a></li>
-                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=8">Открытки </a></li>
-                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=11">Прочая полиграфия</a></li>
-                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=12">Силиконовые браслеты</a></li>
-                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=13">Слэп браслеты</a></li>
-                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=14">Футболка с сублимацией</a></li>
-                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=15">Шары с логотипом</a></li>
-                                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=17">Блокноты</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры и ПВХ</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=16">Запись дисков </a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=5">Квартальные календари</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=6">Кружки с сублимацией</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=7">Ленты для бейджей (ланъярды)</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=8">Открытки </a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=11">Прочая полиграфия</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=12">Силиконовые браслеты</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=13">Слэп браслеты</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=14">Футболка с сублимацией</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=15">Шары с логотипом</a></li>
+                        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=17">Блокноты</a></li>
 
-                                           <li><a href="/Home/AddLi?zId=@Model.id&tipProd=1">Сувениры</a></li>
-                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=2">Полиграфия</a></li>
-                            <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры</a></li>
-                            @*<li class="divider"></li>*@
+                       <li><a href="/Home/AddLi?zId=@Model.id&tipProd=1">Сувениры</a></li>
+        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=2">Полиграфия</a></li>
+        <li><a href="/Home/AddLi?zId=@Model.id&tipProd=3">Баннеры</a></li>
+        @*<li class="divider"></li>*@
                     </ul>
                 </div>
             </div>

@@ -7,13 +7,13 @@ using System.Web.Mvc;
 
 namespace KvotaWeb.Models.Items
 {
-    public class Flag : ItemBase
+    public class Futbolka : ItemBase
     {
-        public override string Srok { get; set; } = "1-3 рабочих дня";
-        public override string Description { get; set; } = "В стоимость включена обработка флага двойной строкой, карман, петли, завязки.По желанию заказчика допольнительно можно сделать глухой карман, петлю в карман снизу + 0руб. Двухсторонний сшивной флаг - из двух слоев запечатанной ткани, с тканевой прослойкой внутри. Подробнее:  sgrafika.ru Люверсы и лента крепления включена в стоимость флага";
+        public override string Srok { get; set; } = "от 1 часа до 3-5 рабочих дней";
+        public override string Description { get; set; } = "Цены указаны до А4 формата, без учета стоимости носителя. При нанесении изображения большого формата, цена рассчитывается индивидуально. Тираж менее 20 шт.и более 1000 шт.рассчитывается индивидуально· В стоимость не включена цена носителя.";
 
-        [Display(Name = "Размер:")]
-         public int? Razmer { get; set; }
+        [Display(Name = "Вид/основа:")]
+         public int? Osnova { get; set; }
 
         [Display(Name = "Материал:")]
          public int? Material { get; set; }
@@ -33,7 +33,7 @@ namespace KvotaWeb.Models.Items
         public override ListItem ToListItem()
         {
             var rr = base.ToListItem();
-            rr.param11 = Razmer;
+            rr.param11 = Osnova;
             rr.param12 = Material;
             rr.param14 = Dvustoronnii;
             rr.param13 = SvoiRazmerH;
@@ -43,7 +43,7 @@ namespace KvotaWeb.Models.Items
         }
         public static ItemBase CreateItem(ListItem li)
         {
-            return new Flag() { Id = li.id, ZakazId = li.listId, Tiraz = li.tiraz, Razmer = li.param11,
+            return new Futbolka() { Id = li.id, ZakazId = li.listId, Tiraz = li.tiraz, Osnova = li.param11,
                 Material =li.param12??0, Dvustoronnii=li.param14,
                 SvoiRazmerH=li.param13, SvoiRazmerL = li.param23,
                 Dorabotka=li.param24
@@ -53,20 +53,20 @@ namespace KvotaWeb.Models.Items
 public override List<CalcLine> Calc()
 
         {
-            if (Tiraz >= 801) InnerMessageIds.Add(InnerMessages.AskBetterPrice); ;
+            if (Tiraz <20  && Tiraz >= 1000) InnerMessageIds.Add(InnerMessages.AskBetterPrice); ;
 
             var ret = new List<CalcLine>();
             foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
             {
                 var line = new CalcLine() { Postav = i };
                 ret.Add(line);
-                if ( Tiraz == null || Razmer == null  && (SvoiRazmerH == null || SvoiRazmerL == null)) continue;
+                if ( Tiraz == null || Osnova == null ) continue;
 
                 kvotaEntities db = new kvotaEntities();
                 decimal cena;
-                if (Razmer != null && SvoiRazmerH==null && SvoiRazmerL==null)
+                if (Osnova != null && SvoiRazmerH==null && SvoiRazmerL==null)
                 {
-                    if (TryGetPrice(i, Tiraz, Razmer, out cena) == false) continue;
+                    if (TryGetPrice(i, Tiraz, Osnova, out cena) == false) continue;
                 }
                 else
                 {
@@ -87,7 +87,7 @@ public override List<CalcLine> Calc()
         }
 
 
-        public Flag():base( TipProds.Flag, "EditFlag")
+        public Futbolka():base( TipProds.Futbolka, "EditFutbolka")
         {
             var empty = new SelectList(new List<Category>(), "id", "tip"); //Enumerable.Empty<SelectListItem>();
             var nullObj = new Category() { tip = "(не выбрано)" };

@@ -185,6 +185,15 @@
     <Compile Include="Models\Category.cs">
       <DependentUpon>KvotaDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Items\Futbolka.cs" />
+    <Compile Include="Models\Items\SportNomer.cs" />
+    <Compile Include="Models\Items\ReklNakidka.cs" />
+    <Compile Include="Models\Items\Platok.cs" />
+    <Compile Include="Models\Items\Sharf.cs" />
+    <Compile Include="Models\Items\Skatert.cs" />
+    <Compile Include="Models\Items\Vimpel.cs" />
+    <Compile Include="Models\Items\FlagNSO.cs" />
+    <Compile Include="Models\Items\FlagPobedi.cs" />
     <Compile Include="Models\Items\Flag.cs" />
     <Compile Include="Models\Items\BumajniiPaket.cs" />
     <Compile Include="Models\Items\PaketPvd.cs" />
@@ -325,6 +334,14 @@
     <Content Include="Views\Product\EditBumajniiPaket.cshtml" />
     <Content Include="Views\Shared\_ProductLayout.cshtml" />
     <Content Include="Views\Product\EditFlag.cshtml" />
+    <Content Include="Views\Product\EditFlagNSO.cshtml" />
+    <Content Include="Views\Product\EditVimpel.cshtml" />
+    <Content Include="Views\Product\EditSkatert.cshtml" />
+    <Content Include="Views\Product\EditFlagPobedi.cshtml" />
+    <Content Include="Views\Product\EditSharf.cshtml" />
+    <Content Include="Views\Product\EditPlatok.cshtml" />
+    <Content Include="Views\Product\EditReklNakidka.cshtml" />
+    <Content Include="Views\Product\EditSportNomer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

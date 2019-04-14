@@ -261,6 +261,15 @@ namespace KvotaWeb.Models
                 case TipProds.Decol: return "Деколь";
                 case TipProds.BumajniiPaket: return "Пакеты бумажные";
                 case TipProds.Flag: return "Флаги и растяжки";
+                case TipProds.FlagPobedi: return "Флаг Победы";
+                case TipProds.FlagNSO: return "Флаги Новосибирской области и Новосибирска";
+                case TipProds.Vimpel: return "Вымпелы";
+                case TipProds.Skatert: return "Скатерти";
+                case TipProds.Sharf: return "Шарфы";
+                case TipProds.Platok: return "Платки, косынки";
+                case TipProds.ReklNakidka: return "Рекламные накидки";
+                case TipProds.SportNomer: return "Спортивные номера";
+                case TipProds.Futbolka: return "Футболка";
 
                 case TipProds.Banner: return "Баннеры и ПВХ";
                     /*

@@ -78,7 +78,17 @@ namespace KvotaWeb.Models.Items
 
     public enum Postavs:int { РРЦ_1_5=1, АртСувенир=2, ААА=3, Плановая_СС=10};
     public enum TipProds:int { Znachok = 4, Shelkografiya = 23, Tampopechat = 24, PaketPvd = 29, Tisnenie = 30, DTG = 18, Gravirovka = 28, UFkachestvo = 31, UFstandart = 32, Decol = 33, BumajniiPaket = 9, Flag = 34
-            , Banner = 3 };
+            , Banner = 3,
+        FlagPobedi = 35,
+        FlagNSO = 36,
+        Vimpel = 37,
+        Skatert = 38,
+        Sharf = 39,
+        Platok = 40,
+        ReklNakidka = 41,
+        SportNomer = 42,
+        Futbolka = 43
+    };
     public abstract class ItemBase
     {
         public int? ZakazId { get; set; }
@@ -285,10 +295,50 @@ var lines = Calc();
                     return BumajniiPaket.CreateItem(li);
                 case TipProds.Flag:
                     return Flag.CreateItem(li);
+                case TipProds.FlagPobedi:
+                    return FlagPobedi.CreateItem(li);
+                case TipProds.FlagNSO:
+                    return FlagNSO.CreateItem(li);
+                case TipProds.Vimpel:
+                    return Vimpel.CreateItem(li);
+                case TipProds.Skatert:
+                    return Skatert.CreateItem(li);
+                case TipProds.Sharf:
+                    return Sharf.CreateItem(li);
+                case TipProds.Platok:
+                    return Platok.CreateItem(li);
+                case TipProds.ReklNakidka:
+                    return ReklNakidka.CreateItem(li);
+                case TipProds.SportNomer:
+                    return SportNomer.CreateItem(li);
 
                 default:
                     return null;
+                 /*   var tipProd = (TipProds)li.tipProd;
+                    var tipProdName = Enum.GetName(typeof(TipProds), li.tipProd);
+                    var tt = GetType(tipProdName);
+                    var mm = tt.GetMethod("CreateItem");
+                    var rr=mm.Invoke(null, new object[] { li }) ;
+                    return GetType(tipProdName).GetMethod("CreateItem").Invoke(null,new object[] { li }) as ItemBase;*/
             }
+        }
+
+        public static Type GetType(string typeName)
+        {
+            var type = Type.GetType(typeName);
+            if (type != null) return type;
+            foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                type = a.GetType(typeName);
+                if (type != null)
+                    return type;
+            }
+            return null;
+        }
+        public object GetInstance(string strFullyQualifiedName)
+        {
+            Type t = Type.GetType(strFullyQualifiedName);
+            return Activator.CreateInstance(t);
         }
     }
 }

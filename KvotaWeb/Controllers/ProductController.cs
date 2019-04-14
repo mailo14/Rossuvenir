@@ -1035,7 +1035,15 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
                 case TipProds.UFstandart: var model8 = new UFstandart(); TryUpdateModel(model8, collection); model = model8; break;
                 case TipProds.Decol: var model9= new Decol(); TryUpdateModel(model9, collection); model = model9; break;
                 case TipProds.BumajniiPaket: var model10= new BumajniiPaket(); TryUpdateModel(model10, collection); model = model10; break;
-                case TipProds.Flag: model = GetModel<Flag>(collection);break; //var model11= new Flag(); TryUpdateModel(model11, collection); model = model11; break;
+                case TipProds.Flag: model = GetModel<Flag>(collection);break; 
+                case TipProds.FlagPobedi: model = GetModel<FlagPobedi>(collection);break;
+                case TipProds.FlagNSO: model = GetModel<FlagNSO>(collection);break;
+                case TipProds.Vimpel: model = GetModel<Vimpel>(collection);break;
+                case TipProds.Skatert: model = GetModel<Skatert>(collection);break;
+                case TipProds.Sharf: model = GetModel<Sharf>(collection);break;
+                case TipProds.Platok: model = GetModel<Platok>(collection);break;
+                case TipProds.ReklNakidka: model = GetModel<ReklNakidka>(collection);break;
+                case TipProds.SportNomer: model = GetModel<SportNomer>(collection);break;
             }
           
                 var li = model.ToListItem();
