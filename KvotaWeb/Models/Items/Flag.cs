@@ -53,35 +53,38 @@ namespace KvotaWeb.Models.Items
 public override List<CalcLine> Calc()
 
         {
-            if (Tiraz >= 801) InnerMessageIds.Add(InnerMessages.AskBetterPrice); ;
 
             var ret = new List<CalcLine>();
             foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
             {
                 var line = new CalcLine() { Postav = i };
                 ret.Add(line);
-                if ( Tiraz == null || Razmer == null  && (SvoiRazmerH == null || SvoiRazmerL == null)) continue;
-
-                kvotaEntities db = new kvotaEntities();
-                decimal cena;
-                if (Razmer != null && SvoiRazmerH==null && SvoiRazmerL==null)
+                if (Tiraz >= 801) { InnerMessageIds.Add(InnerMessages.AskBetterPrice); continue; }
+                if (i == Postavs.Плановая_СС)
                 {
-                    if (TryGetPrice(i, Tiraz, Razmer, out cena) == false) continue;
-                }
-                else
-                {
-                    if( SvoiRazmerH == null || SvoiRazmerL == null) continue;
-                    cena = (decimal)SvoiRazmerH.Value * (decimal)SvoiRazmerL.Value / 100 / 100 * (Tiraz > 3 ? 500 : 530);                     
-                }
-                decimal nacenk=0;
-                if (Material == 1) nacenk += 0.15m;
-                else if (Material == 2) nacenk += 0.20m;
-                if (Dvustoronnii) nacenk += 1.20m;
+                    if (Tiraz == null || Razmer == null && (SvoiRazmerH == null || SvoiRazmerL == null)) continue;
 
-                 line.Cena = cena *(1m+nacenk)* (decimal)Tiraz.Value
-                    +(Dorabotka?150m:0);
+                    kvotaEntities db = new kvotaEntities();
+                    decimal cena;
+                    if (Razmer != null && SvoiRazmerH == null && SvoiRazmerL == null)
+                    {
+                        if (TryGetPrice(i, Tiraz, Razmer, out cena) == false) continue;
+                    }
+                    else
+                    {
+                        if (SvoiRazmerH == null || SvoiRazmerL == null) continue;
+                        cena = (decimal)SvoiRazmerH.Value * (decimal)SvoiRazmerL.Value / 100 / 100 * (Tiraz > 3 ? 500 : 530);
+                    }
+                    decimal nacenk = 0;
+                    if (Material == 1) nacenk += 0.15m;
+                    else if (Material == 2) nacenk += 0.20m;
+                    if (Dvustoronnii) nacenk += 1.20m;
+
+                    line.Cena = cena * (1m + nacenk) * (decimal)Tiraz.Value
+                       + (Dorabotka ? 150m : 0);
+                }
             }
-            ret.First(pp => pp.Postav == Postavs.РРЦ_1_5).Cena=1.5m*ret.First(pp => pp.Postav == Postavs.Плановая_СС).Cena;
+            var pCena = ret.First(pp => pp.Postav == Postavs.Плановая_СС).Cena; if (pCena.HasValue) ret.First(pp => pp.Postav == Postavs.РРЦ_1_5).Cena=1.5m*pCena;
             return ret;
 
         }

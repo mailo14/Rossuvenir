@@ -126,14 +126,16 @@ namespace KvotaWeb.Models.Items
 
         public bool TryGetPrice(Postavs firma, double? dTiraz, int? catId, out decimal cena)
         {
-            var tiraz = (decimal)dTiraz;
-            kvotaEntities db = new kvotaEntities();
             cena = 0;
+            var tiraz = (decimal)dTiraz;
+            if (tiraz == 0) return false;
+
+            kvotaEntities db = new kvotaEntities();
             var minTiraz = (from p in db.Price where p.firma == (int)firma && p.catId == catId orderby p.tiraz select (int?)p.tiraz).FirstOrDefault();
             if (!minTiraz.HasValue) return false;
 
             var maxTirazi = (from p in db.Price where p.firma == (int)firma && p.catId == catId orderby p.tiraz descending select p.tiraz).Take(2).ToArray();
-            if (tiraz > 2 * maxTirazi[0] - maxTirazi[1]) InnerMessageIds.Add(InnerMessages.AskBetterPrice);
+            if (maxTirazi.Length==2 && tiraz > 2 * maxTirazi[0] - maxTirazi[1]) InnerMessageIds.Add(InnerMessages.AskBetterPrice);
             if (tiraz < minTiraz)
             {
                 cena = (decimal)(from p in db.Price where p.firma == (int)firma && p.catId == catId && p.tiraz == minTiraz select p.cena).First();
@@ -230,7 +232,7 @@ var lines = Calc();
                 {
                     tLine.EdCena = (line.Cena.Value / (decimal)Tiraz.Value).ToString("f2");
                     tLine.Cena = line.Cena.Value.ToString("f2");
-                    if (line != baseLine && baseLine.Cena!=null)
+                    if (line != baseLine && baseLine.Cena!=null && baseLine.Cena != 0)
                         tLine.Marza = ((line.Cena - baseLine.Cena) / line.Cena * 100).Value.ToString("f2") + @"%";
                     else tLine.Marza = "-";
                 }
@@ -311,6 +313,8 @@ var lines = Calc();
                     return ReklNakidka.CreateItem(li);
                 case TipProds.SportNomer:
                     return SportNomer.CreateItem(li);
+                case TipProds.Futbolka:
+                    return Futbolka.CreateItem(li);
 
                 default:
                     return null;

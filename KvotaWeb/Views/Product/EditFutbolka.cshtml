@@ -1,10 +1,11 @@
-﻿@model KvotaWeb.Models.Items.DTG
+﻿@model KvotaWeb.Models.Items.Futbolka
+
 <form id="myform" method="post" action="/Product/EditЗначки">
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal col-sm-8 col-sm-push-2">
         <hr />
-        <h4>Элемент @Html.ActionLink(" заказа № " + @Model.ZakazId, "Edit", "Home", new { id = @Model.ZakazId }, null)  -  @KvotaWeb.Models.ListItem.GetTipProdName((int)@Model.TipProd)</h4>
+        <h4>Элемент @Html.ActionLink(" заказа № " + @Model.ZakazId, "Edit", "Home", new { id = @Model.ZakazId }, null)  -  @KvotaWeb.Models.ListItem.GetTipProdName(@Model.TipProd)</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -25,11 +26,31 @@
 
         <div class="form-group">
             <div class="control-label col-sm-5">
-                @Html.LabelFor(model => model.Razmer)
+                @Html.LabelFor(model => model.Osnova)
             </div>
             <div class="col-sm-7">
-                @Html.DropDownListFor(model => model.Razmer, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param11", @class = "form-control", @onchange = "OnChangeEvent();" })
-                @Html.ValidationMessageFor(model => model.Razmer, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.Osnova, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param1", @class = "form-control", @onchange = "OnChangeParam1Event();" })
+                @Html.ValidationMessageFor(model => model.Osnova, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Tcvet)
+            </div>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.Tcvet, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param2", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.Tcvet, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.DopTcveta)
+            </div>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.DopTcveta, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.DopTcveta, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -52,6 +73,20 @@
     </div>
 </form>
 <script type="text/javascript">
+        function OnChangeParam1Event() {
+            //var catId = $(this).val();
+            var catId = $('#param1').val();
+                var url = '@Url.Action("fillParam2", "Product")';
+                $.getJSON(url, { catId: catId }, function (result) {
+                    var ddl = $('#param2');
+                    ddl.empty();
+                    $(result).each(function () {
+                        $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
+                    });
+                    OnChangeEvent();
+                    $('#param2').focus();
+            });
+        }
         function OnChangeEvent() {
             $("body").css("cursor", "progress");
             $.ajax({
@@ -69,3 +104,4 @@
             });
         }
 </script>
+

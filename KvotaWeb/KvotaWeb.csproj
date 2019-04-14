@@ -342,6 +342,7 @@
     <Content Include="Views\Product\EditPlatok.cshtml" />
     <Content Include="Views\Product\EditReklNakidka.cshtml" />
     <Content Include="Views\Product\EditSportNomer.cshtml" />
+    <Content Include="Views\Product\EditFutbolka.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

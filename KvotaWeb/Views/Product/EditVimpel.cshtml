@@ -34,47 +34,17 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="control-label col-sm-5">
-                @Html.LabelFor(model => model.SvoiRazmerH)
-            </div>
-            <div class="col-sm-7">
-                @Html.EditorFor(model => model.SvoiRazmerH, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
-                @Html.ValidationMessageFor(model => model.SvoiRazmerH, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="control-label col-sm-5">
-                @Html.LabelFor(model => model.SvoiRazmerL)
-            </div>
-            <div class="col-sm-7">
-                @Html.EditorFor(model => model.SvoiRazmerL, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
-                @Html.ValidationMessageFor(model => model.SvoiRazmerL, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="control-label col-sm-5">
-                @Html.LabelFor(model => model.Material)
-            </div>
-            <div class="col-sm-7">
-                @Html.DropDownListFor(model => model.Material, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param12", @class = "form-control", @onchange = "OnChangeEvent();" })
-                @Html.ValidationMessageFor(model => model.Material, "", new { @class = "text-danger" })
+        <div class="form-group" align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.Myagkii, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.Myagkii)
             </div>
         </div>
 
         <div class="form-group" align="left">
             <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
-                @Html.EditorFor(model => model.Dvustoronnii, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
-                @Html.LabelFor(model => model.Dvustoronnii)
-            </div>
-        </div>
-
-        <div class="form-group" align="left">
-            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
-                @Html.EditorFor(model => model.Dorabotka, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
-                @Html.LabelFor(model => model.Dorabotka)
+                @Html.EditorFor(model => model.Zapechatka, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.Zapechatka)
             </div>
         </div>
 
@@ -86,6 +56,14 @@
             <label class="control-label col-sm-5">Срок изготовления:</label>
             <label class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
         </div>
+
+        @if (Model.Description != null)
+    {
+        <div class="form-group">
+            <label class="control-label col-sm-5">Примечание:</label>
+            <label class="control-label col-sm-7" style="text-align:left;">@Model.Description </label>
+        </div>
+}
     </div>
 </form>
 <script type="text/javascript">

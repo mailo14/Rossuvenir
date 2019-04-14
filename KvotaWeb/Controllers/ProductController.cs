@@ -1044,6 +1044,7 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
                 case TipProds.Platok: model = GetModel<Platok>(collection);break;
                 case TipProds.ReklNakidka: model = GetModel<ReklNakidka>(collection);break;
                 case TipProds.SportNomer: model = GetModel<SportNomer>(collection);break;
+                case TipProds.Futbolka: model = GetModel<Futbolka>(collection);break;
             }
           
                 var li = model.ToListItem();

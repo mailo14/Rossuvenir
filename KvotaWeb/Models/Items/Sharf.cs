@@ -55,20 +55,23 @@ public override List<CalcLine> Calc()
             {
                 var line = new CalcLine() { Postav = i };
                 ret.Add(line);
-                if ( Tiraz == null || Razmer == null  ) continue;
+                if (i == Postavs.Плановая_СС)
+                {
+                    if (Tiraz == null || Razmer == null) continue;
 
-                kvotaEntities db = new kvotaEntities();
-                decimal cena;
-                  if (TryGetPrice(i, Tiraz, Razmer, out cena) == false) continue;
-                
-                if (Atlas) cena = cena * (1 + 0.2m);
-                if (VnutrProsloika) cena += 30;
-                if (Bohroma) cena += 30;
-                if (Obstrochka) cena += 25;
+                    kvotaEntities db = new kvotaEntities();
+                    decimal cena;
+                    if (TryGetPrice(i, Tiraz, Razmer, out cena) == false) continue;
 
-                line.Cena = cena * (decimal)Tiraz.Value;
+                    if (Atlas) cena = cena * (1 + 0.2m);
+                    if (VnutrProsloika) cena += 30;
+                    if (Bohroma) cena += 30;
+                    if (Obstrochka) cena += 25;
+
+                    line.Cena = cena * (decimal)Tiraz.Value;
+                }
             }
-            ret.First(pp => pp.Postav == Postavs.РРЦ_1_5).Cena=1.5m*ret.First(pp => pp.Postav == Postavs.Плановая_СС).Cena;
+            var pCena = ret.First(pp => pp.Postav == Postavs.Плановая_СС).Cena; if (pCena.HasValue) ret.First(pp => pp.Postav == Postavs.РРЦ_1_5).Cena=1.5m*pCena;
             return ret;
         }
 

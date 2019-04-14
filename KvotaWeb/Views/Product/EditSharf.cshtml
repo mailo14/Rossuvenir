@@ -70,6 +70,14 @@
             <label class="control-label col-sm-5">Срок изготовления:</label>
             <label class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
         </div>
+
+        @if (Model.Description != null)
+    {
+        <div class="form-group">
+            <label class="control-label col-sm-5">Примечание:</label>
+            <label class="control-label col-sm-7" style="text-align:left;">@Model.Description </label>
+        </div>
+}
     </div>
 </form>
 <script type="text/javascript">

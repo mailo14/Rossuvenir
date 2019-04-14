@@ -26,7 +26,7 @@ namespace KvotaWeb.Models.Items
         }
         public static ItemBase CreateItem(ListItem li)
         {
-            return new FlagPobedi() { Id = li.id, ZakazId = li.listId, Tiraz = li.tiraz,
+            return new ReklNakidka() { Id = li.id, ZakazId = li.listId, Tiraz = li.tiraz,
                 Razmer = li.param11            };
         }
       
@@ -38,15 +38,18 @@ public override List<CalcLine> Calc()
             {
                 var line = new CalcLine() { Postav = i };
                 ret.Add(line);
-                if ( Tiraz == null || Razmer == null) continue;
+                if (i == Postavs.Плановая_СС)
+                {
+                    if (Tiraz == null || Razmer == null) continue;
 
-                kvotaEntities db = new kvotaEntities();
-                decimal cena;
-                if (TryGetPrice(i, Tiraz, Razmer, out cena) == false) continue;
+                    kvotaEntities db = new kvotaEntities();
+                    decimal cena;
+                    if (TryGetPrice(i, Tiraz, Razmer, out cena) == false) continue;
 
-                line.Cena = cena* (Gabardin?1.2m:1m)* (decimal)Tiraz.Value;
+                    line.Cena = cena * (Gabardin ? 1.2m : 1m) * (decimal)Tiraz.Value;
+                }
             }
-            ret.First(pp => pp.Postav == Postavs.РРЦ_1_5).Cena=1.5m*ret.First(pp => pp.Postav == Postavs.Плановая_СС).Cena;
+            var pCena = ret.First(pp => pp.Postav == Postavs.Плановая_СС).Cena; if (pCena.HasValue) ret.First(pp => pp.Postav == Postavs.РРЦ_1_5).Cena=1.5m*pCena;
             return ret;
         }
 
