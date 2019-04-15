@@ -34,16 +34,19 @@ namespace KvotaWeb.Models.Items
             {
                 var line = new CalcLine() { Postav = i };
                 ret.Add(line);
-                if (Razmer == null || Tiraz == null) continue;
+                if (i == Postavs.Плановая_СС)
+                {
+                    if (Razmer == null || Tiraz == null) continue;
 
-                kvotaEntities db = new kvotaEntities();
-                decimal cena;
-                if (TryGetPrice(i, Tiraz, Razmer, out cena) == false) continue;
+                    kvotaEntities db = new kvotaEntities();
+                    decimal cena;
+                    if (TryGetPrice(i, Tiraz, Razmer, out cena) == false) continue;
 
-                line.Cena = cena * (decimal)Tiraz.Value;
+                    line.Cena = cena * (decimal)Tiraz.Value;
+                }
             }
+            var pCena = ret.First(pp => pp.Postav == Postavs.Плановая_СС).Cena; if (pCena.HasValue) ret.First(pp => pp.Postav == Postavs.РРЦ_1_5).Cena = 1.5m * pCena;
             return ret;
-
         }
 
 
