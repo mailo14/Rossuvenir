@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using KvotaWeb.Models;
 using KvotaWeb.Models.Items;
+using KvotaWeb.ViewModels;
 
 namespace KvotaWeb.Controllers
 {
@@ -892,8 +894,18 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
             return RedirectToAction("Edit", "Home");//, new { id = li.listId });
         }
         #endregion
- #region Блокноты
-        public ActionResult EditЗначки(int id)
+        #region Блокноты
+        public ActionResult EditЗначки2(int id)
+        {
+            kvotaEntities db = new kvotaEntities();
+            var li = db.ListItem.FirstOrDefault(pp => pp.id == id);
+
+            var item =  Mapper.Map<SvetootrazatelNaklei>(li);//ItemBase.Create(li);
+            ViewData = item.ViewData;
+var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
+            return View(item.ViewName, vm);
+        }
+            public ActionResult EditЗначки(int id)
         {
             kvotaEntities db = new kvotaEntities();
             var li = db.ListItem.FirstOrDefault(pp => pp.id == id);

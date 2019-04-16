@@ -7,10 +7,12 @@ using System.Web.Mvc;
 
 namespace KvotaWeb.Models.Items
 {
-    public class Svetootrazatel : ItemBase
+    public class SvetootrazatelNaklei : ItemBase
     {
         public override string Srok { get; set; }= "2–4 рабочих дня";
-
+        public override string Description{ get; set; }= "Новинка на российском рынке, практичный и необычный аксессуар, слэп -часы давно пользуются признанием за рубежом.Обладатели вещицы отмечают удобство использования: довольно одного лёгкого удара о запястье, — и часы обернулись вокруг руки точно по размеру. Замечательной идеей будет преподнесение такого практичного подарка вашим сотрудникам или партнёрам; наверняка вы вскоре заметите их пунктуальность!"
+                            + Environment.NewLine + "**— на каждом изделии своё изображение или имя."
+                            + Environment.NewLine + "Гарантия на механизм(без батарейки): 6 месяцев. Страна производства: Китай.Бесплатная доставка: по Москве(в пределах МКАД) при заказе от 5000 ₽; до терминалов ТК в областных центрах России при заказе от 10000 ₽.";
 
         int? _Vid = null;
         [Display(Name = "Вид:")]
@@ -59,9 +61,6 @@ namespace KvotaWeb.Models.Items
         }
 
 
-        [Display(Name = "Размер/форма:")]
-        public int? KolichestvoTcvetov { get; set; }
-
         [Display(Name = "нанести логотип в один цвет")]
          public bool OneColor { get; set; }
 
@@ -79,7 +78,7 @@ namespace KvotaWeb.Models.Items
         {
             var rr = base.ToListItem();
             rr.param11 = Vid;
- rr.param12 = KolichestvoTcvetov;
+ //rr.param12 = KolichestvoTcvetov;
             rr.param13 = DopTcveta;
 
             rr.param14 = OneColor;
@@ -91,14 +90,14 @@ namespace KvotaWeb.Models.Items
 
         public static ItemBase CreateItem(ListItem li)
         {
-            return new Svetootrazatel()
+            return new SvetootrazatelNaklei()
             {
                 Id = li.id,
                 ZakazId = li.listId,
                 Tiraz = li.tiraz,
 
                 Vid=li.param11,
-  KolichestvoTcvetov = li.param12,
+  //KolichestvoTcvetov = li.param12,
             DopTcveta= li.param13,
 
             OneColor= li.param14 ,
@@ -123,7 +122,7 @@ namespace KvotaWeb.Models.Items
                 if (TryGetPrice(i, Tiraz, Vid, out cena) == false) continue;
                 
                 decimal nanecenie = 0;
-              /*  if (Shelkografiya)
+            /*    if (Shelkografiya)
                 {
                     if (Tiraz >= 100)
                         nanecenie += 10;
@@ -133,8 +132,8 @@ namespace KvotaWeb.Models.Items
                 if (Dvustoronnii) nanecenie *= 2;
 
                 if (Personal) nanecenie += 40;
-                if (Vid==558 && Chip16) nanecenie += 25;
-                */
+                if (Vid==558 && Chip16) nanecenie += 25;*/
+
 
                  cena += nanecenie;
                 line.Cena = cena * (decimal)Tiraz.Value;
@@ -142,7 +141,7 @@ namespace KvotaWeb.Models.Items
             return ret;
         }
 
-        public Svetootrazatel(): base(TipProds.Svetootrazatel, "EditSvetootrazatel")
+        public SvetootrazatelNaklei(): base(TipProds.SvetootrazatelNaklei, "EditSvetootrazatelOneValue")
         {
             var empty = new SelectList(new List<Category>(), "id", "tip"); //Enumerable.Empty<SelectListItem>();
             var nullObj = new Category() { tip = "(не выбрано)" };

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AutoMapperAttributeMapping;
+using KvotaWeb.Automapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -53,6 +55,9 @@ namespace KvotaWeb
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            Mappings.RegisterMappings();
+            ModelMetadataProviderConfig.RegisterModelMetadataProvider(); //This is what will bootstrap the bootstrap for the new 
         }
     }
 }

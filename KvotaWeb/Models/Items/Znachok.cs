@@ -89,7 +89,8 @@ namespace KvotaWeb.Models.Items
         SportNomer = 42,
         Futbolka = 43,
         SlapChasi = 44,
-        Svetootrazatel = 45
+        Svetootrazatel = 45,
+        SvetootrazatelNaklei = 46
     };
     public abstract class ItemBase
     {
