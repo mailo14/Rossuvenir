@@ -66,5 +66,6 @@ namespace KvotaWeb.Models
         public bool param25 { get; set; }
         public bool param35 { get; set; }
         public bool param45 { get; set; }
+        public Nullable<int> subTipProd { get; set; }
     }
 }

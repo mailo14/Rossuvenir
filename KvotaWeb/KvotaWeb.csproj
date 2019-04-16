@@ -185,6 +185,8 @@
     <Compile Include="Models\Category.cs">
       <DependentUpon>KvotaDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Items\Svetootrazatel.cs" />
+    <Compile Include="Models\Items\SlapChasi.cs" />
     <Compile Include="Models\Items\Futbolka.cs" />
     <Compile Include="Models\Items\SportNomer.cs" />
     <Compile Include="Models\Items\ReklNakidka.cs" />
@@ -344,6 +346,8 @@
     <Content Include="Views\Product\EditReklNakidka.cshtml" />
     <Content Include="Views\Product\EditSportNomer.cshtml" />
     <Content Include="Views\Product\EditFutbolka.cshtml" />
+    <Content Include="Views\Product\EditSlapChasi.cshtml" />
+    <Content Include="Views\Product\EditSvetootrazatel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

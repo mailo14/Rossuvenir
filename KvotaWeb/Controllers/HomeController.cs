@@ -270,6 +270,9 @@ namespace KvotaWeb.Models
                 case TipProds.ReklNakidka: return "Рекламные накидки";
                 case TipProds.SportNomer: return "Спортивные номера";
                 case TipProds.Futbolka: return "Футболки";
+                case TipProds.SlapChasi: return "Силиконовые слэп часы";
+                case TipProds.Svetootrazatel: return "Светоотражатели";
+
 
                 case TipProds.Banner: return "Баннеры и ПВХ";
                     /*

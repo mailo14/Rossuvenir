@@ -87,7 +87,9 @@ namespace KvotaWeb.Models.Items
         Platok = 40,
         ReklNakidka = 41,
         SportNomer = 42,
-        Futbolka = 43
+        Futbolka = 43,
+        SlapChasi = 44,
+        Svetootrazatel = 45
     };
     public abstract class ItemBase
     {
@@ -315,6 +317,8 @@ var lines = Calc();
                     return SportNomer.CreateItem(li);
                 case TipProds.Futbolka:
                     return Futbolka.CreateItem(li);
+                case TipProds.SlapChasi:
+                    return SlapChasi.CreateItem(li);
 
                 default:
                     return null;
