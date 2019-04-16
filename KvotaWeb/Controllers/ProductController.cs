@@ -901,8 +901,13 @@ ViewData["paramBag11"] = new SelectList((from pp in db.Category where pp.parentI
             var li = db.ListItem.FirstOrDefault(pp => pp.id == id);
 
             var item =  Mapper.Map<SvetootrazatelNaklei>(li);//ItemBase.Create(li);
+
             ViewData = item.ViewData;
+
+
+            
 var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
+//var vmBack =  Mapper.Map<SvetootrazatelNaklei>(vm);//ItemBase.Create(li);
             return View(item.ViewName, vm);
         }
             public ActionResult EditЗначки(int id)
@@ -1058,6 +1063,8 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
                 case TipProds.SportNomer: model = GetModel<SportNomer>(collection);break;
                 case TipProds.Futbolka: model = GetModel<Futbolka>(collection);break;
                 case TipProds.SlapChasi: model = GetModel<SlapChasi>(collection);break;
+
+                case TipProds.SvetootrazatelNaklei: model = GetModel<SvetootrazatelNaklei>(collection);break;
             }
           
                 var li = model.ToListItem();

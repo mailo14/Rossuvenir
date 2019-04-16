@@ -1,4 +1,4 @@
-﻿@model  KvotaWeb.ViewModels.SvetootrazatelOneValueVM
+﻿@*model  KvotaWeb.ViewModels.SvetootrazatelOneValueVM*@
 
 <form id="myform" method="post" action="/Product/EditЗначки">
     @Html.AntiForgeryToken()
@@ -23,10 +23,14 @@
             </div>
         </div>
 
-       
-        
 
-      
+
+        <div id="totalResultsDiv">
+            @Html.Action("Recalc", "Product", new { totals = @Model.GetTotal() })
+        </div>
+
+
+
 
         <div class="form-group">
             <label class="control-label col-sm-5">Срок изготовления:</label>

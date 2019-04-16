@@ -136,7 +136,7 @@ namespace KvotaWeb.Models.Items
 
 
                  cena += nanecenie;
-                line.Cena = cena * (decimal)Tiraz.Value;
+                line.Cena = new Random().Next(500); //cena * (decimal)Tiraz.Value;
             }
             return ret;
         }
