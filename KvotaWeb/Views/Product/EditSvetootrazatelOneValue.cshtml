@@ -1,49 +1,46 @@
-﻿@*model  KvotaWeb.ViewModels.SvetootrazatelOneValueVM*@
+﻿@model  KvotaWeb.ViewModels.SvetootrazatelOneValueVM
 
 <form id="myform" method="post" action="/Product/EditЗначки">
     @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.ZakazId)
+    @Html.HiddenFor(model => model.TipProd)
+    @Html.HiddenFor(model => model.Tiraz)
+    @Html.HiddenFor(model => model.Vid)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-horizontal col-sm-8 col-sm-push-2">
-        <hr />
-        <h4>Элемент @Html.ActionLink(" заказа № " + @Model.ZakazId, "Edit", "Home", new { id = @Model.ZakazId }, null)  -  @KvotaWeb.Models.ListItem.GetTipProdName(@Model.TipProd)</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.ZakazId)
-        @Html.HiddenFor(model => model.TipProd)
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        <div class="form-group">
-            <div class="control-label col-sm-5">
-                @Html.LabelFor(model => model.Tiraz)
-            </div>
-            <div class="col-sm-7">
-                @Html.EditorFor(model => model.Tiraz, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
-                @Html.ValidationMessageFor(model => model.Tiraz, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        <div class="control-label col-sm-5">
+            @Html.LabelFor(model => model.Tiraz)
         </div>
-
-
-
-        <div id="totalResultsDiv">
-            @Html.Action("Recalc", "Product", new { totals = @Model.GetTotal() })
+        <div class="col-sm-7">
+            @Html.EditorFor(model => model.Tiraz, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+            @Html.ValidationMessageFor(model => model.Tiraz, "", new { @class = "text-danger" })
         </div>
+    </div>
+
+
+
+    <div id="totalResultsDiv">
+        @Html.Action("Recalc", "Product", new { totals = @Model.Source.GetTotal() })
+    </div>
 
 
 
 
-        <div class="form-group">
-            <label class="control-label col-sm-5">Срок изготовления:</label>
-            <label class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
-        </div>
+    <div class="form-group">
+        <label class="control-label col-sm-5">Срок изготовления:</label>
+        <label class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
+    </div>
 
-        @if (Model.Description != null)
+    @if (Model.Description != null)
     {
         <div class="form-group">
             <label class="control-label col-sm-5">Примечание:</label>
             <label class="control-label col-sm-7" style="text-align:left;">@Model.Description </label>
         </div>
-}
+    }
     </div>
 </form>
 <script type="text/javascript">

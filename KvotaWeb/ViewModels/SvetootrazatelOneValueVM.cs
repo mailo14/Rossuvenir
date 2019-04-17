@@ -9,6 +9,7 @@ namespace KvotaWeb.ViewModels
 {
     public class SvetootrazatelOneValueVM
     {
+        public ItemBase Source { get; set; }
         public string Srok { get; set; }
         public int? ZakazId { get; set; }
         public string TotalLabel { get; set; }
@@ -17,6 +18,7 @@ namespace KvotaWeb.ViewModels
         public TipProds TipProd { get; set; }
 
         public ViewDataDictionary ViewData { get; set; }
+        public int? Vid { get; set; }
 
         public double? Tiraz { get; set; }
         public  string Description { get; set; }
