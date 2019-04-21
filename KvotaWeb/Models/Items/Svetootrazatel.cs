@@ -11,6 +11,35 @@ namespace KvotaWeb.Models.Items
     {
         public override string Srok { get; set; }= "2–4 рабочих дня";
 
+        public string Description
+        {
+            get
+            {
+                var catId = Vid;
+                var descr = "";
+                switch (catId)
+                {
+                    case 566:
+                        descr = "Светоотражающие наклейки совсем лёгкие и очень просты в применении. Они крепятся к поверхностям различной природы за счёт клейкой основы, которая надёжно фиксирует светоотражающий элемент на коробках, тетрадных обложках, велосипеде... Яркие и примечательные наклейки, днём не отличимые от интересного аксессуара, обеспечат безопасность на дорогах в тёмное время суток. Особенно такие наклейки нравятся детям!"
+               + "Фасование наклеек: на подложке, по 8 шт."
+               + "Возможно изготовление светоотражающих наклеек различной формы и размера под заказ.";
+                        break;
+                    case 567:
+                        descr = "Светоотражающие слэп браслеты огибают запястье по хлопку и универсальны для любого размера руки. Они прочны и удобны для пешеходов, а поверхность светоотражателя без труда очищается влажной губкой. Наша компания занимается изготовлением качественных фликеров с нанесением, которые с удовольствием будет носить каждый."
+                            +"Возможно изготовление слеп браслетов различной длины под заказ.";
+                        break;
+                    case 568:
+                        descr = "Светоотражающие брелоки выполнены из двусторонней световозвращающей плёнки, с возможностью нанесения логотипа с двух сторон. Брелки надёжно крепятся цепочкой к сумкам, ранцам и рюкзакам, поэтому они всегда остаются на виду и в подвижном состоянии."
+                            +"Возможно изготовление брелоков любой формы и размеров под заказ.";
+                        break;
+                    case 569:
+                        descr = "Компактные светоотражающие значки надежно крепятся на любой вид одежды с помощью металлической булавки. Яркий дизайн таких значков привлекает к себе внимание и повышает характеристики видимости пешехода в темное время суток. Приобретая светоотражатели с нанесением вашей символики, вы не просто делаете подарок, но еще и выражаете свою заботу о людях.";
+                        break;
+                }
+                return descr;
+            }
+            set { }
+        }
 
         int? _Vid = null;
         [Display(Name = "Вид:")]
@@ -26,17 +55,28 @@ namespace KvotaWeb.Models.Items
                 var empty = new SelectList(new List<Category>(), "id", "tip");
 
                 kvotaEntities db = new kvotaEntities();
-                if (value == null) ViewData["params2"] = empty;
-                else ViewData["params2"] = new SelectList((from pp in db.Category where pp.parentId == value select pp), "id", "tip");
-
-                if (value == 558)
+                if (value == 568 || value == 569)
                 {
-                    ViewData["Chip16DivStyle"] = "display:block;";
+                    ViewData["params2"] = new SelectList((from pp in db.Category where pp.parentId == value select pp), "id", "tip");
+                    ViewData["RazmerFormaDivStyle"] = "display:block;";                    
                 }
                 else
                 {
-                    ViewData["Chip16DivStyle"] = "display:none;";
+                    ViewData["params2"] = empty;
+                    ViewData["RazmerFormaDivStyle"] = "display:none;";
                 }
+
+                if (value == 566)
+                {
+                    ViewData["UpakovatDivStyle"] = "display:none;";
+                }
+                else
+                {
+                    ViewData["UpakovatDivStyle"] = "display:block;";
+                }
+                if (value == null)
+                    ViewData["DescrDivStyle"] = "display:none;";
+                    
                 /*switch (value)
                 {
                     case 556:
@@ -60,7 +100,7 @@ namespace KvotaWeb.Models.Items
 
 
         [Display(Name = "Размер/форма:")]
-        public int? KolichestvoTcvetov { get; set; }
+        public int? RazmerForma { get; set; }
 
         [Display(Name = "нанести логотип в один цвет")]
          public bool OneColor { get; set; }
@@ -79,7 +119,7 @@ namespace KvotaWeb.Models.Items
         {
             var rr = base.ToListItem();
             rr.param11 = Vid;
- rr.param12 = KolichestvoTcvetov;
+ rr.param12 = RazmerForma;
             rr.param13 = DopTcveta;
 
             rr.param14 = OneColor;
@@ -98,7 +138,7 @@ namespace KvotaWeb.Models.Items
                 Tiraz = li.tiraz,
 
                 Vid=li.param11,
-  KolichestvoTcvetov = li.param12,
+  RazmerForma = li.param12,
             DopTcveta= li.param13,
 
             OneColor= li.param14 ,
@@ -116,29 +156,26 @@ namespace KvotaWeb.Models.Items
             {
                 var line = new CalcLine() { Postav = i };
                 ret.Add(line);
-                if (Vid== null || Tiraz == null ) continue;
+                if (i == Postavs.Плановая_СС)
+                {
+                    if (Vid== null || Tiraz == null ||  ((Vid== 568 || Vid== 569) && RazmerForma==null )) continue;
 
                 decimal cena;
 
-                if (TryGetPrice(i, Tiraz, Vid, out cena) == false) continue;
+                if (TryGetPrice(i, Tiraz, (Vid == 568 || Vid == 569)?RazmerForma: Vid, out cena) == false) continue;
                 
-                decimal nanecenie = 0;
-              /*  if (Shelkografiya)
-                {
-                    if (Tiraz >= 100)
-                        nanecenie += 10;
-                    else nanecenie += 1000.0m / (decimal)Tiraz.Value;
-                }
-                    if (Lazer) nanecenie += 20;
-                if (Dvustoronnii) nanecenie *= 2;
+                decimal dops = 0;
+                if (OneColor) dops += (Vid == 567) ? 7 : 5;
+                if (DopTcveta!=null) dops += (decimal)DopTcveta.Value*( (Vid == 567) ? 7 : 5);
+                if (Polnocvet) dops += 15;
+                if (Upakovat && Vid!= 566) dops += 2;
 
-                if (Personal) nanecenie += 40;
-                if (Vid==558 && Chip16) nanecenie += 25;
-                */
-
-                 cena += nanecenie;
+                cena += dops;
                 line.Cena = cena * (decimal)Tiraz.Value;
+                }
             }
+            var pCena = ret.First(pp => pp.Postav == Postavs.Плановая_СС).Cena; if (pCena.HasValue) ret.First(pp => pp.Postav == Postavs.РРЦ_1_5).Cena = 1.5m * pCena;
+
             return ret;
         }
 
@@ -150,7 +187,6 @@ namespace KvotaWeb.Models.Items
             kvotaEntities db = new kvotaEntities();
             ViewData = new ViewDataDictionary();
             ViewData["params1"] = new SelectList((from pp in db.Category where pp.parentId == 439 select pp), "id", "tip");
-        
         }
     }
 

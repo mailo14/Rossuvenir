@@ -153,7 +153,7 @@ namespace KvotaWeb.Controllers
         {              
             switch (tipProd)
             {
-                case TipProds.SvetootrazatelNaklei: return  RedirectToAction("EditЗначки2", "Product", new { id = id });
+                //case TipProds.SvetootrazatelNaklei: return  RedirectToAction("EditЗначки2", "Product", new { id = id });
                 case TipProds.Banner: return RedirectToAction("EditBanner", "Product", new { id = id });
                 //case 4:case 23:case 24:case 29:case 30:case 18:case 28: case 31: case 32:  case 33:case 9: case 34:
                 default:
@@ -273,6 +273,7 @@ namespace KvotaWeb.Models
                 case TipProds.Futbolka: return "Футболки";
                 case TipProds.SlapChasi: return "Силиконовые слэп часы";
                 case TipProds.Svetootrazatel: return "Светоотражатели";
+                case TipProds.KontrBraslet: return "Контрольные браслеты";
 
 
                 case TipProds.Banner: return "Баннеры и ПВХ";

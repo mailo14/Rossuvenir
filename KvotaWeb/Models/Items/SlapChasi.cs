@@ -112,7 +112,9 @@ namespace KvotaWeb.Models.Items
             {
                 var line = new CalcLine() { Postav = i };
                 ret.Add(line);
-                if (Vid== null || Tiraz == null ) continue;
+                if (i == Postavs.Плановая_СС)
+                {
+                    if (Vid== null || Tiraz == null ) continue;
 
                 decimal cena;
 
@@ -135,6 +137,9 @@ namespace KvotaWeb.Models.Items
                  cena += nanecenie;
                 line.Cena = cena * (decimal)Tiraz.Value;
             }
+        }
+        var pCena = ret.First(pp => pp.Postav == Postavs.Плановая_СС).Cena; if (pCena.HasValue) ret.First(pp => pp.Postav == Postavs.РРЦ_1_5).Cena=1.5m*pCena;
+
             return ret;
         }
 
