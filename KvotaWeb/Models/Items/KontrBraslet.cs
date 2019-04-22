@@ -32,7 +32,7 @@ namespace KvotaWeb.Models.Items
             set { }
         }
 
-        public string Description
+        public override string Description
         {
             get
             {

@@ -274,6 +274,8 @@ namespace KvotaWeb.Models
                 case TipProds.SlapChasi: return "Силиконовые слэп часы";
                 case TipProds.Svetootrazatel: return "Светоотражатели";
                 case TipProds.KontrBraslet: return "Контрольные браслеты";
+                case TipProds.SlapBraslet: return "Слэп браслеты";
+                case TipProds.Lenta: return "Ленты для бейджей (ланъярды)";
 
 
                 case TipProds.Banner: return "Баннеры и ПВХ";

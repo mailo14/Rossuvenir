@@ -1,0 +1,175 @@
+﻿@model KvotaWeb.Models.Items.SlapBraslet
+
+<form id="myform" method="post" action="/Product/EditЗначки">
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal col-sm-8 col-sm-push-2">
+        <hr />
+        <h4>Элемент @Html.ActionLink(" заказа № " + @Model.ZakazId, "Edit", "Home", new { id = @Model.ZakazId }, null)  -  @KvotaWeb.Models.ListItem.GetTipProdName(@Model.TipProd)</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.ZakazId)
+        @Html.HiddenFor(model => model.TipProd)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Tiraz)
+            </div>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.Tiraz, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.Tiraz, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Vid)
+            </div>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.Vid, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param1", @class = "form-control", @onchange = "OnChangeParam1Event();" })
+                @Html.ValidationMessageFor(model => model.Vid, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="OneColorDiv" style=@ViewData["OneColorDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.OneColor, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.OneColor)
+            </div>
+        </div>
+
+        <div class="form-group" id="DopTcvetaDiv" style=@ViewData["DopTcvetaDivStyle"] >
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.DopTcveta)
+            </div>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.DopTcveta, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.DopTcveta, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="PolnocvetDiv" style=@ViewData["PolnocvetDivStyle"]  align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.Polnocvet, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.Polnocvet)
+            </div>
+        </div>
+
+        <div class="form-group" id="UpakovatDiv" style=@ViewData["UpakovatDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.Upakovat, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.Upakovat)
+            </div>
+        </div>
+
+
+        <div class="form-group" id="PechatFormaDiv" style=@ViewData["PechatFormaDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.PechatForma, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.PechatForma)
+            </div>
+        </div>
+
+        <div class="form-group" id="SmenaTcvetaDiv" style=@ViewData["SmenaTcvetaDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.SmenaTcveta, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.SmenaTcveta)
+            </div>
+        </div>
+
+        <div id="totalResultsDiv">
+            @Html.Action("Recalc", "Product", new { totals = @Model.GetTotal() })
+        </div>
+
+        <div class="form-group" id="SrokDiv" style=@ViewData["SrokDivStyle"]>
+            <label class="control-label col-sm-5">Срок изготовления:</label>
+            <label id="SrokLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
+        </div>
+
+
+        <div class="form-group" id="DescrDiv" style=@ViewData["DescrDivStyle"]>
+            <label class="control-label col-sm-5">Примечание:</label>
+            <label id="DescrLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Description</label>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    function OnChangeParam1Event() {
+        //var catId = $(this).val();
+        var catId = $('#param1').val();
+        // alert(catId);
+        if (catId > 0) {
+            document.getElementById('DescrDiv').style.display = 'block';
+            var descr = '';
+            if (catId == 553)
+                descr = "Светоотражающий слэп браслет с логотипом — это не только модный, но ещё и практичный аксессуар. Выполняя функцию светоотражателя, такой браслет обеспечивает видимость в тёмное время суток. Мы можем изготовить светоотражающие (самофиксирующиеся) slap-браслеты необходимого вам размерана заказ. ";
+            else if (catId == 554)
+                descr = "Силиконовый слеп браслет с логотипом — броский и запоминающийся промо продукт, а также великолепный сувенир на любом мероприятии. Главное преимущество таких браслетов, конечно же, универсальность размера, они великолепно подходят как взрослым, так и детям.";
+            else if (catId == 555)
+                descr = "Тканевые слеп браслеты — абсолютно новый, восхитительный промо продукт, разработанный нашей кампанией. В данном изделии стальная пластина с обеих сторон покрывается тканью сатин с удивительно гладкой и шелковистой текстурой.А сублимационная печать позволяет нанести на тканевые слэп браслеты абсолютно любое графическое изображение. Нанесение и упаковка включены в стоимость изготовления тиража. ";
+            
+            document.getElementById('DescrLabel').innerHTML = descr;
+        }
+        else
+            document.getElementById('DescrDiv').style.display = 'none';
+
+        if (catId > 0) {
+            document.getElementById('SrokDiv').style.display = 'block';
+            var descr = '';
+            if (catId == 553 || catId == 554)
+                descr = "2-4 рабочих дня";
+            else if (catId == 555)
+                descr = "12–14 календарных дней";
+           
+            document.getElementById('SrokLabel').innerHTML = descr;
+        }
+        else
+            document.getElementById('SrokDiv').style.display = 'none';
+
+        if (catId == 553 || catId == 554) {
+            document.getElementById('OneColorDiv').style.display = 'block';
+            document.getElementById('DopTcvetaDiv').style.display = 'block';
+            document.getElementById('UpakovatDiv').style.display = 'block';         
+        }
+        else {
+            document.getElementById('OneColorDiv').style.display = 'none';
+            document.getElementById('DopTcvetaDiv').style.display = 'none';
+            document.getElementById('UpakovatDiv').style.display = 'none'; 
+        }
+        if (catId == 553 ) {
+            document.getElementById('PolnocvetDiv').style.display = 'block';
+        }
+        else {
+            document.getElementById('PolnocvetDiv').style.display = 'none';
+        }
+        if (catId == 554) {
+            document.getElementById('PechatFormaDiv').style.display = 'block';
+            document.getElementById('SmenaTcvetaDiv').style.display = 'block';
+        }
+        else {
+            document.getElementById('PechatFormaDiv').style.display = 'none';
+            document.getElementById('SmenaTcvetaDiv').style.display = 'none';
+        }
+
+        OnChangeEvent();
+    }
+        function OnChangeEvent() {
+            $("body").css("cursor", "progress");
+            $.ajax({
+                type: 'POST',
+                url: "/Product/Recalc",
+                data: $('#myform').serialize(),
+                success: function (data, res) {
+                    $("#totalResultsDiv").html(data);
+                    $("body").css("cursor", "default");
+                },
+                error: function () {
+                    alert("There was an error submitting comment");
+                    $("body").css("cursor", "default");
+                }
+            });
+        }
+</script>

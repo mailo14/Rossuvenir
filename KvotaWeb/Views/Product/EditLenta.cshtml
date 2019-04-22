@@ -1,0 +1,218 @@
+﻿@model KvotaWeb.Models.Items.Lenta
+
+<form id="myform" method="post" action="/Product/EditЗначки">
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal col-sm-8 col-sm-push-2">
+        <hr />
+        <h4>Элемент @Html.ActionLink(" заказа № " + @Model.ZakazId, "Edit", "Home", new { id = @Model.ZakazId }, null)  -  @KvotaWeb.Models.ListItem.GetTipProdName(@Model.TipProd)</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.ZakazId)
+        @Html.HiddenFor(model => model.TipProd)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Tiraz)
+            </div>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.Tiraz, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.Tiraz, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Vid)
+            </div>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.Vid, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param1", @class = "form-control", @onchange = "OnChangeParam1Event();" })
+                @Html.ValidationMessageFor(model => model.Vid, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="RazmerFormaDiv" style=@ViewData["RazmerFormaDivStyle"]>
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.RazmerForma)
+            </div>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.RazmerForma, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param2", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.RazmerForma, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group" id="PremiumDiv" style=@ViewData["PremiumDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.Premium, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.Premium)
+            </div>
+        </div>
+        <div class="form-group" id="ZamokObrivDiv" style=@ViewData["ZamokObrivDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.ZamokObriv, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.ZamokObriv)
+            </div>
+        </div>
+        <div class="form-group" id="MezurZamokDiv" style=@ViewData["MezurZamokDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.MezurZamok, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.MezurZamok)
+            </div>
+        </div>
+        <div class="form-group" id="KarmashekDiv" style=@ViewData["KarmashekDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.Karmashek, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.Karmashek)
+            </div>
+        </div>
+        <div class="form-group" id="LogoObrDiv" style=@ViewData["LogoObrDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.LogoObr, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.LogoObr)
+            </div>
+        </div>
+        <div class="form-group" id="LogoObyomDiv" style=@ViewData["LogoObyomDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.LogoObyom, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.LogoObyom)
+            </div>
+        </div>
+        <div class="form-group" id="KrepKolcoDiv" style=@ViewData["KrepKolcoDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.KrepKolco, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.KrepKolco)
+            </div>
+        </div>
+
+        <div id="totalResultsDiv">
+            @Html.Action("Recalc", "Product", new { totals = @Model.GetTotal() })
+        </div>
+
+        <div class="form-group" id="SrokDiv" style=@ViewData["SrokDivStyle"]>
+            <label class="control-label col-sm-5">Срок изготовления:</label>
+            <label id="SrokLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
+        </div>
+
+
+        <div class="form-group" id="DescrDiv" style=@ViewData["DescrDivStyle"]>
+            <label class="control-label col-sm-5">Примечание:</label>
+            <label id="DescrLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Description</label>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    function OnChangeParam1Event() {
+        //var catId = $(this).val();
+        var catId = $('#param1').val();
+        // alert(catId);
+        if (catId > 0) {
+            document.getElementById('DescrDiv').style.display = 'block';
+            var descr = '';
+            if (catId == 532)
+                descr = "Ленты для бейджей изготовлены из качественного материала — нейлон. Мы всегда храним на складе запас готовой продукции, и предлагаем широкую цветовую гамму, среди которой вы без труда найдёте фирменный цвет своей компании. Всё это даёт возможность получить необходимые вам ленты для бейджей в самые кратчайшие сроки. ";
+            else if (catId == 533)
+                descr = "Ленты для бейджей с логотипом сублимация — ленты с двусторонней полноцветной печатью. При данном виде нанесения возможен перенос любого изображения, даже с самыми мелкими деталями. Материал ленты изготовлен из самого высококачественного сырья. Цвета получаются яркими и насыщенными, а краска не стирается.";
+            else if (catId == 534)
+                descr = "Ленты(ланьярды) для бейджей с логотипом, выполненные с использованием шелкографического метода нанесения изображений и надписей, пользуются большой популярностью и распространены повсеместно.Изображение получается очень отчётливым и точно соответствует корпоративному цвету вашей организации: ведь цвет нанесения смешивается специально для каждого конкретного случая. Cтандартные крепления бесплатны";
+            else if (catId == 535)
+                descr = "Жаккардовые ленты для бейджей получаются при сложном тканом сплетении, в результате которого изображение или логотип буквально вплетаются в ленту с помощью специального ткацкого станка. В классическом варианте используется два различных цвета нитей, при сплетении которых на обратной стороне ленты получается инверсия рисунка или логотипа. Cтандартные крепления бесплатны";
+            else if (catId == 536)
+                descr = "Разноцветные шнурки для бейджей очень легко подобрать под фирменный цвет и тематику мероприятия. Мы всегда храним на складе запас готовой продукции, это даёт возможность получить шнурки для бейджей, необходимые для вашего мероприятия в самые кратчайшие сроки. Cтандартные крепления бесплатны. Шнурки для бейджей всегда в наличии на наших складах в большом количестве";
+            else if (catId == 537)
+                descr = "Отличительной особенностью таких ретракторов является большой и прочный карабин с металлической основой. Элегантные и прочные — такие держатели для пропуска по праву считаются премиальными. * — при тиражах 100 шт. и более.";
+            
+            document.getElementById('DescrLabel').innerHTML = descr;
+        }
+        else
+            document.getElementById('DescrDiv').style.display = 'none';
+
+        if (catId > 0) {
+            document.getElementById('SrokDiv').style.display = 'block';
+            var descr = '';
+            if (catId == 532)
+                descr = "в наличии на складе";
+            else if (catId == 533)
+                descr = "4–7 календарных дней(для лент 25 мм: 14–17 календарных дней)";
+            else if (catId == 534)
+                descr = "14–17 календарных дней";
+            else if (catId == 535)
+                descr = "8–12 календарных дней";
+            else if (catId == 536)
+                descr = "8–12 календарных дней";
+            else if (catId == 537)
+                descr = "в наличии на складе";
+           
+            document.getElementById('SrokLabel').innerHTML = descr;
+        }
+        else
+            document.getElementById('SrokDiv').style.display = 'none';
+
+        if (catId != null && catId != 532) {
+            document.getElementById('RazmerFormaDiv').style.display = 'block';
+            var url = '@Url.Action("fillParam2", "Product")';
+            $.getJSON(url, { catId: catId }, function (result) {
+                var ddl = $('#param2');
+                ddl.empty();
+                $(result).each(function () {
+                    $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
+                });
+                OnChangeEvent();
+                $('#param2').focus();
+            });
+        }
+        else {
+                document.getElementById('RazmerFormaDiv').style.display = 'none';
+                OnChangeEvent();
+            }
+
+
+        if (catId != 532 && catId != 537) {
+            document.getElementById('PremiumDiv').style.display = 'block';
+            document.getElementById('ZamokObrivDiv').style.display = 'block';
+            document.getElementById('MezurZamokDiv').style.display = 'block';
+        }
+        else {
+            document.getElementById('PremiumDiv').style.display = 'none';
+            document.getElementById('ZamokObrivDiv').style.display = 'none';
+            document.getElementById('MezurZamokDiv').style.display = 'none';
+        }
+        if (catId != 537)
+            document.getElementById('KarmashekDiv').style.display = 'block';
+        else
+            document.getElementById('KarmashekDiv').style.display = 'none';
+
+        if (catId == 533)
+            document.getElementById('LogoObrDiv').style.display = 'block';
+        else
+            document.getElementById('LogoObrDiv').style.display = 'none';
+        if (catId == 537) {
+            document.getElementById('LogoObyomDiv').style.display = 'block';
+            document.getElementById('KrepKolcoDiv').style.display = 'block';
+        }
+        else {
+            document.getElementById('LogoObyomDiv').style.display = 'none';
+            document.getElementById('KrepKolcoDiv').style.display = 'none';
+        }
+
+        OnChangeEvent();
+    }
+        function OnChangeEvent() {
+            $("body").css("cursor", "progress");
+            $.ajax({
+                type: 'POST',
+                url: "/Product/Recalc",
+                data: $('#myform').serialize(),
+                success: function (data, res) {
+                    $("#totalResultsDiv").html(data);
+                    $("body").css("cursor", "default");
+                },
+                error: function () {
+                    alert("There was an error submitting comment");
+                    $("body").css("cursor", "default");
+                }
+            });
+        }
+</script>

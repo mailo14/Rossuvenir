@@ -196,6 +196,8 @@
       <DependentUpon>KvotaDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Items\KontrBraslet.cs" />
+    <Compile Include="Models\Items\Lenta.cs" />
+    <Compile Include="Models\Items\SlapBraslet.cs" />
     <Compile Include="Models\Items\SvetootrazatelNaklei.cs" />
     <Compile Include="Models\Items\Svetootrazatel.cs" />
     <Compile Include="Models\Items\SlapChasi.cs" />
@@ -363,6 +365,8 @@
     <Content Include="Views\Product\EditSvetootrazatel.cshtml" />
     <Content Include="Views\Product\EditSvetootrazatelOneValue.cshtml" />
     <Content Include="Views\Product\EditKontrBraslet.cshtml" />
+    <Content Include="Views\Product\EditSlapBraslet.cshtml" />
+    <Content Include="Views\Product\EditLenta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

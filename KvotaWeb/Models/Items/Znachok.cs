@@ -91,7 +91,9 @@ namespace KvotaWeb.Models.Items
         SlapChasi = 44,
         Svetootrazatel = 45,
         SvetootrazatelNaklei = 46,
-        KontrBraslet = 47
+        KontrBraslet = 47,
+        SlapBraslet = 48,
+        Lenta = 49
     };
     public abstract class ItemBase
     {
@@ -325,6 +327,10 @@ var lines = Calc();
                     return Svetootrazatel.CreateItem(li);
                 case TipProds.KontrBraslet:
                     return KontrBraslet.CreateItem(li);
+                case TipProds.SlapBraslet:
+                    return SlapBraslet.CreateItem(li);
+                case TipProds.Lenta:
+                    return Lenta.CreateItem(li);
 
                 default:
                     return null;

@@ -11,7 +11,7 @@ namespace KvotaWeb.Models.Items
     {
         public override string Srok { get; set; }= "2–4 рабочих дня";
 
-        public string Description
+        public override string Description
         {
             get
             {
