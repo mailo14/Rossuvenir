@@ -323,6 +323,8 @@ var lines = Calc();
                     return SlapChasi.CreateItem(li);
                 case TipProds.Svetootrazatel:
                     return Svetootrazatel.CreateItem(li);
+                case TipProds.KontrBraslet:
+                    return KontrBraslet.CreateItem(li);
 
                 default:
                     return null;

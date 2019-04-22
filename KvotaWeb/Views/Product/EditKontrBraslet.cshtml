@@ -129,8 +129,10 @@
                 $('#param2').focus();
             });
         }
-        else
+        else {
             document.getElementById('NanesenieDiv').style.display = 'none';
+            OnChangeEvent();
+        }
 
         if (catId == 560) {
             document.getElementById('NanestiLogoDiv').style.display = 'block';

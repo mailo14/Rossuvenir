@@ -125,14 +125,16 @@
                 $('#param2').focus();
             });
         }
-        else
+        else {
             document.getElementById('RazmerFormaDiv').style.display = 'none';
+        OnChangeEvent();
+    }
 
         if (catId == 566)
             document.getElementById('UpakovatDiv').style.display = 'none';
         else
             document.getElementById('UpakovatDiv').style.display = 'block';
-
+ 
     }
         function OnChangeEvent() {
             $("body").css("cursor", "progress");
