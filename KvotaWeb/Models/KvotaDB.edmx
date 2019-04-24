@@ -70,6 +70,8 @@
           <Property Name="param35" Type="bit" Nullable="false" />
           <Property Name="param45" Type="bit" Nullable="false" />
           <Property Name="subTipProd" Type="int" />
+          <Property Name="param54" Type="bit" Nullable="false" />
+          <Property Name="param64" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Price">
           <Key>
@@ -191,6 +193,8 @@
           <Property Name="param35" Type="Boolean" Nullable="false" />
           <Property Name="param45" Type="Boolean" Nullable="false" />
           <Property Name="subTipProd" Type="Int32" />
+          <Property Name="param54" Type="Boolean" Nullable="false" />
+          <Property Name="param64" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Price">
           <Key>
@@ -247,6 +251,8 @@
           <EntitySetMapping Name="ListItem">
             <EntityTypeMapping TypeName="kvotaModel.ListItem">
               <MappingFragment StoreEntitySet="ListItem">
+                <ScalarProperty Name="param64" ColumnName="param64" />
+                <ScalarProperty Name="param54" ColumnName="param54" />
                 <ScalarProperty Name="subTipProd" ColumnName="subTipProd" />
                 <ScalarProperty Name="param45" ColumnName="param45" />
                 <ScalarProperty Name="param35" ColumnName="param35" />

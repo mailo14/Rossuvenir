@@ -1067,6 +1067,7 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
                 case TipProds.KontrBraslet: model = GetModel<KontrBraslet>(collection);break;
                 case TipProds.SlapBraslet: model = GetModel<SlapBraslet>(collection);break;
                 case TipProds.Lenta: model = GetModel<Lenta>(collection);break;
+                case TipProds.SiliconBraslet: model = GetModel<SiliconBraslet>(collection);break;
 
                // case TipProds.SvetootrazatelNaklei: model = GetModel<SvetootrazatelNaklei>(collection);break;
             }

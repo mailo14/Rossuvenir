@@ -1,0 +1,321 @@
+﻿@model KvotaWeb.Models.Items.SiliconBraslet
+
+<form id="myform" method="post" action="/Product/EditЗначки">
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal col-sm-8 col-sm-push-2">
+        <hr />
+        <h4>Элемент @Html.ActionLink(" заказа № " + @Model.ZakazId, "Edit", "Home", new { id = @Model.ZakazId }, null)  -  @KvotaWeb.Models.ListItem.GetTipProdName(@Model.TipProd)</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.ZakazId)
+        @Html.HiddenFor(model => model.TipProd)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Tiraz)
+            </div>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.Tiraz, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.Tiraz, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Vid)
+            </div>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.Vid, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param1", @class = "form-control", @onchange = "OnChangeParam1Event();" })
+                @Html.ValidationMessageFor(model => model.Vid, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="RazmerFormaDiv" style=@ViewData["RazmerFormaDivStyle"]>
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.RazmerForma)
+            </div>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.RazmerForma, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param2", @class = "form-control", @onchange = "OnChangeParam2Event();" })
+                @Html.ValidationMessageFor(model => model.RazmerForma, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="DopTcvetaDiv">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.DopTcveta)
+            </div>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.DopTcveta, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.DopTcveta, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="LogoDiv" style=@ViewData["LogoDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.Logo, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.Logo)
+            </div>
+        </div>
+        <div class="form-group" id="AddKolcoDiv" style=@ViewData["AddKolcoDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.AddKolco, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.AddKolco)
+            </div>
+        </div>
+        <div class="form-group" id="SvetonakopDiv" style=@ViewData["SvetonakopDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.Svetonakop, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.Svetonakop)
+            </div>
+        </div>
+        <div class="form-group" id="UpakovatDiv" style=@ViewData["UpakovatDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.Upakovat, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.Upakovat)
+            </div>
+        </div>
+        <div class="form-group" id="SvirlDiv" style=@ViewData["SvirlDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.Svirl, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.Svirl)
+            </div>
+        </div>
+        <div class="form-group" id="SmenaTcvetaDiv" style=@ViewData["SmenaTcvetaDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.SmenaTcveta, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.SmenaTcveta)
+            </div>
+        </div>
+        <div class="form-group" id="SmenaRazmeraDiv" style=@ViewData["SmenaRazmeraDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.SmenaRazmera, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.SmenaRazmera)
+            </div>
+        </div>
+        <div class="form-group" id="PersonalDiv" style=@ViewData["PersonalDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.Personal, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.Personal)
+            </div>
+        </div>
+        <div class="form-group" id="AddNumDiv" style=@ViewData["AddNumDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.AddNum, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.AddNum)
+            </div>
+        </div>
+        <div class="form-group" id="AddKrepDiv" style=@ViewData["AddKrepDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.AddKrep, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.AddKrep)
+            </div>
+        </div>
+        <div class="form-group" id="AddZastezDiv" style=@ViewData["AddZastezDivStyle"] align="left">
+            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+                @Html.EditorFor(model => model.AddZastez, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
+                @Html.LabelFor(model => model.AddZastez)
+            </div>
+        </div>
+
+        <div id="totalResultsDiv">
+            @Html.Action("Recalc", "Product", new { totals = @Model.GetTotal() })
+        </div>
+
+        <div class="form-group" id="SrokDiv" style=@ViewData["SrokDivStyle"]>
+            <label class="control-label col-sm-5">Срок изготовления:</label>
+            <label id="SrokLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
+        </div>
+
+
+        <div class="form-group" id="DescrDiv" style=@ViewData["DescrDivStyle"]>
+            <label class="control-label col-sm-5">Примечание:</label>
+            <label id="DescrLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Description</label>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    function OnChangeParam1Event() {
+        //var catId = $(this).val();
+        var catId = $('#param1').val();
+        // alert(catId);
+        if (catId > 0) {
+            document.getElementById('DescrDiv').style.display = 'block';
+            var descr = '';
+            if (catId == 578)
+                descr = "Нанесение логотипа превращает силиконовые браслеты в крутой, эффективный промо продукт. Браслеты с данным типом нанесения мы можем изготовить в самые кратчайшие сроки. Логотип наносится по всей окружности браслета специальной прорезиненной краской. ";
+            else if (catId == 579)
+                descr = "Отличительной особенностью таких браслетов является сложная технология нанесения, при которой вдавленный/выпуклый логотип вручную прокрашивается специальной краской. Такие браслеты обладают высоким качеством и индивидуальностью. Бесплатная доставка: по Москве(в пределах МКАД) при заказе от 5000 ₽; до терминалов ТК в областных центрах России при заказе от 10000 ₽.";
+            else if (catId == 580)
+                descr = "Уникальное предложение нашей компании — единственного отечественного производителя силиконовых браслетов. Комбинируйте любые два, три или даже четыре цвета, создавая по-настоящему особенное изделие! Огромный потенциал для творчества и индивидуализации. Позвольте себе максимум стиля и выразительности, решайтесь на беспрецедентность! Бесплатная доставка: по Москве(в пределах МКАД) при заказе от 5000 ₽; до терминалов ТК в областных центрах России при заказе от 10000 ₽.";
+            else if (catId == 581)
+                descr = "Двухцветные силиконовые браслеты — это уникальное предложение от нашей компании. Браслеты такого типа смотрятся невероятно эффектно и стильно, и по праву могут считаться премиальными. Бесплатная доставка: по Москве(в пределах МКАД) при заказе от 5000 ₽; до терминалов ТК в областных центрах России при заказе от 10000 ₽.";
+            else if (catId == 582)
+                descr = "Идентификационные браслеты передают значимую информацию о своём обладателе (имя, адрес, номера телефонов и т.д.) Они производятся из качественных, долговечных и безопасных материалов и предназначены для постоянного ношения. Основная часть браслета выполнена из 100% экологически чистого силикона, а металлическая вставка выполнена из нержавеющей стали (316L). Нанесение осуществляется на металлическую часть методом гравировки. Бесплатная доставка: по Москве(в пределах МКАД) при заказе от 5000 ₽; до терминалов ТК в областных центрах России при заказе от 10000 ₽.";
+            else if (catId == 583)
+                descr = "Отличительной особенностью таких браслетов является сложная технология нанесения, при которой выпуклый логотип вручную прокрашивается специальной краской.Такие браслеты обладают высоким качеством и индивидуальностью.Бесплатная доставка: по Москве(в пределах МКАД) при заказе от 5000 ₽; до терминалов ТК в областных центрах России при заказе от 10000 ₽.E156";
+            else if (catId == 584)
+                descr = "Для данного вида нанесения мы изготавливаем специальную форму и отливаем по ней браслеты. Силиконовые браслеты на руку с таким видом нанесения невероятно практичны. Бесплатная доставка: по Москве(в пределах МКАД) при заказе от 5000 ₽; до терминалов ТК в областных центрах России при заказе от 10000 ₽.";
+            else if (catId == 585)
+                descr = "Эта модель силиконового браслета с логотипом предусматривает также область со специальным покрытием, где вы можете самостоятельно сделать любую нужную надпись. Возможности применения такого изделия не ограничены, — они станут отличным решением для проведения всевозможных конкурсов, лотерей и других массовых мероприятий. Бесплатная доставка: по Москве(в пределах МКАД) при заказе от 5000 ₽; до терминалов ТК в областных центрах России при заказе от 10000 ₽.";
+            else if (catId == 586)
+                descr = "Силиконовые браслеты без нанесения различных цветов всегда в наличии на наших складах в большом количестве. ";
+            else if (catId == 587)
+                descr = "";
+            else if (catId == 588)
+                descr = "Эта модель силиконового браслета с логотипом предусматривает также область со специальным покрытием, где вы можете самостоятельно сделать любую нужную надпись. Такое изделие — находка для фитнесс-клубов, так как позволяет вам подписать номер шкафчика с личными вещами посетителей. ";
+            else if (catId == 589)
+                descr = "Браслеты для ключей изготовлены из экологически чистого силикона, а специальная, прорезиненная краска исключает возможность стирания логотипа или нумерации. Информацию по креплениям для ключей уточняйте, пожалуйста, у менеджера.";
+            else if (catId == 590)
+                descr = "Силиконовые R-fid браслеты — современный и удобный способ идентификации, как массовых, так и персональных пропускных систем. Корпус браслетов изготовлен из высококачественного силикона и надежно защищает чип от воздействия воды и температуры. Стоимость изделия с чипом EM-marine. Мы можем изготовить и другие чипы: Mifare, Mifare 1к, Mifare 4к. Бесплатная доставка: по Москве(в пределах МКАД) при заказе от 5000 ₽; до терминалов ТК в областных центрах России при заказе от 10000 ₽.";
+            else if (catId == 591)
+                descr = "Rfid - браслеты — удобный способ идентификации посетителей, отлично подходит для массовых и персональных пропускных систем.Эта модель выглядит как украшение, использовать которое очень удобно благодаря наличию металлической застёжки. Аксессуар выполнен их высококачественного бархатистого силикона и прекрасно защищает чип от воздействия неблагоприятных факторов среды и механических повреждений. Стоимость изделия с чипом EM-marine. Мы можем изготовить и другие чипы: Mifare, Mifare 1к, Mifare 4к.";
+            
+            document.getElementById('DescrLabel').innerHTML = descr;
+        }
+        else
+            document.getElementById('DescrDiv').style.display = 'none';
+
+        if (catId > 0) {
+            document.getElementById('SrokDiv').style.display = 'block';
+            var descr = '';
+            if (catId == 578) {
+                var razmer = $('#param2').val();
+                if (razmer == 592 || razmer == 593)
+                    descr = "2–4 рабочих дня";
+                else descr = "12–14 календарных дней";
+            }
+            else if (catId == 580 || catId == 581 || catId == 582 || catId == 585 || catId == 587)
+                descr = "2–4 рабочих дня";
+            else if (catId == 579 || catId == 583 || catId == 584)
+                descr = "12–14 календарных дней";
+            else if (catId == 586 || catId == 588)
+                descr = "в наличии на складе";
+            else if (catId == 589)
+                descr = "5–7 календарных дней";
+            else if (catId == 590 || catId == 591)
+                descr = "21–25 дней";
+           
+            document.getElementById('SrokLabel').innerHTML = descr;
+        }
+        else
+            document.getElementById('SrokDiv').style.display = 'none';
+        
+        if (catId != null && [578, 579, 582, 583, 584].includes(Number.parseInt(catId))) {
+            document.getElementById('RazmerFormaDiv').style.display = 'block';
+            var url = '@Url.Action("fillParam2", "Product")';
+            $.getJSON(url, { catId: catId }, function (result) {
+                var ddl = $('#param2');
+                ddl.empty();
+                $(result).each(function () {
+                    $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
+                });
+                OnChangeEvent();
+                $('#param2').focus();
+            });
+        }
+        else {
+                document.getElementById('RazmerFormaDiv').style.display = 'none';
+                OnChangeEvent();
+        }
+        if (catId != null && [578, 579, 580, 581, 583, 585].includes(Number.parseInt(catId))) {
+            document.getElementById('DopTcvetaDiv').style.display = 'block';
+        }
+        else {
+            document.getElementById('DopTcvetaDiv').style.display = 'none';
+        }
+        
+        if (catId != null && [578, 580, 581, 585, 586, 588].includes(Number.parseInt(catId)))
+        document.getElementById('AddKolcoDiv').style.display = 'block';
+                else document.getElementById('AddKolcoDiv').style.display = 'none';
+
+        if (catId != null && [578, 579, 582, 583, 584].includes(Number.parseInt(catId)))
+        document.getElementById('SvetonakopDiv').style.display = 'block';
+                else document.getElementById('SvetonakopDiv').style.display = 'none';
+
+        if (catId != null && [578, 579, 580, 581, 583, 584, 585, 586, 587, 588, 589].includes(Number.parseInt(catId)))
+        document.getElementById('UpakovatDiv').style.display = 'block';
+                else document.getElementById('UpakovatDiv').style.display = 'none';
+
+        if (catId != null && [578, 579, 583, 584].includes(Number.parseInt(catId)))
+        document.getElementById('SvirlDiv').style.display = 'block';
+                else document.getElementById('SvirlDiv').style.display = 'none';
+
+        if (catId != null && [578, 580, 581, 585].includes(Number.parseInt(catId)))
+        document.getElementById('SmenaTcvetaDiv').style.display = 'block';
+                else document.getElementById('SmenaTcvetaDiv').style.display = 'none';
+        if (catId != null && [578, 579, 583, 584].includes(Number.parseInt(catId)))
+        document.getElementById('SmenaRazmeraDiv').style.display = 'block';
+                else document.getElementById('SmenaRazmeraDiv').style.display = 'none';
+
+        if (catId != null && [582, 590, 591].includes(Number.parseInt(catId)))
+        document.getElementById('PersonalDiv').style.display = 'block';
+                else document.getElementById('PersonalDiv').style.display = 'none';
+
+        if (catId != null && [588, 589, 590, 591].includes(Number.parseInt(catId)))
+        document.getElementById('LogoDiv').style.display = 'block';
+                else document.getElementById('LogoDiv').style.display = 'none';
+
+        if (catId != null && [589, 590, 591].includes(Number.parseInt(catId)))
+        document.getElementById('AddNumDiv').style.display = 'block';
+                else document.getElementById('AddNumDiv').style.display = 'none';
+
+        if (catId == 589) {
+            document.getElementById('AddKrepDiv').style.display = 'block';
+            document.getElementById('AddZastezDiv').style.display = 'block';
+        }
+        else {
+            document.getElementById('AddKrepDiv').style.display = 'none';
+            document.getElementById('AddZastezDiv').style.display = 'none';
+        }
+    }
+
+    function OnChangeParam2Event() {
+        var catId = $('#param1').val();
+        
+        if (catId > 0) {
+            document.getElementById('SrokDiv').style.display = 'block';
+            var descr = '';
+            if (catId == 578) {
+                var razmer = $('#param2').val();
+                if (razmer == 592 || razmer == 593)
+                    descr = "2–4 рабочих дня";
+                else descr = "12–14 календарных дней";
+            }
+            else if (catId == 580 || catId == 581 || catId == 582 || catId == 585 || catId == 587)
+                descr = "2–4 рабочих дня";
+            else if (catId == 579 || catId == 583 || catId == 584)
+                descr = "12–14 календарных дней";
+            else if (catId == 586 || catId == 588)
+                descr = "в наличии на складе";
+            else if (catId == 589)
+                descr = "5–7 календарных дней";
+            else if (catId == 590 || catId == 591)
+                descr = "21–25 дней";
+           
+            document.getElementById('SrokLabel').innerHTML = descr;
+        }
+        else
+            document.getElementById('SrokDiv').style.display = 'none';
+        OnChangeEvent();
+    }
+        function OnChangeEvent() {
+            $("body").css("cursor", "progress");
+            $.ajax({
+                type: 'POST',
+                url: "/Product/Recalc",
+                data: $('#myform').serialize(),
+                success: function (data, res) {
+                    $("#totalResultsDiv").html(data);
+                    $("body").css("cursor", "default");
+                },
+                error: function () {
+                    alert("There was an error submitting comment");
+                    $("body").css("cursor", "default");
+                }
+            });
+        }
+</script>
