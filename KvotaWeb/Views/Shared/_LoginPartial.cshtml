@@ -18,8 +18,11 @@
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
-        <li>@Html.ActionLink("Войти", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })<a href="#" class="glyphicon glyphicon-exclamation-sign" onclick="var sender = event.target || event.srcElement ;$(sender).popover('toogle');" data-toggle="toogle" data-html="true" data-title="<img src='/Images/logo3.png' height='50' style='margin:5px 5px' />"></a></li>        
+<ul class="nav navbar-nav navbar-right">
+    @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
+    
+    <li>@Html.ActionLink("Войти", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+        <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" data-placement="bottom" data-html="true" title="<img src='/Images/logo3.png' height='50' style='margin:5px 5px' />" onclick="var sender = event.target || event.srcElement ;$(sender).popover('toogle');"></button>
+    <a href="#" class="glyphicon glyphicon-exclamation-sign" onclick="var sender = event.target || event.srcElement ;$(sender).popover('toogle');" data-toggle="toogle" data-html="true" data-title="<img src='/Images/logo3.png' height='50' style='margin:5px 5px' />"></a></li>
 </ul>
 }

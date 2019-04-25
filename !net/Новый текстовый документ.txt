@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Exclamation-sign Glyph</h2>
+      <p>Exclamation-sign icon: <span class="glyphicon glyphicon-exclamation-sign"></span></p>    
+      <p>Exclamation-sign icon as a link:
+        <a href="#"  class="glyphicon glyphicon glyphicon-info-sign"  onclick="var sender = event.target || event.srcElement ;$(sender).popover('toogle');" data-toggle="toogle" data-placement="bottom" data-html="true" data-title="Аватар пользователя: <span class='glyphicon glyphicon glyphicon-info-sign'>Exclamation</span> ">
+        </a>
+      </p>
+      <p>Exclamation-sign icon on a button:
+        <button type="button" class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-exclamation-sign"></span> Exclamation
+        </button>
+      </p>
+      <p>Exclamation-sign icon on a styled link button:
+        <a href="javascript:OnChangeEvent();" class="btn btn-info btn-lg glyphicon glyphicon glyphicon-info-sign"
+        id="infoBut" data-toggle="toogle" data-html="true" data-title="Аватар пользователя">
+        </a>
+      </p> 
+    </div>
+  </body>
+  <script type="text/javascript">  
+  function move(e) {
+    if (!e)
+        e = window.event;
+    var sender = e.target || e.srcElement ;
+    //alert(sender);
+    $(sender).popover('toogle')
+}
+        function OnChangeEvent() {
+           $('#infoBut').popover('toogle')
+           //this.popover('toogle')
+                    //alert("There was an error submitting comment");
+        }
+        $(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+   })
+</script>
+</html>
+
