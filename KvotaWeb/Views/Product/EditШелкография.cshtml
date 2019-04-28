@@ -56,14 +56,19 @@
             </div>
         </div>
 
-        <div class="form-group" id="paramDiv5" style=@ViewData["paramDivStyle5"] align="left">
-            @* <label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
-                @Html.EditorFor(model => model.FormatA3, new { htmlAttributes = new { @id = "param5", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
-                <label for="param5" id="paramLabel5">@Html.LabelFor(model => model.FormatA3)</label>
-            </label>*@
+        @*<div class="form-group" id="paramDiv5" style=@ViewData["paramDivStyle5"] align="left">
             <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
                 @Html.EditorFor(model => model.FormatA3, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
                 @Html.LabelFor(model => model.FormatA3)
+            </div>
+        </div>*@
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Ploshad)
+            </div>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.Ploshad, @ViewData["params3"] as SelectList, "(не выбрано)", new { @id = "param3", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.Ploshad, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -84,36 +89,36 @@
         </div>
 }
     </div>
-</form>
-<script type="text/javascript">
-        function OnChangeParam1Event() {
-            //var catId = $(this).val();
-            var catId = $('#param1').val();
-                var url = '@Url.Action("fillParam2", "Product")';
-                $.getJSON(url, { catId: catId }, function (result) {
-                    var ddl = $('#param2');
-                    ddl.empty();
-                    $(result).each(function () {
-                        $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
-                    });
-                    OnChangeEvent();
-                    $('#param2').focus();
-                });
-        }
-        function OnChangeEvent() {
-            $("body").css("cursor", "progress");
-            $.ajax({
-                type: 'POST',
-                url: "/Product/Recalc",
-                data: $('#myform').serialize(),
-                success: function (data, res) {
-                    $("#totalResultsDiv").html(data);
-                    $("body").css("cursor", "default");
-                },
-                error: function () {
-                    alert("There was an error submitting comment");
-                    $("body").css("cursor", "default");
+        </form>
+        <script type="text/javascript">
+                function OnChangeParam1Event() {
+                    //var catId = $(this).val();
+                    var catId = $('#param1').val();
+                        var url = '@Url.Action("fillParam2", "Product")';
+                        $.getJSON(url, { catId: catId }, function (result) {
+                            var ddl = $('#param2');
+                            ddl.empty();
+                            $(result).each(function () {
+                                $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
+                            });
+                            OnChangeEvent();
+                            $('#param2').focus();
+                        });
                 }
-            });
-        }
-</script>
+                function OnChangeEvent() {
+                    $("body").css("cursor", "progress");
+                    $.ajax({
+                        type: 'POST',
+                        url: "/Product/Recalc",
+                        data: $('#myform').serialize(),
+                        success: function (data, res) {
+                            $("#totalResultsDiv").html(data);
+                            $("body").css("cursor", "default");
+                        },
+                        error: function () {
+                            alert("There was an error submitting comment");
+                            $("body").css("cursor", "default");
+                        }
+                    });
+                }
+        </script>

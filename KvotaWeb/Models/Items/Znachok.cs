@@ -253,9 +253,10 @@ var lines = Calc();
             {
                 case TipProds.Znachok:
                     return Znachok.CreateItem(li);
+
                 case TipProds.Shelkografiya:
-                    return new Shelkografiya() {Id=li.id,ZakazId= li.listId, Tiraz = li.tiraz,  Tcvet = li.param11,  KolichestvoTcvetov = li.param12
-                    ,Sintetika=li.param14,FormatA3=li.param15};                    
+                    return Shelkografiya.CreateItem(li);
+                                 
   case TipProds.Tampopechat:
                     return new Tampopechat()
                     {
