@@ -135,7 +135,7 @@
             @*<a class="image-popup col-sm-5" href="/Images/products/SiliconBraslet/578.png" style="padding-right:0px;">
             <img src="/Images/products/SiliconBraslet/578.png" alt="" align="left" class="col-sm-12" style="padding-right:0px;">
         </a>*@
-            <img src="/Images/products/SiliconBraslet/578.png" alt="" align="left" class="col-sm-5" style="padding-right:0px;">
+            <img id="DescrImage" src="/Images/products/SiliconBraslet/578.png" alt="" align="left" class="col-sm-5" style="padding-right:0px;">
             <label id="DescrLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Description</label>
         </div>
     </div>
@@ -149,11 +149,19 @@
     -->
 <script type="text/javascript">
 
+    function ImageExist(url) {
+        var img = new Image();
+        img.src = url;
+        return img.height != 0;
+    }
     function OnChangeParam1Event() {
         //var catId = $(this).val();
         var catId = $('#param1').val();
         // alert(catId);
         if (catId > 0) {
+            var imageUrl = '/Images/products/SiliconBraslet/' + catId + '.png';
+            document.getElementById("DescrImage").src = imageUrl;
+
             document.getElementById('DescrDiv').style.display = 'block';
             var descr = '';
             if (catId == 578)
@@ -187,8 +195,10 @@
 
             document.getElementById('DescrLabel').innerHTML = descr;
         }
-        else
+        else {
             document.getElementById('DescrDiv').style.display = 'none';
+            document.getElementById("DescrImage").src = '';
+        }
 
         if (catId > 0) {
             document.getElementById('SrokDiv').style.display = 'block';
@@ -283,15 +293,26 @@
             document.getElementById('AddZastezDiv').style.display = 'none';
         }
     }
+    function UrlExists(url) {
+        var http = new XMLHttpRequest();
+        http.open('HEAD', url, false);
+        http.send();
+        return http.status != 404;
+    }
 
     function OnChangeParam2Event() {
         var catId = $('#param1').val();
 
         if (catId > 0) {
+
+            var razmer = $('#param2').val();
+            var imageUrl = '/Images/products/SiliconBraslet/' + razmer + '.png'; 
+            if (razmer > 0 && UrlExists(imageUrl))
+                document.getElementById("DescrImage").src = imageUrl;            
+
             document.getElementById('SrokDiv').style.display = 'block';
             var descr = '';
             if (catId == 578) {
-                var razmer = $('#param2').val();
                 if (razmer == 592 || razmer == 593)
                     descr = "2–4 рабочих дня";
                 else descr = "12–14 календарных дней";
@@ -309,7 +330,7 @@
 
             document.getElementById('SrokLabel').innerHTML = descr;
         }
-        else
+        else 
             document.getElementById('SrokDiv').style.display = 'none';
         OnChangeEvent();
     }
