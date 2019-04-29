@@ -76,7 +76,7 @@
 
 
         <div class="form-group" id="DescrDiv" style=@ViewData["DescrDivStyle"] >
-            <label class="control-label col-sm-5">Примечание:</label>
+            <img id="DescrImage" src="" alt="" align="left" class="col-sm-5" style="padding-right:0px;">
             <label id="DescrLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Description</label>
         </div>
     </div>
@@ -88,6 +88,9 @@
         // alert(catId);
         if (catId > 0) {
             document.getElementById('DescrDiv').style.display = 'block';
+            var imageUrl = '/Images/products/KontrBraslet/' + catId + '.png';
+            document.getElementById("DescrImage").src = imageUrl;
+
             var descr = '';
             if (catId == 559)
                 descr = "Бумажные контрольные браслеты — одновременно простой и экономный способ контроля посетителей.Одноразовые клубные браслеты — невероятно эффективный и недорогой инструмент для идентификации посетителей на любом мероприятии. Производство: ОАЭ. Эконом-печать выполняется только в чёрном цвете! Цветная печать возможна только при тиражах до 2500 шт. ";
@@ -95,11 +98,13 @@
                 descr = "Виниловые контрольные браслеты — одноразовые браслеты категории «премиум». Пластиковые или виниловые контроль браслеты — невероятно эффективный инструмент для идентификации посетителей.";
             else if (catId == 561)
                 descr = "Браслеты для контроля посетителей из ткани без преувеличения можно назвать полноценным промо-продуктом. Возможность нанесения полноцветного изображения или логотипа превращает эти браслеты в яркий и памятный сувенир для гостей мероприятия, а надежный пластиковый или металлический замок полностью исключает возможность их повторного использования и передачи вторым лицам. Сублимация - материал сатин, вышивка - материал полиэстер+хлопок+нейлон";
-            
+
             document.getElementById('DescrLabel').innerHTML = descr;
         }
-        else
+        else {
             document.getElementById('DescrDiv').style.display = 'none';
+            document.getElementById("DescrImage").src = '';
+        }
 
         if (catId > 0) {
             document.getElementById('SrokDiv').style.display = 'block';

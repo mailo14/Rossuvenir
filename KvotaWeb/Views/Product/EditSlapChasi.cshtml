@@ -85,19 +85,23 @@
             <label id="SrokLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
         </div>
 
-        @if (Model.Description != null)
-        {
-            <div class="form-group">
-                <label class="control-label col-sm-5">Примечание:</label>
-                <label id="DescriptionLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Description </label>
-            </div>
-        }
+        <div class="form-group" id="DescrDiv" style=@ViewData["DescrDivStyle"]>
+            <img id="DescrImage" src="" alt="" align="left" class="col-sm-5" style="padding-right:0px;">
+            <label id="DescrLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Description</label>
+        </div>
     </div>
 </form>
 <script type="text/javascript">
     function OnChangeParam1Event() {        
             //var catId = $(this).val();
-        var catId = $('#param1').val();        
+        var catId = $('#param1').val();   
+
+        if (catId > 0) {
+            var imageUrl = '/Images/products/SlapChasi/' + catId + '.png';
+            document.getElementById("DescrImage").src = imageUrl;
+        }
+        else document.getElementById("DescrImage").src = '';
+    
             if (catId == 558)
                 document.getElementById('Chip16Div').style.display = 'block';
             else

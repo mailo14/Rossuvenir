@@ -98,7 +98,7 @@
 
 
         <div class="form-group" id="DescrDiv" style=@ViewData["DescrDivStyle"]>
-            <label class="control-label col-sm-5">Примечание:</label>
+            <img id="DescrImage" src="" alt="" align="left" class="col-sm-5" style="padding-right:0px;">
             <label id="DescrLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Description</label>
         </div>
     </div>
@@ -110,6 +110,8 @@
         // alert(catId);
         if (catId > 0) {
             document.getElementById('DescrDiv').style.display = 'block';
+            var imageUrl = '/Images/products/Lenta/' + catId + '.png';
+            document.getElementById("DescrImage").src = imageUrl;
             var descr = '';
             if (catId == 532)
                 descr = "Ленты для бейджей изготовлены из качественного материала — нейлон. Мы всегда храним на складе запас готовой продукции, и предлагаем широкую цветовую гамму, среди которой вы без труда найдёте фирменный цвет своей компании. Всё это даёт возможность получить необходимые вам ленты для бейджей в самые кратчайшие сроки. ";
@@ -123,11 +125,13 @@
                 descr = "Разноцветные шнурки для бейджей очень легко подобрать под фирменный цвет и тематику мероприятия. Мы всегда храним на складе запас готовой продукции, это даёт возможность получить шнурки для бейджей, необходимые для вашего мероприятия в самые кратчайшие сроки. Cтандартные крепления бесплатны. Шнурки для бейджей всегда в наличии на наших складах в большом количестве";
             else if (catId == 537)
                 descr = "Отличительной особенностью таких ретракторов является большой и прочный карабин с металлической основой. Элегантные и прочные — такие держатели для пропуска по праву считаются премиальными. * — при тиражах 100 шт. и более.";
-            
+
             document.getElementById('DescrLabel').innerHTML = descr;
         }
-        else
+        else {
             document.getElementById('DescrDiv').style.display = 'none';
+            document.getElementById("DescrImage").src = '';
+        }
 
         if (catId > 0) {
             document.getElementById('SrokDiv').style.display = 'block';

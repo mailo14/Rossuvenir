@@ -91,7 +91,7 @@
 
 
         <div class="form-group" id="DescrDiv" style=@ViewData["DescrDivStyle"]>
-            <label class="control-label col-sm-5">Примечание:</label>
+            <img id="DescrImage" src="" alt="" align="left" class="col-sm-5" style="padding-right:0px;">
             <label id="DescrLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Description</label>
         </div>
     </div>
@@ -103,6 +103,9 @@
         // alert(catId);
         if (catId > 0) {
             document.getElementById('DescrDiv').style.display = 'block';
+            var imageUrl = '/Images/products/SlapBraslet/' + catId + '.png';
+            document.getElementById("DescrImage").src = imageUrl;
+
             var descr = '';
             if (catId == 553)
                 descr = "Светоотражающий слэп браслет с логотипом — это не только модный, но ещё и практичный аксессуар. Выполняя функцию светоотражателя, такой браслет обеспечивает видимость в тёмное время суток. Мы можем изготовить светоотражающие (самофиксирующиеся) slap-браслеты необходимого вам размерана заказ. ";
@@ -110,11 +113,13 @@
                 descr = "Силиконовый слеп браслет с логотипом — броский и запоминающийся промо продукт, а также великолепный сувенир на любом мероприятии. Главное преимущество таких браслетов, конечно же, универсальность размера, они великолепно подходят как взрослым, так и детям.";
             else if (catId == 555)
                 descr = "Тканевые слеп браслеты — абсолютно новый, восхитительный промо продукт, разработанный нашей кампанией. В данном изделии стальная пластина с обеих сторон покрывается тканью сатин с удивительно гладкой и шелковистой текстурой.А сублимационная печать позволяет нанести на тканевые слэп браслеты абсолютно любое графическое изображение. Нанесение и упаковка включены в стоимость изготовления тиража. ";
-            
+
             document.getElementById('DescrLabel').innerHTML = descr;
         }
-        else
+        else {
             document.getElementById('DescrDiv').style.display = 'none';
+            document.getElementById("DescrImage").src = '';
+        }
 
         if (catId > 0) {
             document.getElementById('SrokDiv').style.display = 'block';

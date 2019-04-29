@@ -49,6 +49,8 @@ namespace KvotaWeb.Models.Items
                             + Environment.NewLine + "Гарантия на механизм(без батарейки): 6 месяцев. Страна производства: Китай.";
                         break;
                 }
+                if (value == null)
+                    ViewData["DescrDivStyle"] = "display:none;";
             }
         }
 

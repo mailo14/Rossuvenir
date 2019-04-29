@@ -39,7 +39,7 @@
                 @Html.LabelFor(model => model.RazmerForma)
             </div>
             <div class="col-sm-7">
-                @Html.DropDownListFor(model => model.RazmerForma, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param2", @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.DropDownListFor(model => model.RazmerForma, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param2", @class = "form-control", @onchange = "OnChangeParam2Event();" })
                 @Html.ValidationMessageFor(model => model.RazmerForma, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -86,7 +86,7 @@
 
 
         <div class="form-group" id="DescrDiv" style=@ViewData["DescrDivStyle"] >
-            <label class="control-label col-sm-5">Примечание:</label>
+            <img id="DescrImage" src="" alt="" align="left" class="col-sm-5" style="padding-right:0px;">
             <label id="DescrLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Description</label>
         </div>
     </div>
@@ -96,8 +96,11 @@
         //var catId = $(this).val();
         var catId = $('#param1').val();
         // alert(catId);
-        if (catId > 0) {
+        if (catId > 0) {            
             document.getElementById('DescrDiv').style.display = 'block';
+            var imageUrl = '/Images/products/Svetootrazatel/' + catId + '.png';
+            document.getElementById("DescrImage").src = imageUrl;
+
             var descr = '';
             if (catId == 566)
                 descr = 'Светоотражающие наклейки совсем лёгкие и очень просты в применении. Они крепятся к поверхностям различной природы за счёт клейкой основы, которая надёжно фиксирует светоотражающий элемент на коробках, тетрадных обложках, велосипеде... Яркие и примечательные наклейки, днём не отличимые от интересного аксессуара, обеспечат безопасность на дорогах в тёмное время суток. Особенно такие наклейки нравятся детям!Фасование наклеек: на подложке, по 8 шт. Возможно изготовление светоотражающих наклеек различной формы и размера под заказ.';
@@ -110,8 +113,10 @@
 
             document.getElementById('DescrLabel').innerHTML = descr;
         }
-        else
+        else {
             document.getElementById('DescrDiv').style.display = 'none';
+            document.getElementById("DescrImage").src = '';
+        }
         if (catId == 568 || catId == 569) {
             document.getElementById('RazmerFormaDiv').style.display = 'block';
             var url = '@Url.Action("fillParam2", "Product")';
@@ -135,6 +140,24 @@
         else
             document.getElementById('UpakovatDiv').style.display = 'block';
  
+    }
+    function UrlExists(url) {
+        var http = new XMLHttpRequest();
+        http.open('HEAD', url, false);
+        http.send();
+        return http.status != 404;
+    }
+    function OnChangeParam2Event() {
+        var catId = $('#param1').val();
+
+        if (catId > 0) {
+
+            var razmer = $('#param2').val();
+            var imageUrl = '/Images/products/Svetootrazatel/' + razmer + '.png';
+            if (razmer > 0 && UrlExists(imageUrl))
+                document.getElementById("DescrImage").src = imageUrl;
+        }
+        OnChangeEvent();
     }
         function OnChangeEvent() {
             $("body").css("cursor", "progress");
