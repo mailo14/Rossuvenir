@@ -132,12 +132,23 @@
 
 
         <div class="form-group" id="DescrDiv" style=@ViewData["DescrDivStyle"]>
-            <label class="control-label col-sm-5">Примечание:</label>
+            @*<a class="image-popup col-sm-5" href="/Images/products/SiliconBraslet/578.png" style="padding-right:0px;">
+            <img src="/Images/products/SiliconBraslet/578.png" alt="" align="left" class="col-sm-12" style="padding-right:0px;">
+        </a>*@
+            <img src="/Images/products/SiliconBraslet/578.png" alt="" align="left" class="col-sm-5" style="padding-right:0px;">
             <label id="DescrLabel" class="control-label col-sm-7" style="text-align:left;">@Model.Description</label>
         </div>
     </div>
 </form>
+
+<!--
+<script src="/Scripts/jquery.magnific-popup.min.js"></script>
+    $('.image-popup').magnificPopup({
+        type: 'image'
+    });
+    -->
 <script type="text/javascript">
+
     function OnChangeParam1Event() {
         //var catId = $(this).val();
         var catId = $('#param1').val();
@@ -173,7 +184,7 @@
                 descr = "Силиконовые R-fid браслеты — современный и удобный способ идентификации, как массовых, так и персональных пропускных систем. Корпус браслетов изготовлен из высококачественного силикона и надежно защищает чип от воздействия воды и температуры. Стоимость изделия с чипом EM-marine. Мы можем изготовить и другие чипы: Mifare, Mifare 1к, Mifare 4к. Бесплатная доставка: по Москве(в пределах МКАД) при заказе от 5000 ₽; до терминалов ТК в областных центрах России при заказе от 10000 ₽.";
             else if (catId == 591)
                 descr = "Rfid - браслеты — удобный способ идентификации посетителей, отлично подходит для массовых и персональных пропускных систем.Эта модель выглядит как украшение, использовать которое очень удобно благодаря наличию металлической застёжки. Аксессуар выполнен их высококачественного бархатистого силикона и прекрасно защищает чип от воздействия неблагоприятных факторов среды и механических повреждений. Стоимость изделия с чипом EM-marine. Мы можем изготовить и другие чипы: Mifare, Mifare 1к, Mifare 4к.";
-            
+
             document.getElementById('DescrLabel').innerHTML = descr;
         }
         else
@@ -198,12 +209,12 @@
                 descr = "5–7 календарных дней";
             else if (catId == 590 || catId == 591)
                 descr = "21–25 дней";
-           
+
             document.getElementById('SrokLabel').innerHTML = descr;
         }
         else
             document.getElementById('SrokDiv').style.display = 'none';
-        
+
         if (catId != null && [578, 579, 582, 583, 584].includes(Number.parseInt(catId))) {
             document.getElementById('RazmerFormaDiv').style.display = 'block';
             var url = '@Url.Action("fillParam2", "Product")';
@@ -227,7 +238,7 @@
         else {
             document.getElementById('DopTcvetaDiv').style.display = 'none';
         }
-        
+
         if (catId != null && [578, 580, 581, 585, 586, 588].includes(Number.parseInt(catId)))
         document.getElementById('AddKolcoDiv').style.display = 'block';
                 else document.getElementById('AddKolcoDiv').style.display = 'none';
@@ -275,7 +286,7 @@
 
     function OnChangeParam2Event() {
         var catId = $('#param1').val();
-        
+
         if (catId > 0) {
             document.getElementById('SrokDiv').style.display = 'block';
             var descr = '';
@@ -295,7 +306,7 @@
                 descr = "5–7 календарных дней";
             else if (catId == 590 || catId == 591)
                 descr = "21–25 дней";
-           
+
             document.getElementById('SrokLabel').innerHTML = descr;
         }
         else
