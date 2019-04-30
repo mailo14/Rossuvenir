@@ -41,47 +41,47 @@ namespace KvotaWeb
 
                 if (li.bPost1.HasValue)
                 {
-                    cena = (decimal)(from p in db.Price where p.catId == 600 select p.cena).First();
+                    cena = (decimal)(from p in db.Price where p.catId == 510 select p.cena).First();
                     sum += cena * li.bPost1.Value;
                 }
                 if (li.bPost2.HasValue)
                 {
-                    cena = (decimal)(from p in db.Price where p.catId == 601 select p.cena).First();
+                    cena = (decimal)(from p in db.Price where p.catId == 511 select p.cena).First();
                     sum += cena * li.bPost2.Value;
                 }
                 if (li.bPost3.HasValue)
                 {
-                    cena = (decimal)(from p in db.Price where p.catId == 602 select p.cena).First();
+                    cena = (decimal)(from p in db.Price where p.catId == 512 select p.cena).First();
                     sum += cena * li.bPost3.Value;
                 }
                 if (li.bPost4.HasValue)
                 {
-                    cena = (decimal)(from p in db.Price where p.catId == 603 select p.cena).First();
+                    cena = (decimal)(from p in db.Price where p.catId == 513 select p.cena).First();
                     sum += cena * li.bPost4.Value;
                 }
                 if (li.bPost5.HasValue)
                 {
-                    cena = (decimal)(from p in db.Price where p.catId == 604 select p.cena).First();
+                    cena = (decimal)(from p in db.Price where p.catId == 514 select p.cena).First();
                     sum += cena * li.bPost5.Value;
                 }
                 if (li.bPost6.HasValue)
                 {
-                    cena = (decimal)(from p in db.Price where p.catId == 605 select p.cena).First();
+                    cena = (decimal)(from p in db.Price where p.catId == 515 select p.cena).First();
                     sum += cena * li.bPost6.Value;
                 }
                 if (li.bPost7.HasValue)
                 {
-                    cena = (decimal)(from p in db.Price where p.catId == 606 select p.cena).First();
+                    cena = (decimal)(from p in db.Price where p.catId == 516 select p.cena).First();
                     sum += cena * li.bPost7.Value;
                 }
                 if (li.bPost8.HasValue)
                 {
-                    cena = (decimal)(from p in db.Price where p.catId == 607 select p.cena).First();
+                    cena = (decimal)(from p in db.Price where p.catId == 517 select p.cena).First();
                     sum += cena * li.bPost8.Value;
                 }
                 if (li.bPost9.HasValue)
                 {
-                    cena = (decimal)(from p in db.Price where p.catId == 608 select p.cena).First();
+                    cena = (decimal)(from p in db.Price where p.catId == 518 select p.cena).First();
                     sum += cena * li.bPost9.Value;
                 }
 
