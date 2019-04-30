@@ -110,7 +110,14 @@ namespace KvotaWeb.Models.Items
             }
         }
 
-
+        public override string PicturePath
+        {
+            get
+            {
+                return GetExistImageUrl(this.GetType(), Vid, null);
+            }
+            set { }
+        }
 
         [Display(Name = "нанести логотип")]
          public bool OneColor { get; set; }

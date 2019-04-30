@@ -54,6 +54,15 @@ namespace KvotaWeb.Models.Items
             }
         }
 
+        public override string PicturePath
+        {
+            get
+            {
+                return GetExistImageUrl(this.GetType(), Vid, null);
+            }
+            set { }
+        }
+
         [Display(Name = "выполнить нанесение шелкографией")]
          public bool Shelkografiya { get; set; }
         

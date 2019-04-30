@@ -117,6 +117,7 @@ namespace KvotaWeb.Models.Items
         public string ViewName { get; set; }
         public abstract string Srok { get; set; }
         public virtual string Description { get; set; }
+        public virtual string PicturePath { get; set; } = "";
 
         public virtual ListItem ToListItem()
         {
@@ -130,6 +131,18 @@ namespace KvotaWeb.Models.Items
         };
         }
 
+        public string GetExistImageUrl(Type type, int? param1, int? param2)
+        {
+            string imageUrl;
+            if (param1.HasValue)
+            {
+                string dir = $@"/Images/products/{type.Name}/";
+                if (System.IO.File.Exists(HttpContext.Current.Server.MapPath(imageUrl = dir + param1 + ".png"))
+                    || param2.HasValue && System.IO.File.Exists(HttpContext.Current.Server.MapPath(imageUrl = dir + param2 + ".png")))
+                    return imageUrl;
+            }
+            return "";
+        }
 
         public bool TryGetPrice(Postavs firma, double? dTiraz, int? catId, out decimal cena)
         {

@@ -98,6 +98,14 @@ namespace KvotaWeb.Models.Items
             }
         }
 
+        public override string PicturePath
+        {
+            get
+            {
+                return GetExistImageUrl(this.GetType(), Vid, RazmerForma);
+            }
+            set { }
+        }
 
         [Display(Name = "Размер/форма:")]
         public int? RazmerForma { get; set; }
