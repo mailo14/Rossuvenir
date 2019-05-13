@@ -196,6 +196,7 @@
       <DependentUpon>KvotaDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Items\KontrBraslet.cs" />
+    <Compile Include="Models\Items\MultiSuvenir.cs" />
     <Compile Include="Models\Items\SiliconBraslet.cs" />
     <Compile Include="Models\Items\Lenta.cs" />
     <Compile Include="Models\Items\SlapBraslet.cs" />
@@ -416,6 +417,7 @@
     <Content Include="Views\Product\EditSlapBraslet.cshtml" />
     <Content Include="Views\Product\EditLenta.cshtml" />
     <Content Include="Views\Product\EditSiliconBraslet.cshtml" />
+    <Content Include="Views\Shared\EditMultiSuvenir.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

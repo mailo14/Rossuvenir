@@ -1,0 +1,42 @@
+﻿@model KvotaWeb.Models.Items.MultiSuvenir
+
+<form id="myform" method="post" action="/Product/EditЗначки">
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal col-sm-8 col-sm-push-2">
+
+        <div class="form-group">
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Tiraz)
+            </div>
+            <div class="col-sm-7">
+                @Html.EditorFor(model => model.Tiraz, new { htmlAttributes = new { @class = "form-control", @onkeyup = "OnChangeEvent();" } })
+                @Html.ValidationMessageFor(model => model.Tiraz, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        @foreach (var i in Model.Items)
+    {
+        Html.Partial("~/Views/Product/EditFlagNSO", i);
+}
+    </div>
+</form>
+<script type="text/javascript">
+    function OnChangeEvent() {
+        $("body").css("cursor", "progress");
+        $.ajax({
+            type: 'POST',
+            url: "/Product/Recalc",
+            data: $('#myform').serialize(),
+            success: function (data, res) {
+                $("#totalResultsDiv").html(data);
+                $("body").css("cursor", "default");
+            },
+            error: function () {
+                alert("There was an error submitting comment");
+                $("body").css("cursor", "default");
+            }
+        });
+    }
+</script>

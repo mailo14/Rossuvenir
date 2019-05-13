@@ -94,7 +94,8 @@ namespace KvotaWeb.Models.Items
         KontrBraslet = 47,
         SlapBraslet = 48,
         Lenta = 49,
-        SiliconBraslet = 50
+        SiliconBraslet = 50,
+        MultiSuvenir = 51
     };
     public abstract class ItemBase
     {

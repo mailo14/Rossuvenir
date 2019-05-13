@@ -1036,11 +1036,15 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
         [HttpPost]
         public ActionResult Recalc(FormCollection collection)
         {
+            var model00 = new MultiSuvenir();
+            TryUpdateModel(model00, collection);
+
             TipProds tipProd = (TipProds)Enum.Parse(typeof(TipProds), collection["TipProd"]) ; 
            // var tipProd = (TipProds)int.Parse(collection["TipProd"]);
             ItemBase model=null;
             switch (tipProd)
             {
+              //  case TipProds.MultiSuvenir: var model00 = new MultiSuvenir(); TryUpdateModel(model00, collection);                    break;
                 case TipProds.Znachok: var model0 = new Znachok(); TryUpdateModel(model0, collection); model = model0; break;
                 case TipProds.Shelkografiya: var model1 = new Shelkografiya(); TryUpdateModel(model1, collection); model = model1; break;
                 case TipProds.Tampopechat: var model2 = new Tampopechat(); TryUpdateModel(model2, collection); model = model2; break;
