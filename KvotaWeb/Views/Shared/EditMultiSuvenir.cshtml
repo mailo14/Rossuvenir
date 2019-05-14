@@ -1,4 +1,7 @@
-﻿@model KvotaWeb.Models.Items.MultiSuvenir
+﻿@using KvotaWeb.Models
+@using KvotaWeb.Models.Items
+
+@model KvotaWeb.Models.Items.MultiSuvenir
 
 <form id="myform" method="post" action="/Product/EditЗначки">
     @Html.AntiForgeryToken()
@@ -14,15 +17,55 @@
                 @Html.ValidationMessageFor(model => model.Tiraz, "", new { @class = "text-danger" })
             </div>
         </div>
-
-
-        @foreach (var i in Model.Items)
-    {
-        Html.Partial("~/Views/Product/EditFlagNSO", i);
-}
     </div>
+    <div id="dataTable">
+        @foreach (var i in @Model.Items)
+        {
+            @Html.Partial("EditFlagNSO_p", i);
+        }
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-5">Добавить вид нанесения:</label>
+        <div class="col-sm-7">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    (не выбрано) <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a id=@TipProds.DTG.ToString()>DTG (прямая печать на ткани)</a></li>
+                    <li><a id=@TipProds.Gravirovka>Гравировка</a></li>
+                    <li><a id="@TipProds.Decol">Деколь</a></li>
+                    <li><a id="@TipProds.Tampopechat">Тампопечать</a></li>
+                    <li><a id="@TipProds.Tisnenie">Тиснение</a></li>
+                    <li><a id="@TipProds.UFkachestvo">УФ (качество)</a></li>
+                    <li><a id="@TipProds.UFstandart">УФ (стандарт)</a></li>
+                    <li><a id="@TipProds.Shelkografiya">Шелкография</a></li>                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
 </form>
 <script type="text/javascript">
+    $('li a').click(function (e) {
+       // e.preventDefault();
+        var sender = e.target || e.srcElement; //$(sender).
+        alert(this.id);
+        //alert($(this).);
+        var data = this.id;//$("#txtname").val();
+        $.ajax({
+            url: "/Product/AddSubSuvenir",
+            dataType: "html",
+            data: { tipProd: data, multSuvenirId =parentId },
+            success: function (result) {
+                $('#dataTable').append(result);
+            }
+        });
+    });
+    /*
+    function OnAddVid(vid) {
+        alert(vid);
+    }*/
     function OnChangeEvent() {
         $("body").css("cursor", "progress");
         $.ajax({

@@ -1021,6 +1021,11 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
             return Json(data);
         }*/
 
+        public ActionResult AddSubSuvenir(TipProds tipProd,int multSuvenirId)
+        {
+
+            return PartialView("EditFlagNSO_p", new FlagNSO());
+        }
         public ActionResult Recalc(TotalResultsModel totals)
         {
             return PartialView("TotalResults", totals);
@@ -1036,6 +1041,13 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
         [HttpPost]
         public ActionResult Recalc(FormCollection collection)
         {
+            var newcol = new FormCollection();
+            //newcol.Add()
+            foreach (var k in collection.AllKeys)
+            {
+                var el = collection[k];
+            }
+
             var model00 = new MultiSuvenir();
             TryUpdateModel(model00, collection);
 
