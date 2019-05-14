@@ -1023,8 +1023,21 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
 
         public ActionResult AddSubSuvenir(TipProds tipProd,int multSuvenirId)
         {
+            kvotaEntities db = new kvotaEntities();
 
-            return PartialView("EditFlagNSO_p", new FlagNSO());
+            var li = new ListItem();
+            li.tipProd = (int)tipProd;
+            //li.listId = zId;
+         //   li.parentId = multSuvenirId;
+            db.ListItem.Add(li);
+            db.SaveChanges();
+                        
+            //var li = db.ListItem.FirstOrDefault(pp => pp.id == id);
+            var item = ItemBase.Create(li);
+            ViewData = item.ViewData;
+
+            //return PartialView("EditFlagNSO_p", new FlagNSO());
+            return PartialView(item.ViewName, item);
         }
         public ActionResult Recalc(TotalResultsModel totals)
         {
