@@ -21,6 +21,19 @@ namespace KvotaWeb.Models.Items
             return rr;
         }
 
+        public static ItemBase CreateItem(ListItem li)
+        {
+            return new DTG()
+            {
+                Id = li.id,
+                ZakazId = li.listId,
+                Tiraz = li.tiraz,
+                ParentId = li.parentId,
+
+                Razmer = li.param11
+            };
+        }
+
         public override List<CalcLine> Calc()
 
         {

@@ -27,6 +27,20 @@ namespace KvotaWeb.Models.Items
             return rr;
         }
 
+        public static ItemBase CreateItem(ListItem li)
+        {
+            return new Gravirovka()
+            {
+                Id = li.id,
+                ZakazId = li.listId,
+                Tiraz = li.tiraz,
+                ParentId = li.parentId,
+
+                Vid = li.param11,
+                Ploshad = li.param13,
+            };
+        }
+
         public override List<CalcLine> Calc()
 
         {

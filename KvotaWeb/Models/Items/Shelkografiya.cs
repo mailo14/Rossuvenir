@@ -78,6 +78,8 @@ namespace KvotaWeb.Models.Items
                 Id = li.id,
                 ZakazId = li.listId,
                 Tiraz = li.tiraz,
+                ParentId = li.parentId,
+
                 Tcvet = li.param11,
                 KolichestvoTcvetov = li.param12
                     ,

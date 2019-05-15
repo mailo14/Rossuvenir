@@ -92,18 +92,34 @@ namespace KvotaWeb.Controllers
 
         public ActionResult AddLi(int zId, TipProds tipProd)
         {
-            if (tipProd== TipProds.MultiSuvenir)
-
-                return EditLi(0, tipProd);
-            //int tipProd = SelectedIndex++;
             var li = new ListItem();
-            li.tipProd = (int)tipProd;
-            li.listId = zId;
+            if (new TipProds[] { TipProds.DTG, TipProds.Gravirovka, TipProds.Decol, TipProds.Tampopechat, TipProds.Tisnenie, TipProds.UFkachestvo, TipProds.UFstandart, TipProds.Shelkografiya }
+                .Contains(tipProd))
+            {
+                li.tipProd = (int)TipProds.MultiSuvenir;
+                li.listId = zId;
+                db.ListItem.Add(li);
+                db.SaveChanges();
 
-            db.ListItem.Add(li);
-            db.SaveChanges();
-            int id = li.id;
-            return EditLi(id, tipProd);
+                var subLi = new ListItem();
+                subLi.tipProd = (int)tipProd;
+                subLi.parentId = li.id;
+                db.ListItem.Add(subLi);
+                db.SaveChanges();
+
+            return EditLi(li.id, TipProds.MultiSuvenir);
+            }
+            else
+            {
+                //int tipProd = SelectedIndex++;
+                li.tipProd = (int)tipProd;
+                li.listId = zId;
+
+                db.ListItem.Add(li);
+                db.SaveChanges();
+
+            return EditLi(li.id, tipProd);
+            }
             /*switch (tipProd)
             {
                 // case 4: li.vid1 = 201;break;
@@ -156,7 +172,7 @@ namespace KvotaWeb.Controllers
         {              
             switch (tipProd)
             {
-                case TipProds.MultiSuvenir:return View("EditMultiSuvenir",new MultiSuvenir());
+                //case TipProds.MultiSuvenir:return View("EditMultiSuvenir",new MultiSuvenir());
                 //case TipProds.SvetootrazatelNaklei: return  RedirectToAction("EditЗначки2", "Product", new { id = id });
                 case TipProds.Banner: return RedirectToAction("EditBanner", "Product", new { id = id });
                 //case 4:case 23:case 24:case 29:case 30:case 18:case 28: case 31: case 32:  case 33:case 9: case 34:
@@ -281,6 +297,7 @@ namespace KvotaWeb.Models
                 case TipProds.SlapBraslet: return "Слэп браслеты";
                 case TipProds.Lenta: return "Ленты для бейджей (ланъярды)";
                 case TipProds.SiliconBraslet: return "Силиконовые браслеты";
+                case TipProds.MultiSuvenir: return "Сувениры";
 
 
                 case TipProds.Banner: return "Баннеры и ПВХ";

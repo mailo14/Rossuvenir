@@ -34,6 +34,20 @@ namespace KvotaWeb.Models.Items
             return rr;
         }
 
+        public static ItemBase CreateItem(ListItem li)
+        {
+            return new PaketPvd()
+            {
+                Id = li.id,
+                ZakazId = li.listId,
+                Tiraz = li.tiraz,
+                Paket = li.param11,
+                KolichestvoTcvetov1 = li.param12,
+                KolichestvoTcvetov2 = li.param21,
+                PoleZapechatki = li.param14
+            };
+        }
+
         public override List<CalcLine> Calc()
 
         {

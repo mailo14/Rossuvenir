@@ -1028,7 +1028,7 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
             var li = new ListItem();
             li.tipProd = (int)tipProd;
             //li.listId = zId;
-         //   li.parentId = multSuvenirId;
+            li.parentId = multSuvenirId;
             db.ListItem.Add(li);
             db.SaveChanges();
                         
@@ -1054,19 +1054,60 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
         [HttpPost]
         public ActionResult Recalc(FormCollection collection)
         {
-            var newcol = new FormCollection();
-            //newcol.Add()
-            foreach (var k in collection.AllKeys)
-            {
-                var el = collection[k];
-            }
-
-            var model00 = new MultiSuvenir();
-            TryUpdateModel(model00, collection);
-
-            TipProds tipProd = (TipProds)Enum.Parse(typeof(TipProds), collection["TipProd"]) ; 
+            var tipProdsStr = collection["TipProd"].Split(',');
+            TipProds tipProd = (TipProds)Enum.Parse(typeof(TipProds), tipProdsStr[0]) ; 
            // var tipProd = (TipProds)int.Parse(collection["TipProd"]);
             ItemBase model=null;
+            if (tipProd == TipProds.MultiSuvenir)
+            {
+                model = GetModel<SiliconBraslet>(collection); 
+                var n = tipProdsStr.Length - 1;
+                var newcols=new FormCollection[n];
+                var models=new ItemBase[n];
+                for (int i = 0; i < n; i++)
+                {
+                    newcols[i] = new FormCollection();
+                    ItemBase subModel=null;
+                    var stp = (TipProds)Enum.Parse(typeof(TipProds), tipProdsStr[i + 1]);
+                    switch (stp)
+                    {
+                        case TipProds.Shelkografiya: subModel = new Shelkografiya(); break;
+                        case TipProds.Tampopechat: subModel = new Tampopechat(); break;
+                        case TipProds.Tisnenie: subModel = new Tisnenie(); break;
+                        case TipProds.DTG: subModel = new DTG(); break;
+                        case TipProds.Gravirovka: subModel = new Gravirovka(); break;
+                        case TipProds.UFkachestvo: subModel = new UFkachestvo(); break;
+                        case TipProds.UFstandart: subModel = new UFstandart(); break;
+                        case TipProds.Decol: subModel = new Decol(); break;
+                    }
+                    models[i] = subModel;
+                }
+                //newcol.Add()
+                foreach (var k in collection.AllKeys)
+                {
+                    var els = collection[k].Split(',');
+                    int j=0;
+                    foreach (var el in els)
+                    {
+                        while (j < n)
+                            if (models[j].GetType().GetProperty(k) != null)
+                            {
+                                newcols[j].Add(new System.Collections.Specialized.NameValueCollection() { {k,el } });
+                                j++;
+                                break;
+                            }
+                            else j++;
+                    }
+                }
+                for (int ii = 0; ii < n; ii++)
+                {
+                    TryUpdateModel(models[ii], newcols[ii]);
+                    var subLi = models[ii].ToListItem();
+                    subLi.tiraz = model.Tiraz;
+                    SaveLi(subLi);
+                }
+            }
+            else
             switch (tipProd)
             {
               //  case TipProds.MultiSuvenir: var model00 = new MultiSuvenir(); TryUpdateModel(model00, collection);                    break;
@@ -1130,10 +1171,13 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
             kvotaEntities db = new kvotaEntities();
             db.Entry(li).State = System.Data.Entity.EntityState.Modified;
 
-            var z = db.Zakaz.FirstOrDefault(pp => pp.id == li.listId);
-            z.comment = string.Join(", ",
-            db.ListItem.Where(pp => pp.listId == z.id).Select(pp => pp.tipProd).ToList()
-            .Select(pp => ListItem.GetTipProdName((TipProds)pp)));
+            if (li.listId.HasValue)
+            {
+                var z = db.Zakaz.FirstOrDefault(pp => pp.id == li.listId);
+                z.comment = string.Join(", ",
+                db.ListItem.Where(pp => pp.listId == z.id).Select(pp => pp.tipProd).ToList()
+                .Select(pp => ListItem.GetTipProdName((TipProds)pp)));
+            }
             db.SaveChanges();
         }
         [HttpPost]

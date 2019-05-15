@@ -37,6 +37,20 @@ namespace KvotaWeb.Models.Items
             return rr;
         }
 
+        public static ItemBase CreateItem(ListItem li)
+        {
+            return new Tampopechat()
+            {
+                Id = li.id,
+                ZakazId = li.listId,
+                Tiraz = li.tiraz,
+                ParentId = li.parentId,
+
+                Osnova = li.param11,
+                KolichestvoTcvetov = li.param12
+            };
+        }
+
         public override List<CalcLine> Calc()
 
         {

@@ -66,6 +66,8 @@ namespace KvotaWeb.Models.Items
                 Id = li.id,
                 ZakazId = li.listId,
                 Tiraz = li.tiraz,
+                ParentId = li.parentId,
+
                 Izdelie = li.param11,
                 RazmerZapechatki = li.param12,
                 IndividPers = li.param14

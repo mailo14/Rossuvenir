@@ -109,6 +109,7 @@ namespace KvotaWeb.Models.Items
         }
 
         public int Id { get; set; }
+        public int? ParentId { get; set; }
         public TipProds TipProd { get; set; }
 
         public ViewDataDictionary ViewData { get; set; }
@@ -129,7 +130,8 @@ namespace KvotaWeb.Models.Items
                 id = Id,
                 tiraz = Tiraz,
                     listId = ZakazId,
-        };
+                parentId= ParentId
+            };
         }
 
         public string GetExistImageUrl(Type type, int? param1, int? param2)
@@ -205,6 +207,8 @@ var lines = Calc();
         public decimal GetNacenk(int? listId, int tipProd)
             {
                 var db = new kvotaEntities();
+            if (listId.HasValue)
+            {//костыль
                 var z = db.Zakaz.First(pp => pp.id == listId);
                 //+доп.услуги+доп.траты)*наценка
                 //if (z.dopUslDost) sum += 400;
@@ -214,12 +218,13 @@ var lines = Calc();
                 {
                     case 1://стандарт
                         if (tipProd == 3) return 1.4m;
-                    break;
+                        break;
                     //    else return 1.0;
                     case 3://своя
                         if (z.nacenValue.HasValue) return (decimal)z.nacenValue.Value;
-                    break;
+                        break;
                 }
+            }
                 return 1;
             }
         public  TotalResultsModel GetTotal()
@@ -269,45 +274,17 @@ var lines = Calc();
                     return Znachok.CreateItem(li);
 
                 case TipProds.Shelkografiya:
-                    return Shelkografiya.CreateItem(li);
-                                 
+                    return Shelkografiya.CreateItem(li);                                 
   case TipProds.Tampopechat:
-                    return new Tampopechat()
-                    {
-                        Id = li.id,
-                        ZakazId = li.listId,
-                        Tiraz = li.tiraz,
-                        Osnova = li.param11,
-                        KolichestvoTcvetov = li.param12
-                    };
-                case TipProds.PaketPvd:                    return new PaketPvd()
-                    {
-                        Id = li.id,
-                        ZakazId = li.listId,
-                        Tiraz = li.tiraz,
-                        Paket= li.param11,
-                        KolichestvoTcvetov1 = li.param12,
-                        KolichestvoTcvetov2 = li.param21,
-                        PoleZapechatki=li.param14
-                    };   
-                case TipProds.Tisnenie:                    return new Tisnenie()
-                    {
-                        Id = li.id,
-                        ZakazId = li.listId,
-                        Tiraz = li.tiraz,
-                        Vid= li.param11,
-                        Ploshad = li.param13,                        KlisheExists=li.param14
-                    }; 
+                    return Tampopechat.CreateItem(li);
+                case TipProds.PaketPvd:
+                    return PaketPvd.CreateItem(li);
+                case TipProds.Tisnenie:
+                    return Tisnenie.CreateItem(li);
                 case TipProds.DTG:
-                    return new DTG() {Id=li.id,ZakazId= li.listId, Tiraz = li.tiraz,  Razmer = li.param11 };
-                case TipProds.Gravirovka:                    return new Gravirovka()
-                    {
-                        Id = li.id,
-                        ZakazId = li.listId,
-                        Tiraz = li.tiraz,
-                        Vid= li.param11,
-                        Ploshad = li.param13,                        
-                    };
+                    return DTG.CreateItem(li);
+                case TipProds.Gravirovka:
+                    return Gravirovka.CreateItem(li);
                 case TipProds.UFkachestvo:
                     return UFkachestvo.CreateItem(li);
                 case TipProds.UFstandart:
@@ -349,6 +326,8 @@ var lines = Calc();
                     return Lenta.CreateItem(li);
                 case TipProds.SiliconBraslet:
                     return SiliconBraslet.CreateItem(li);
+                case TipProds.MultiSuvenir:
+                    return MultiSuvenir.CreateItem(li);
 
                 default:
                     return null;
