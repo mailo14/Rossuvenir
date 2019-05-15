@@ -27,42 +27,42 @@
         {
             if (i.TipProd == TipProds.DTG)
             {
-                @Html.Partial("EditDTG", i);
+                @Html.Partial("EditDTG",i,i.ViewData);
             }
             else
         if (i.TipProd == TipProds.Gravirovka)
             {
-                @Html.Partial("EditГравировка", i);
+                @Html.Partial("EditГравировка",i,i.ViewData);
             }
             else
         if (i.TipProd == TipProds.Decol)
             {
-                @Html.Partial("EditДеколь", i);
+                @Html.Partial("EditДеколь",i,i.ViewData);
             }
             else
         if (i.TipProd == TipProds.Tampopechat)
             {
-                @Html.Partial("EditТампопечать", i);
+                @Html.Partial("EditТампопечать",i,i.ViewData);
             }
             else
         if (i.TipProd == TipProds.Tisnenie)
             {
-                @Html.Partial("EditТиснение", i);
+                @Html.Partial("EditТиснение",i,i.ViewData);
             }
             else
         if (i.TipProd == TipProds.UFkachestvo)
             {
-                @Html.Partial("EditУФкачество", i);
+                @Html.Partial("EditУФкачество",i,i.ViewData);
             }
             else
         if (i.TipProd == TipProds.UFstandart)
             {
-                @Html.Partial("EditУФстандарт", i);
+                @Html.Partial("EditУФстандарт",i,i.ViewData);
             }
             else
         if (i.TipProd == TipProds.Shelkografiya)
             {
-                @Html.Partial("EditШелкография", i);
+                @Html.Partial("EditШелкография",i,i.ViewData);
             }
         }@**@
     </div>
