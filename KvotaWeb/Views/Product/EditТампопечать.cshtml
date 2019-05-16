@@ -1,60 +1,61 @@
 ﻿@model KvotaWeb.Models.Items.Tampopechat
 
-        <div class="form-horizontal col-sm-8 col-sm-push-2">
-            @Html.AntiForgeryToken()
-            <h4>@KvotaWeb.Models.ListItem.GetTipProdName(@Model.TipProd)</h4>
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.Id)
-            @Html.HiddenFor(model => model.ParentId)
-            @Html.HiddenFor(model => model.TipProd)
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div>
+    @Html.AntiForgeryToken()
+    <h4 style="margin-bottom:0px;">@KvotaWeb.Models.ListItem.GetTipProdName(@Model.TipProd):</h4>
+    <hr style="margin-top:3px;margin-bottom:10px;border-width:5px">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.ParentId)
+    @Html.HiddenFor(model => model.TipProd)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            <div class="form-group">
-                <div class="control-label col-sm-5">
-                    @Html.LabelFor(model => model.Osnova)
-                </div>
-                <div class="col-sm-7">
-                    @Html.DropDownListFor(model => model.Osnova, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param1", @class = "form-control", @onchange = "OnChangeParam1Event();" })
-                    @Html.ValidationMessageFor(model => model.Osnova, "", new { @class = "text-danger" })
-                </div>
-            </div>
+    <div class="form-group">
+        <div class="control-label col-sm-5">
+            @Html.LabelFor(model => model.Osnova)
+        </div>
+        <div class="col-sm-7">
+            @Html.DropDownListFor(model => model.Osnova, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "paramTampopechat1", @class = "form-control", @onchange = "OnChangeParamEventTampopechat1();" })
+            @Html.ValidationMessageFor(model => model.Osnova, "", new { @class = "text-danger" })
+        </div>
+    </div>
 
-            <div class="form-group">
-                <div class="control-label col-sm-5">
-                    @Html.LabelFor(model => model.KolichestvoTcvetov)
-                </div>
-                <div class="col-sm-7">
-                    @Html.DropDownListFor(model => model.KolichestvoTcvetov, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param2", @class = "form-control", @onchange = "OnChangeEvent();" })
-                    @Html.ValidationMessageFor(model => model.KolichestvoTcvetov, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label class="control-label col-sm-5">Срок изготовления:</label>
-                <label class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
-            </div>
+    <div class="form-group">
+        <div class="control-label col-sm-5">
+            @Html.LabelFor(model => model.KolichestvoTcvetov)
+        </div>
+        <div class="col-sm-7">
+            @Html.DropDownListFor(model => model.KolichestvoTcvetov, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "paramTampopechat2", @class = "form-control", @onchange = "OnChangeEvent();" })
+            @Html.ValidationMessageFor(model => model.KolichestvoTcvetov, "", new { @class = "text-danger" })
+        </div>
+    </div>
 
-            @if (Model.Description != null)
+    <div class="form-group">
+        <label class="control-label col-sm-5">Срок изготовления:</label>
+        <label class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
+    </div>
+
+    @if (Model.Description != null)
     {
         <div class="form-group">
             <label class="control-label col-sm-5">Примечание:</label>
             <label class="control-label col-sm-7" style="text-align:left;">@Model.Description </label>
         </div>
-}<hr>
-        </div>
+    }
+</div>
     <script type="text/javascript">
-        function OnChangeParam1Event() {
+        function OnChangeParamEventTampopechat1() {
             //var catId = $(this).val();
-            var catId = $('#param1').val();
+            var catId = $('#paramTampopechat1').val();
                 var url = '@Url.Action("fillParam2", "Product")';
                 $.getJSON(url, { catId: catId }, function (result) {
-                    var ddl = $('#param2');
+                    var ddl = $('#paramTampopechat2');
                     ddl.empty();
                     $(result).each(function () {
                         $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
                     });
                     OnChangeEvent();
-                    $('#param2').focus();
+                    $('#paramTampopechat2').focus();
                 });
         }
     </script>

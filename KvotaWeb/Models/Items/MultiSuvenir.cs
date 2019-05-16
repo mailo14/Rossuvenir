@@ -10,10 +10,7 @@ namespace KvotaWeb.Models.Items
     public class MultiSuvenir : ItemBase
     {
         public List<ItemBase> Items { get; set; }//= new List<ItemBase>() {/* new Znachok(), */new FlagNSO(), new FlagNSO() };
-
-        [Display(Name = "Тираж:")]
-        public double? Tiraz { get; set; }
-
+        
         public override string Srok { get; set ; }
 
         public override ListItem ToListItem()
@@ -43,7 +40,7 @@ namespace KvotaWeb.Models.Items
             foreach (var sub in subs)
             {
                 var item = ItemBase.Create(sub);
-                subCalcs.Add(item.Calc());
+                subCalcs.Add(item.Calc(Tiraz));
             }
 
             var ret = new List<CalcLine>();

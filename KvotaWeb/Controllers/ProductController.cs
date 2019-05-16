@@ -1060,7 +1060,13 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
             ItemBase model=null;
             if (tipProd == TipProds.MultiSuvenir)
             {
-                model = GetModel<SiliconBraslet>(collection); 
+                var newMainCol = new FormCollection (){ {
+                        "Id", collection["Id"].Split(',')[0] } ,
+                    { "TipProd", collection["TipProd"].Split(',')[0] },
+                    { "ZakazId", collection["ZakazId"] },
+                    { "Tiraz", collection["Tiraz"]}
+                };
+                model = GetModel<MultiSuvenir>(newMainCol); 
                 var n = tipProdsStr.Length - 1;
                 var newcols=new FormCollection[n];
                 var models=new ItemBase[n];
@@ -1085,14 +1091,17 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
                 //newcol.Add()
                 foreach (var k in collection.AllKeys)
                 {
-                    var els = collection[k].Split(',');
-                    int j=0;
+                    if (k == "ZakazId" || k == "Tiraz") continue;
+                    
+                    var els = collection[k].Split(',').ToList();
+                    if (k == "Id" || k == "TipProd") els.RemoveAt(0);
+                        int j=0;
                     foreach (var el in els)
                     {
                         while (j < n)
                             if (models[j].GetType().GetProperty(k) != null)
                             {
-                                newcols[j].Add(new System.Collections.Specialized.NameValueCollection() { {k,el } });
+                                newcols[j].Add(k, el);// new System.Collections.Specialized.NameValueCollection() { {k,el.ToString() } });
                                 j++;
                                 break;
                             }
@@ -1101,10 +1110,27 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
                 }
                 for (int ii = 0; ii < n; ii++)
                 {
-                    TryUpdateModel(models[ii], newcols[ii]);
-                    var subLi = models[ii].ToListItem();
-                    subLi.tiraz = model.Tiraz;
-                    SaveLi(subLi);
+                    //model = GetModel<SiliconBraslet>(collection);
+                    // var TT = models[ii].GetType();
+                    // var model0= Activator.CreateInstance(models[ii].GetType());
+                    //BindingContext.ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(() => model0, model0.GetType());
+                    switch (models[ii].TipProd)
+                    {
+                        case TipProds.Shelkografiya: models[ii]=GetModel<Shelkografiya>(newcols[ii]); break;
+                        case TipProds.Tampopechat: models[ii]=GetModel<Tampopechat>(newcols[ii]); break;
+                        case TipProds.Tisnenie: models[ii]=GetModel<Tisnenie>(newcols[ii]); break;
+                        case TipProds.DTG: models[ii]=GetModel<DTG>(newcols[ii]); break;
+                        case TipProds.Gravirovka: models[ii]=GetModel<Gravirovka>(newcols[ii]); break;
+                        case TipProds.UFkachestvo: models[ii]=GetModel<UFkachestvo>(newcols[ii]); break;
+                        case TipProds.UFstandart: models[ii]=GetModel<UFstandart>(newcols[ii]); break;
+                        case TipProds.Decol: models[ii]=GetModel<Decol>(newcols[ii]); break;
+                    }
+                    //TryUpdateModel(model0,new string[] { "Razmer"} ,newcols[ii]);
+                    //TryUpdateModel(models[ii], newcols[ii]);
+
+                        var subLi = models[ii].ToListItem();
+                        subLi.tiraz = model.Tiraz;
+                        SaveLi(subLi);/**/
                 }
             }
             else

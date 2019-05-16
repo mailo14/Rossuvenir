@@ -8,9 +8,11 @@
     <div class="form-horizontal col-sm-8 col-sm-push-2">
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.Id, new { @id = "IdProp" })
+        @Html.HiddenFor(model => model.ZakazId)
+        @Html.HiddenFor(model => model.TipProd)
 
         <hr />
-        <h4>Элемент @Html.ActionLink(" заказа № " + @Model.ZakazId, "Edit", "Home", new { id = @Model.ZakazId }, null)</h4>
+        <h4>Элемент @Html.ActionLink(" заказа № " + @Model.ZakazId, "Edit", "Home", new { id = @Model.ZakazId }, null) - Нанесение логотипа</h4>
         <hr />
         <div class="form-group">
             <div class="control-label col-sm-5">
@@ -21,79 +23,86 @@
                 @Html.ValidationMessageFor(model => model.Tiraz, "", new { @class = "text-danger" })
             </div>
         </div>
-    </div>
-    <div id="dataTable">
-        @foreach (var i in @Model.Items)
-        {
-            if (i.TipProd == TipProds.DTG)
+
+
+        <div id="dataTable" class="form-group" style="margin:0px;">
+            @foreach (var i in @Model.Items)
             {
-                @Html.Partial("EditDTG",i,i.ViewData);
-            }
-            else
-        if (i.TipProd == TipProds.Gravirovka)
-            {
-                @Html.Partial("EditГравировка",i,i.ViewData);
-            }
-            else
-        if (i.TipProd == TipProds.Decol)
-            {
-                @Html.Partial("EditДеколь",i,i.ViewData);
-            }
-            else
-        if (i.TipProd == TipProds.Tampopechat)
-            {
-                @Html.Partial("EditТампопечать",i,i.ViewData);
-            }
-            else
-        if (i.TipProd == TipProds.Tisnenie)
-            {
-                @Html.Partial("EditТиснение",i,i.ViewData);
-            }
-            else
-        if (i.TipProd == TipProds.UFkachestvo)
-            {
-                @Html.Partial("EditУФкачество",i,i.ViewData);
-            }
-            else
-        if (i.TipProd == TipProds.UFstandart)
-            {
-                @Html.Partial("EditУФстандарт",i,i.ViewData);
-            }
-            else
-        if (i.TipProd == TipProds.Shelkografiya)
-            {
-                @Html.Partial("EditШелкография",i,i.ViewData);
-            }
-        }@**@
-    </div>
-    <div class="form-horizontal col-sm-8 col-sm-push-2">
-        <label class="control-label col-sm-5">Добавить вид нанесения:</label>
-        <div class="col-sm-7">
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    (не выбрано) <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a id=@TipProds.DTG.ToString()>DTG (прямая печать на ткани)</a></li>
-                    <li><a id=@TipProds.Gravirovka>Гравировка</a></li>
-                    <li><a id="@TipProds.Decol">Деколь</a></li>
-                    <li><a id="@TipProds.Tampopechat">Тампопечать</a></li>
-                    <li><a id="@TipProds.Tisnenie">Тиснение</a></li>
-                    <li><a id="@TipProds.UFkachestvo">УФ (качество)</a></li>
-                    <li><a id="@TipProds.UFstandart">УФ (стандарт)</a></li>
-                    <li><a id="@TipProds.Shelkografiya">Шелкография</a></li>
-                </ul>
+                if (i.TipProd == TipProds.DTG)
+                {
+                    @Html.Partial("EditDTG", i, i.ViewData);
+                }
+                else
+            if (i.TipProd == TipProds.Gravirovka)
+                {
+                    @Html.Partial("EditГравировка", i, i.ViewData);
+                }
+                else
+            if (i.TipProd == TipProds.Decol)
+                {
+                    @Html.Partial("EditДеколь", i, i.ViewData);
+                }
+                else
+            if (i.TipProd == TipProds.Tampopechat)
+                {
+                    @Html.Partial("EditТампопечать", i, i.ViewData);
+                }
+                else
+            if (i.TipProd == TipProds.Tisnenie)
+                {
+                    @Html.Partial("EditТиснение", i, i.ViewData);
+                }
+                else
+            if (i.TipProd == TipProds.UFkachestvo)
+                {
+                    @Html.Partial("EditУФкачество", i, i.ViewData);
+                }
+                else
+            if (i.TipProd == TipProds.UFstandart)
+                {
+                    @Html.Partial("EditУФстандарт", i, i.ViewData);
+                }
+                else
+            if (i.TipProd == TipProds.Shelkografiya)
+                {
+                    @Html.Partial("EditШелкография", i, i.ViewData);
+                }
+            }@**@
+        </div>
+        
+        <div class="form-group">
+            <hr style="margin-top:3px;margin-bottom:10px;border-width:5px">
+            <label class="control-label col-sm-5">Добавить вид нанесения:</label>
+            <div class="col-sm-7">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        (не выбрано) <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a id=@TipProds.DTG.ToString()>DTG (прямая печать на ткани)</a></li>
+                        <li><a id=@TipProds.Gravirovka>Гравировка</a></li>
+                        <li><a id="@TipProds.Decol">Деколь</a></li>
+                        <li><a id="@TipProds.Tampopechat">Тампопечать</a></li>
+                        <li><a id="@TipProds.Tisnenie">Тиснение</a></li>
+                        <li><a id="@TipProds.UFkachestvo">УФ (качество)</a></li>
+                        <li><a id="@TipProds.UFstandart">УФ (стандарт)</a></li>
+                        <li><a id="@TipProds.Shelkografiya">Шелкография</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
 
+        <div id="totalResultsDiv">
+            @Html.Action("Recalc", "Product", new { totals = @Model.GetTotal() })
+        </div>
+    </div>
 </form>
 <script type="text/javascript">
     $('li a').click(function (e) {
        // e.preventDefault();
         var sender = e.target || e.srcElement; //$(sender).
         var multSuvenirId = $('#IdProp').val();
-        alert(multSuvenirId);
+       // alert(multSuvenirId);
         //alert($(this).);
         var data = this.id;//$("#txtname").val();
         //var parentId = Number("0");//+

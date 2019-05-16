@@ -1,9 +1,10 @@
 ﻿@model KvotaWeb.Models.Items.Shelkografiya
 
 
-<div class="form-horizontal col-sm-8 col-sm-push-2">
+<div>
     @Html.AntiForgeryToken()
-    <h4>@KvotaWeb.Models.ListItem.GetTipProdName(@Model.TipProd)</h4>
+    <h4 style="margin-bottom:0px;">@KvotaWeb.Models.ListItem.GetTipProdName(@Model.TipProd):</h4>
+    <hr style="margin-top:3px;margin-bottom:10px;border-width:5px">
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.ParentId)
@@ -15,7 +16,7 @@
             @Html.LabelFor(model => model.Tcvet)
         </div>
         <div class="col-sm-7">
-            @Html.DropDownListFor(model => model.Tcvet, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param1", @class = "form-control", @onchange = "OnChangeParam1Event();" })
+            @Html.DropDownListFor(model => model.Tcvet, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "paramShelkografiya1", @class = "form-control", @onchange = "OnChangeParamShelkografiyaEvent1();" })
             @Html.ValidationMessageFor(model => model.Tcvet, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -25,7 +26,7 @@
             @Html.LabelFor(model => model.KolichestvoTcvetov)
         </div>
         <div class="col-sm-7">
-            @Html.DropDownListFor(model => model.KolichestvoTcvetov, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "param2", @class = "form-control", @onchange = "OnChangeEvent();" })
+            @Html.DropDownListFor(model => model.KolichestvoTcvetov, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "paramShelkografiya2", @class = "form-control", @onchange = "OnChangeEvent();" })
             @Html.ValidationMessageFor(model => model.KolichestvoTcvetov, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -57,7 +58,7 @@
             @Html.ValidationMessageFor(model => model.Ploshad, "", new { @class = "text-danger" })
         </div>
     </div>
-    
+
     <div class="form-group">
         <label class="control-label col-sm-5">Срок изготовления:</label>
         <label class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
@@ -70,21 +71,20 @@
             <label class="control-label col-sm-7" style="text-align:left;">@Model.Description </label>
         </div>
     }
-    <hr>
 </div>
         <script type="text/javascript">
-                function OnChangeParam1Event() {
+            function OnChangeParamShelkografiyaEvent1() {
                     //var catId = $(this).val();
-                    var catId = $('#param1').val();
+                var catId = $('#paramShelkografiya1').val();
                         var url = '@Url.Action("fillParam2", "Product")';
                         $.getJSON(url, { catId: catId }, function (result) {
-                            var ddl = $('#param2');
+                            var ddl = $('#paramShelkografiya2');
                             ddl.empty();
                             $(result).each(function () {
                                 $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
                             });
                             OnChangeEvent();
-                            $('#param2').focus();
+                            $('#paramShelkografiya2').focus();
                         });
                 }
         </script>

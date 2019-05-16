@@ -1,8 +1,9 @@
 ﻿@model KvotaWeb.Models.Items.DTG
 
-<div class="form-horizontal col-sm-8 col-sm-push-2">
+<div>
     @Html.AntiForgeryToken()
-    <h4>@KvotaWeb.Models.ListItem.GetTipProdName(@Model.TipProd)</h4>
+    <h4 style="margin-bottom:0px;">@KvotaWeb.Models.ListItem.GetTipProdName(@Model.TipProd):</h4>
+    <hr style="margin-top:3px;margin-bottom:10px;border-width:5px">
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.ParentId)
@@ -32,5 +33,5 @@
         </div>
     }
 
-    <hr />
+    
 </div>

@@ -195,6 +195,11 @@ namespace KvotaWeb.Models.Items
             }
         }
         public abstract List<CalcLine> Calc();
+        public List<CalcLine> Calc(double? tiraz)
+        {
+            Tiraz = tiraz;
+            return Calc();
+        }
         public  List<CalcLine> CalcWithNacenkaAndRounded()
         {
 var lines = Calc();
