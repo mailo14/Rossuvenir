@@ -40,15 +40,9 @@ namespace KvotaWeb.Controllers
                 sum += li.total??0;
                 if (s.Length > 0) s += ", ";
                 s += li.TipProdName;
-                /*switch (li.tipProd)
-                {
-                    case 2: s += "полиграфия"; break;
-                    case 3: s += "баннеры"; break;
-                    case 1: s += "сувениры"; break;
-                }*/
             }
-            z.comment = s;
-            z.total = sum;
+            z.comment =(s!="")? s:"Новый заказ";
+            z.total = sum;/**/
             db.SaveChanges();
 
             return View(z);
@@ -263,10 +257,10 @@ namespace KvotaWeb.Models
         {
             get
             {
-                return GetTipProdName((TipProds)tipProd);
+                return GetTipProdName((TipProds)tipProd,id);
             }
         }
-        public static string GetTipProdName(TipProds tipProd)
+        public static string GetTipProdName(TipProds tipProd,int id=0)
         {
             switch (tipProd)
             {
@@ -297,7 +291,13 @@ namespace KvotaWeb.Models
                 case TipProds.SlapBraslet: return "Слэп браслеты";
                 case TipProds.Lenta: return "Ленты для бейджей (ланъярды)";
                 case TipProds.SiliconBraslet: return "Силиконовые браслеты";
-                case TipProds.MultiSuvenir: return "Сувениры";
+                case TipProds.MultiSuvenir:
+                    kvotaEntities db = new kvotaEntities();
+                    string ret= string.Join(@"/",
+                        db.ListItem.Where(pp => pp.parentId == id).Select(pp => pp.tipProd).ToList()
+                        .Select(pp => ListItem.GetTipProdName((TipProds)pp)));
+                    if (ret != "") return ret;
+                        return "Сувениры";
 
 
                 case TipProds.Banner: return "Баннеры и ПВХ";

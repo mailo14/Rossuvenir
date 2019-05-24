@@ -39,8 +39,11 @@ namespace KvotaWeb.Models.Items
             var subCalcs = new List<List<CalcLine>>();
             foreach (var sub in subs)
             {
-                var item = ItemBase.Create(sub);
+                
+                   var item = ItemBase.Create(sub);
+                item.InnerMessageIds.Clear();
                 subCalcs.Add(item.Calc(Tiraz));
+                foreach (var im in item.InnerMessageIds) InnerMessageIds.Add(im); 
             }
 
             var ret = new List<CalcLine>();

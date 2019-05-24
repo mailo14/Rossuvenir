@@ -1200,9 +1200,10 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
             if (li.listId.HasValue)
             {
                 var z = db.Zakaz.FirstOrDefault(pp => pp.id == li.listId);
-                z.comment = string.Join(", ",
-                db.ListItem.Where(pp => pp.listId == z.id).Select(pp => pp.tipProd).ToList()
-                .Select(pp => ListItem.GetTipProdName((TipProds)pp)));
+                string s= string.Join(", ",
+                db.ListItem.Where(pp => pp.listId == z.id).Select(pp => new { pp.tipProd,pp.id }).ToList()
+                .Select(pp => ListItem.GetTipProdName((TipProds)pp.tipProd,pp.id)));
+                z.comment = (s != "") ? s : "Новый заказ";
             }
             db.SaveChanges();
         }
