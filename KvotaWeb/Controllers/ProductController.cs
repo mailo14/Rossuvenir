@@ -1132,6 +1132,16 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
                         subLi.tiraz = model.Tiraz;
                         SaveLi(subLi);/**/
                 }
+
+                
+                    kvotaEntities db = new kvotaEntities();
+                var ids = models.Select(pp => pp.Id);
+                var deleted = (from sl in db.ListItem
+                              where sl.parentId == model.Id && !ids.Contains(sl.id)
+                              select sl).ToList();
+                db.ListItem.RemoveRange(deleted);
+                db.SaveChanges();
+
             }
             else
             switch (tipProd)

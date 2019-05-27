@@ -142,4 +142,13 @@
             }
         });
     }
+    function OnDeleteSubSuvenirEvent(subDivId) {
+        var element = document.getElementById(subDivId);
+
+        if (element.parentNode.childElementCount >2
+            && confirm('Удалить запись?') == true) {
+            element.parentNode.removeChild(element);
+            OnChangeEvent();
+        }
+    }
 </script>
