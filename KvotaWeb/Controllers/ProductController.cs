@@ -1025,6 +1025,9 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
         {
             kvotaEntities db = new kvotaEntities();
 
+            if (db.ListItem.FirstOrDefault(pp=> pp.parentId == multSuvenirId && pp.tipProd==(int)tipProd)!=null)
+                throw new Exception("exist tipProd");
+
             var li = new ListItem();
             li.tipProd = (int)tipProd;
             //li.listId = zId;

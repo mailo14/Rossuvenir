@@ -115,9 +115,11 @@
             success: function (result) {
                 $('#dataTable').append(result);
                 $("body").css("cursor", "default");
+                OnChangeEvent();
             },
-            error: function () {
-                alert("There was an error submitting comment");
+            error: function (request, status, error) {
+                //alert("There was an error submitting comment");
+                alert("Нельзя добавлять уже существующий вид нанесения!");
                 $("body").css("cursor", "default");
             }
         });
@@ -143,9 +145,9 @@
         });
     }
     function OnDeleteSubSuvenirEvent(subDivId) {
+        //alert(subDivId);
         var element = document.getElementById(subDivId);
-
-        if (element.parentNode.childElementCount >2
+        if (element.parentNode.childElementCount >=2
             && confirm('Удалить запись?') == true) {
             element.parentNode.removeChild(element);
             OnChangeEvent();
