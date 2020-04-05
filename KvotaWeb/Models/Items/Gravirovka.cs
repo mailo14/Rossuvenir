@@ -66,15 +66,26 @@ namespace KvotaWeb.Models.Items
 
         private decimal? GetCenaPriladki(Postavs firma, int vid)
         {
-            if (firma == Postavs.РРЦ_1_5) return 450m;
-            if (firma == Postavs.ААА) return 350m;
-            if (firma == Postavs.Плановая_СС) return 300m;
+            //if (firma == Postavs.РРЦ_1_5) return 450m;
+            //if (firma == Postavs.ААА) return 350m;
+
+            if (firma == Postavs.РРЦ_1_5)
+            {
+                var cena = GetCenaPriladki(Postavs.Плановая_СС, vid);
+                if (cena.HasValue)
+                    return 1.5m * cena.Value;
+                else
+                    return null;
+            }
+            if (firma == Postavs.Плановая_СС)
+                return TryGetSingleParam(802);
+
             return null;
         }
 
         private decimal? GetCena(Postavs firma, int vid, decimal ploshad)
         {
-            if (firma == Postavs.РРЦ_1_5)
+            /*if (firma == Postavs.РРЦ_1_5)
             {
                 if (vid == 66) return 7.5m * ploshad;
                 if (vid == 67) return 11m * ploshad;
@@ -84,12 +95,19 @@ namespace KvotaWeb.Models.Items
             {
                 if (vid == 66) return 7m * ploshad;
                 if (vid == 67) return 10.5m * ploshad;
+            }*/
+
+            if (firma == Postavs.РРЦ_1_5)
+            {
+                var cena= GetCena(Postavs.Плановая_СС, vid, ploshad);
+                if (cena.HasValue) return 1.5m * cena.Value;
+                else return null;
             }
 
             if (firma == Postavs.Плановая_СС)
             {
-                if (vid == 66) return 5m * ploshad;
-                if (vid == 67) return 7m * ploshad;
+                if (vid == 66) return TryGetSingleParam(800) * ploshad;
+                if (vid == 67) return TryGetSingleParam(801) * ploshad;
             }
             return null;
         }

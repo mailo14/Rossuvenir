@@ -39,6 +39,14 @@ using System.Web;
         public string ConfirmPassword { get; set; }
         
     }
+
+    public class ImportPricesModel
+    {
+        [Required]
+        [Display(Name = "Путь к файлу")]
+        public string Path { get; set; }
+        
+    }
     public class LocalPasswordModel
     {
         [Required]

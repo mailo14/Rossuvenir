@@ -35,6 +35,53 @@ namespace KvotaWeb.Controllers
         }
 
         [AllowAnonymous]
+        public ActionResult ImportPrices()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Upload(HttpPostedFileBase upload)
+        {
+            if (upload != null)
+            {
+                // получаем имя файла
+                string fileName = System.IO.Path.GetFileName(upload.FileName);
+                // сохраняем файл в папку Files в проекте
+                //upload.SaveAs(Server.MapPath($@"~/Files/{fileName}"));
+                    //Server.MapPath($@"~/Files/{fileName}"));// $@"{fileName}");
+
+
+
+                var result = Importer.Import(upload.InputStream);
+                    
+                if (result == "") result = "Импорт успешен!";
+                return Content("<h2>"+result+"</h2>");
+                
+            }
+            return RedirectToAction("Index","Home");
+        }
+        /*[HttpPost]
+        [Authorize(Roles= "Admin")]
+        [ValidateAntiForgeryToken]
+        public ActionResult ImportPrices(ImportPricesModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                   // WebSecurity.CreateUserAndAccount(model.login, model.Password,                        new { login = model.login });
+                    //WebSecurity.Login(model.login, model.Password);
+                    return RedirectToAction("Index", "Home");
+                }
+                catch (MembershipCreateUserException e)
+                {
+                    ModelState.AddModelError("",e.Message ); // ErrorCodeToString(e.StatusCode));
+                }
+            }
+            return View(model);
+        }*/
+
+        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();

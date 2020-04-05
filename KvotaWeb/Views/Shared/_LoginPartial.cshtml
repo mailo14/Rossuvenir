@@ -8,10 +8,11 @@
     <li><a style="padding-right:0px;">Пользователь:</a></li>
     <li>@Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "изменить" })</li>
     @Html.AntiForgeryToken()
-    <li><a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a></li>
-    @if (@User.Identity.Name == "Ефименко")
+    <li><a href="javascript:document.getElementById('logoutForm').submit()">выйти</a></li>
+    @if (@User.Identity.Name == "Ефименко" || @User.Identity.Name == "dev")
     {
         <li>@Html.ActionLink("добавить", "Register", "Account", routeValues: null, htmlAttributes: new { title = "добавить менеджера" })</li>
+        <li>@Html.ActionLink("импорт цен", "ImportPrices", "Account", routeValues: null, htmlAttributes: new { title = "Импорт цен" })</li>
     }
 </ul>
     }

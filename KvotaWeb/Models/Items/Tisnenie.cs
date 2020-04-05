@@ -70,7 +70,7 @@ namespace KvotaWeb.Models.Items
 
         private decimal GetCenaKlishe(Postavs firma, double ploshad)
         {
-            if (firma==Postavs.РРЦ_1_5 || firma == Postavs.ААА)
+            /*if (firma==Postavs.РРЦ_1_5 || firma == Postavs.ААА)
             {
                 if (ploshad < 31) return 850;
                 if (ploshad < 41) return 1000;
@@ -78,11 +78,16 @@ namespace KvotaWeb.Models.Items
                 return 1300+ Math.Ceiling((decimal)ploshad -50)*18;
             }
             if (firma == Postavs.АртСувенир)
-             return 1000;
-            if (firma == Postavs.Плановая_СС)
+             return 1000;*/
+            if (firma == Postavs.Плановая_СС || firma == Postavs.РРЦ_1_5)
             {
-                if (ploshad < 31) return 1080;
-                return 1400;
+                var cena = 0m;
+                if (ploshad < 31) cena= TryGetSingleParam(804);
+               else cena=   TryGetSingleParam(805);
+
+                if (firma == Postavs.РРЦ_1_5)
+                    cena *= 1.5m;
+                return cena;
             }
             return 0;
         }

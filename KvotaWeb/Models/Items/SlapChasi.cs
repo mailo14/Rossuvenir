@@ -130,25 +130,50 @@ namespace KvotaWeb.Models.Items
                 decimal cena;
 
                 if (TryGetPrice(i, Tiraz, Vid, out cena) == false) continue;
-                
-                decimal nanecenie = 0;
-                if (Shelkografiya)
-                {
-                    if (Tiraz >= 100)
-                        nanecenie += 10;
-                    else nanecenie += 1000.0m / (decimal)Tiraz.Value;
+
+                    decimal dops = 0, allTirazDops = 0;
+                    switch (Vid)
+                    {
+                        case 556:
+                            if (Shelkografiya)
+                            {
+                                if (Tiraz >= 100) dops += TryGetSingleParam(895);
+                                else allTirazDops += TryGetSingleParam(896);
+                            }
+                            if (Lazer) dops += TryGetSingleParam(897);
+                            if (Personal) dops += TryGetSingleParam(898);
+                            break;
+
+                        case 557:
+                            if (Shelkografiya)
+                            {
+                                if (Tiraz >= 100) dops += TryGetSingleParam(899);
+                                else allTirazDops += TryGetSingleParam(900);
+                            }
+                            if (Lazer) dops += TryGetSingleParam(901);
+                            if (Personal) dops += TryGetSingleParam(902);
+                            if (Upakovat) dops += TryGetSingleParam(903);
+                            break;
+
+                        case 558:
+                            if (Shelkografiya)
+                            {
+                                if (Tiraz >= 100) dops += TryGetSingleParam(904);
+                                else allTirazDops += TryGetSingleParam(905);
+                            }
+                            if (Lazer) dops += TryGetSingleParam(906);
+                            if (Personal) dops += TryGetSingleParam(907);
+                            if (Chip16) dops += TryGetSingleParam(908);
+                            if (Upakovat) dops += TryGetSingleParam(909);
+                            break;
+                    } 
+
+                    if (Dvustoronnii) { dops *= 2; allTirazDops *= 2; }
+
+                        cena += dops;
+                    line.Cena = cena * (decimal)Tiraz.Value + allTirazDops;
                 }
-                    if (Lazer) nanecenie += 20;
-                if (Dvustoronnii) nanecenie *= 2;
-
-                if (Personal) nanecenie += 40;
-                if (Vid==558 && Chip16) nanecenie += 25;
-
-
-                 cena += nanecenie;
-                line.Cena = cena * (decimal)Tiraz.Value;
             }
-        }
             var pCena = ret.First(pp => pp.Postav == Postavs.Плановая_СС).Cena; if (pCena.HasValue) ret.First(pp => pp.Postav == Postavs.РРЦ_1_5).Cena = 1.5m * pCena;
 
             return ret;

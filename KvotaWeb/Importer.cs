@@ -5,146 +5,103 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
-using Excel = Microsoft.Office.Interop.Excel;
 
 namespace KvotaWeb
 {
     public static class Importer
     {
-        public static bool IsCompare=true;
-        public static string Import(string filename= @"C:\Downloads\РАБОТА @\Калькулятор КВОТА 2.0\Rossuvenir\калькулятор 5 - блокноты, деколь\калькулятор 2020.04.01 — копия.xlsx")
+        public static bool IsCompare = false;
+        //= true;
+        internal static object Import(string filename = @"C:\Downloads\РАБОТА @\Калькулятор КВОТА 2.0\Rossuvenir\калькулятор 5 - блокноты, деколь\калькулятор 2020.04.01 — копия.xlsx")
+        {
+            FileStream inputStream = new FileStream(filename, FileMode.Open);
+            return Import(inputStream);
+        }
+
+        public static string Import(Stream inputStream)
         {
             kvotaEntities db = new kvotaEntities();
 
-            //System.Threading.Tasks.Task.Factory.StartNew(() => {
-                Excel.Application myExcel = null; Excel.Workbooks myBooks = null;
-                Excel._Workbook myBook = null; Excel.Sheets mySheets = null;
-                Excel._Worksheet mySheet = null; Excel.Range myRange = null;
-                Excel.Range cell = null;
+            using (ExcelEngine excelEngine = new ExcelEngine())
+            {
+
+                IApplication application = excelEngine.Excel;
+                application.DefaultVersion = ExcelVersion.Excel2016;
+
+                IWorkbook workbook = excelEngine.Excel.Workbooks.Open(inputStream);
+                var mySheets = workbook.Worksheets;
+
                 try
                 {
-                    myExcel = new Excel.Application                    {                        Visible = false                    };
-                   // myExcel.Visible = true;
-                    myBooks = (Excel.Workbooks)myExcel.Workbooks;
-                    myExcel.DisplayAlerts = false;
-                    myBook = (Excel._Workbook)(myBooks.Open(filename));
-                    mySheets = (Excel.Sheets)myBook.Worksheets;
-                    mySheet = (Excel._Worksheet)(mySheets.get_Item(1)); mySheet.Select();                    cell = mySheet.Cells;
+                    foreach (var mySheet in mySheets)
+                    {
+                        var cell = mySheet.Range;
+                        switch (GetInt(cell[1, 1]))
+                        {
+                            case (int)TipProds.DTG:
+                                ReadSingleRowTable(db, 415, 2, 3, cell);
+                                break;
+                            case (int)TipProds.Gravirovka:
+                                ReadParam(db, 3, 3, cell);
+                                ReadParam(db, 4, 3, cell);
+                                ReadParam(db, 6, 3, cell);
+                                break;
+                            case (int)TipProds.Decol:
+                                Read2DTable(db, 307, 3, 3, cell);
+                                ReadParam(db, 9, 3, cell);
 
-                }
-                catch (Exception ee)
-                {
-                    //MessageBox.Show("Ошибка чтения файла ");
-                    return ee.Message;
-                }
-                object myEmp = System.Reflection.Missing.Value;
-            // try
+                                Read2DTable(db, 308, 12, 3, cell);
+                                break;
+                            case (int)TipProds.Tampopechat:
+                                Read2DTable(db, 42, 3, 3, cell);
+                                Read2DTable(db, 44, 10, 3, cell);
+                                break;
+                            case (int)TipProds.Tisnenie:
+                                Read2DTable(db, 401, 7, 3, cell);
+                                ReadParam(db, 3, 3, cell);
+                                ReadParam(db, 4, 3, cell);
+                                break;
+                            case (int)TipProds.UFkachestvo:
+                                Read2DTable(db, 169, 3, 3, cell, true);
+                                Read2DTable(db, 170, 7, 3, cell, true);
+                                Read2DTable(db, 171, 11, 3, cell, true);
+                                Read2DTable(db, 172, 15, 3, cell);
+                                break;
+                            case (int)TipProds.UFstandart:
+                                Read2DTable(db, 298, 3, 3, cell);
+                                Read2DTable(db, 299, 8, 3, cell);
+                                Read2DTable(db, 300, 13, 3, cell);
+                                break;
+                            case (int)TipProds.Shelkografiya:
+                                Read2DTable(db, 35, 3, 3, cell);
+                                Read2DTable(db, 36, 10, 3, cell);
+                                Read2DTable(db, 158, 17, 3, cell);
+                                break;
+                            case (int)TipProds.Banner:
+                                Read2DTable(db, 2, 6, 5, cell);
+                                Read2DTable(db, 3, 19, 5, cell);
 
+                                foreach (var row in new int[] { 35, 36, 37, 38, 39, 40, 41, 42, 43 })
+                                    ReadParam(db, row, 5, cell);
+                                break;
+                            case (int)TipProds.Vimpel:
+                                Read2DTable(db, 431, 2, 3, cell);
+                                break;
+                            case (int)TipProds.Znachok:
+                                Read2DTable(db, 414, 2, 3, cell);
+                                break;
+                            case (int)TipProds.KontrBraslet:
+                                foreach (var row in new int[] { 3, 12, 22 })
+                                    ReadTirazPriceTable(db, row, 1, cell);
 
-            // MainWindow.p.Dispatcher.Invoke((Action)(() => { progressBar1.Maximum = 700; }));
+                                foreach (var row in new int[] { 6, 7, 8, 15, 16, 17, 25, 26 })
+                                    ReadParam(db, row, 9, cell);
+                                break;
+                            case (int)TipProds.Lenta:
+                                foreach (var row in new int[] { 3, 14, 26, 38, 50, 62 })
+                                    ReadTirazPriceTable(db, row, 1, cell);
 
-            //foreach (mySheets = (Excel.Sheets)myBook.Worksheets;
-            //mySheet = (Excel._Worksheet)(mySheets.get_Item(1)); mySheet.Select();
-
-            try            {
-                if (GetInt(cell[1, 1]) == (int)TipProds.DTG)
-                {
-                    ReadSingleRowTable(db, 415, 2, 3, cell);
-                }
-
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(2)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.Gravirovka)
-                {
-                    ReadParam(db, 3, 3, cell);
-                    ReadParam(db, 4, 3, cell);
-                    ReadParam(db, 6, 3, cell);
-                }
-
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(3)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.Decol)
-                {
-                    Read2DTable(db, 307, 3, 3, cell);
-                    ReadParam(db, 9, 3, cell);
-
-                    Read2DTable(db, 308, 12, 3, cell);
-                }
-
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(4)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.Tampopechat)
-                {
-                    Read2DTable(db, 42, 3, 3, cell);
-                    Read2DTable(db, 44, 10, 3, cell);
-                }
-
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(5)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.Tisnenie)
-                {
-                    Read2DTable(db, 401, 7, 3, cell);
-                    ReadParam(db, 3, 3, cell);
-                    ReadParam(db, 4, 3, cell);
-                }
-
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(6)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.UFkachestvo)
-                {
-                    Read2DTable(db, 169, 3, 3, cell, true);
-                    Read2DTable(db, 170, 7, 3, cell, true);
-                    Read2DTable(db, 171, 11, 3, cell, true);
-                    Read2DTable(db, 172, 15, 3, cell);
-                }
-
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(7)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.UFstandart)
-                {
-                    Read2DTable(db, 298, 3, 3, cell);
-                    Read2DTable(db, 299, 8, 3, cell);
-                    Read2DTable(db, 300, 13, 3, cell);
-                }
-
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(8)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.Shelkografiya)
-                {
-                    Read2DTable(db, 35, 3, 3, cell);
-                    Read2DTable(db, 36, 10, 3, cell);
-                    Read2DTable(db, 158, 17, 3, cell);
-                }
-
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(9)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.Banner)
-                {
-                    Read2DTable(db, 2, 6, 5, cell);
-                    Read2DTable(db, 3, 19, 5, cell);
-
-                    foreach (var row in new int[] { 35, 36, 37, 38, 39, 40, 41, 42, 43 })
-                        ReadParam(db, row, 5, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(10)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.Vimpel)
-                {
-                    Read2DTable(db, 431, 2, 3, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(11)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.Znachok)
-                {
-                    Read2DTable(db, 414, 2, 3, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(12)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.KontrBraslet)
-                {
-                    foreach (var row in new int[] { 3, 12, 22 })
-                        ReadTirazPriceTable(db, row, 1, cell);
-
-                    foreach (var row in new int[] { 6, 7, 8, 15, 16, 17, 25, 26 })
-                        ReadParam(db, row, 9, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(13)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.Lenta)
-                {
-                    foreach (var row in new int[] { 3, 14, 26, 38, 50, 62 })
-                        ReadTirazPriceTable(db, row, 1, cell);
-
-                    foreach (var row in new int[] {
+                                foreach (var row in new int[] {
                     6
                     ,17,18,19,20,21
                     ,29,30,31,32
@@ -152,41 +109,35 @@ namespace KvotaWeb
                     ,53,54,55,56
                     ,65,66
                 })
-                        ReadParam(db, row, 9, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(14)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.Platok)
-                {
-                    Read2DTable(db, 434, 2, 3, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(15)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.ReklNakidka)
-                {
-                    Read2DTable(db, 435, 2, 3, cell, true);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(16)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.Svetootrazatel)
-                {
-                    ReadTirazPriceTable(db, 3, 1, cell);
-                    ReadTirazPriceTable(db, 12, 1, cell);
-                    ReadTirazPriceTable(db, 23, 1, cell);
-                    ReadTirazPriceTable(db, 33, 1, cell);
+                                    ReadParam(db, row, 9, cell);
 
-                    foreach (var row in new int[] {
+                                break;
+                            case (int)TipProds.Platok:
+                                Read2DTable(db, 434, 2, 3, cell);
+                                break;
+                            case (int)TipProds.ReklNakidka:
+                                Read2DTable(db, 435, 2, 3, cell, true);
+
+                                break;
+                            case (int)TipProds.Svetootrazatel:
+                                ReadTirazPriceTable(db, 3, 1, cell);
+                                ReadTirazPriceTable(db, 12, 1, cell);
+                                ReadTirazPriceTable(db, 23, 1, cell);
+                                ReadTirazPriceTable(db, 33, 1, cell);
+
+                                foreach (var row in new int[] {
                     6,7,8
                     ,15,16,17,18
                     ,26,27,28,29
                     ,36,37,38,39
                 })
-                        ReadParam(db, row, 9, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(17)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.SiliconBraslet)
-                {
-                    foreach (var row in new int[] { 3, 16, 28, 39, 51, 60, 71, 82, 92, 102, 109, 117, 127, 135 })
-                        ReadTirazPriceTable(db, row, 1, cell);
+                                    ReadParam(db, row, 9, cell);
+                                break;
+                            case (int)TipProds.SiliconBraslet:
+                                foreach (var row in new int[] { 3, 16, 28, 39, 51, 60, 71, 82, 92, 102, 109, 117, 127, 135 })
+                                    ReadTirazPriceTable(db, row, 1, cell);
 
-                    foreach (var row in new int[] {
+                                foreach (var row in new int[] {
                     6,7,8,9,10,11,12
                     ,19,20,21,22,23
                     ,31,32,33,34
@@ -202,149 +153,109 @@ namespace KvotaWeb
                     ,130,131,132
                     ,138,139,140
                 })
-                        ReadParam(db, row, 9, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(18)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.SlapChasi)
-                {
-                    ReadTirazPriceTable(db, 3, 1, cell);
-                    ReadTirazPriceTable(db, 12, 1, cell);
-                    ReadTirazPriceTable(db, 22, 1, cell);
+                                    ReadParam(db, row, 9, cell);
+                                break;
+                            case (int)TipProds.SlapChasi:
+                                ReadTirazPriceTable(db, 3, 1, cell);
+                                ReadTirazPriceTable(db, 12, 1, cell);
+                                ReadTirazPriceTable(db, 22, 1, cell);
 
-                    foreach (var row in new int[] {
+                                foreach (var row in new int[] {
                     6,7,8,9
                     ,15,16,17,18,19
                     ,25,26,27,28,29,30
                 })
-                        ReadParam(db, row, 9, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(19)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.Skatert)
-                {
-                    Read2DTable(db, 432, 2, 3, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(20)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.SlapBraslet)
-                {
-                    ReadTirazPriceTable(db, 3, 1, cell);
-                    ReadTirazPriceTable(db, 13, 1, cell);
-                    ReadTirazPriceTable(db, 23, 1, cell);
+                                    ReadParam(db, row, 9, cell);
+                                break;
+                            case (int)TipProds.Skatert:
+                                Read2DTable(db, 432, 2, 3, cell);
+                                break;
+                            case (int)TipProds.SlapBraslet:
+                                ReadTirazPriceTable(db, 3, 1, cell);
+                                ReadTirazPriceTable(db, 13, 1, cell);
+                                ReadTirazPriceTable(db, 23, 1, cell);
 
-                    foreach (var row in new int[] {
+                                foreach (var row in new int[] {
                     6,7,8,9
                     ,16,17,18,19,20
                 })
-                        ReadParam(db, row, 9, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(21)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.SportNomer)
-                {
-                    Read2DTable(db, 436, 2, 3, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(22)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.Flag)
-                {
-                    Read2DTable(db, 428, 2, 3, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(23)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.FlagNSO)
-                {
-                    Read2DTable(db, 430, 2, 3, cell, true);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(24)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.FlagPobedi)
-                {
-                    Read2DTable(db, 429, 2, 3, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(25)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.Sharf)
-                {
-                    Read2DTable(db, 433, 2, 3, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(26)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.BumajniiPaket)
-                {
-                    Read2DTable(db, 419, 2, 3, cell);
-                }
-                mySheet = (Excel._Worksheet)(mySheets.get_Item(27)); mySheet.Select(); cell = mySheet.Cells;
-                if (GetInt(cell[1, 1]) == (int)TipProds.PaketPvd)
-                {
-                    ReadSingleRowTable(db, 412, 3, 3, cell);
+                                    ReadParam(db, row, 9, cell);
+                                break;
+                            case (int)TipProds.SportNomer:
+                                Read2DTable(db, 436, 2, 3, cell);
+                                break;
+                            case (int)TipProds.Flag:
+                                Read2DTable(db, 428, 2, 3, cell);
+                                break;
+                            case (int)TipProds.FlagNSO:
+                                Read2DTable(db, 430, 2, 3, cell, true);
+                                break;
+                            case (int)TipProds.FlagPobedi:
+                                Read2DTable(db, 429, 2, 3, cell);
+                                break;
+                            case (int)TipProds.Sharf:
+                                Read2DTable(db, 433, 2, 3, cell);
+                                break;
+                            case (int)TipProds.BumajniiPaket:
+                                Read2DTable(db, 419, 2, 3, cell);
+                                break;
+                            case (int)TipProds.PaketPvd:
+                                ReadSingleRowTable(db, 412, 3, 3, cell);
 
-                    Read2DTable(db, 413, 12, 3, cell);
+                                Read2DTable(db, 413, 12, 3, cell);
+                                break;
+                            default:
+                                throw new Exception("no product sheet");
+                                break;
+                        }
+                    }
+                    db.SaveChanges();
                 }
-               // db.SaveChanges();
-            }catch(Exception ex)
-            {
-                var msg = $"Ошибка на листе {mySheet.Name} в ячейке {(myExcel.Selection as Excel.Range).Address}: {ex.Message}";
-                return msg;
-            }/**/
-            //MainWindow.p.Dispatcher.Invoke((Action)(() => { progressBar1.Value = progressBar1.Maximum; }));
-            //MessageBox.Show("Импорт завершен!");
-            try
+                catch (Exception ex)
                 {
-                    myBook.Close();
-                    myRange = null; mySheet = null; mySheets = null; myBooks = null; myBook = null; myExcel = null;
-                    GC.Collect();
-                }
-                catch(Exception ex2) { return ex2.Message; }
-            //});
+                    var msg = $"Ошибка на листе {application.ActiveSheet} в ячейке {application.ActiveCell.Address}: {ex.Message}";
+                    return msg;
+                }/**/
+                //MainWindow.p.Dispatcher.Invoke((Action)(() => { progressBar1.Value = progressBar1.Maximum; }));
+                //MessageBox.Show("Импорт завершен!");
+            }
             return "";
         }
 
-        internal static string Import2(string filePath)
+
+        private static void ReadParam(kvotaEntities db, int hi, int hj, IRange cell)
         {
-            using (ExcelEngine excelEngine = new ExcelEngine())
-            {
-                //Load the file into stream
-                FileStream inputStream = new FileStream(filePath, FileMode.Open);
-
-                IApplication application = excelEngine.Excel;
-                application.DefaultVersion = ExcelVersion.Excel2016;
-
-                //Loads or open an existing workbook through Open method of IWorkbooks
-                IWorkbook workbook = excelEngine.Excel.Workbooks.Open(inputStream);
-
-                IWorksheet worksheet = workbook.Worksheets[0];
-                // var bb = worksheet.Cells[1, 2].Value2.ToString();
-                var b2 = worksheet.Range[1, 1].Value2.ToString();
-                return b2;
-                    }
-            }
-
-            private static void ReadParam(kvotaEntities db, int hi, int hj, Excel.Range cell)
-        {
-            cell[hi, hj].Select();
+            cell[hi, hj].Activate();
             int id = GetInt(cell[hi, hj]);
 
             var exist = (from pp in db.Price
-                         where pp.catId== id && pp.firma == (int)Postavs.Плановая_СС
+                         where pp.catId == id && pp.firma == (int)Postavs.Плановая_СС
                          select pp).ToList();
-            if (exist.Count!=1)
+            if (exist.Count != 1)
                 throw new Exception("param not 1");
 
-            cell[hi, hj+1].Select();
-            var s = cell[hi, hj + 1];            
+            cell[hi, hj + 1].Activate();
+            var s = cell[hi, hj + 1];
             double cena = 0;
             if (!CellEmpty(s))
                 cena = GetDouble(s);
 
-            if (IsCompare) if (cena!=exist[0].cena) throw new Exception("param");
+            if (IsCompare) if (cena != exist[0].cena) throw new Exception("param");
             exist[0].cena = cena;
         }
 
-        private static void ReadTirazPriceTable(kvotaEntities db,  int hi, int hj, Excel.Range cell, bool noParent=false)
+        private static void ReadTirazPriceTable(kvotaEntities db, int hi, int hj, IRange cell, bool noParent = false)
         {
-            int i = 2, j = 3,maxJ, empLines = 1, tiraz;
+            int i = 2, j = 3, maxJ, empLines = 1, tiraz;
 
             i = hi + 1; maxJ = hj + 1;
-           var exist= new List<Price>();
-            while (!CellEmpty(cell[i, maxJ]) )
+            var exist = new List<Price>();
+            while (!CellEmpty(cell[i, maxJ]))
             {
-                cell[i, maxJ].Select();
+                cell[i, maxJ].Activate();
                 int parentId = GetInt(cell[i, maxJ]);
                 exist.AddRange(from pp in db.Price
-                               where pp.catId== parentId && pp.firma == (int)Postavs.Плановая_СС
+                               where pp.catId == parentId && pp.firma == (int)Postavs.Плановая_СС
                                orderby pp.catId, pp.tiraz
                                select pp);
                 maxJ++;
@@ -352,21 +263,21 @@ namespace KvotaWeb
 
             var newlist = new List<Price>();
             double cena = 0;
-            i = hi+1;
-            while (!CellEmpty(cell[++i, hj]) )
+            i = hi + 1;
+            while (!CellEmpty(cell[++i, hj]))
             {
-                cell[i, hj].Select();
+                cell[i, hj].Activate();
                 tiraz = GetInt(cell[i, hj]);
                 j = 1;
-                while (hj + j<maxJ)//(cell[i, hj + j].Text) != "")
+                while (hj + j < maxJ)//(cell[i, hj + j].Text) != "")
                 {
-                    cell[i, hj + j].Select();
-                   var s = cell[i, hj + j];
-                    if (!CellEmpty(s) )
+                    cell[i, hj + j].Activate();
+                    var s = cell[i, hj + j];
+                    if (!CellEmpty(s))
                     {
                         cena = GetDouble(s);
 
-                        cell[hi, hj + j].Select();
+                        cell[hi, hj + j].Activate();
                         var id = GetInt(cell[hi + 1, hj + j]);
                         var p = new Price { catId = id, firma = (int)Postavs.Плановая_СС, cena = cena, tiraz = tiraz };
                         newlist.Add(p);
@@ -381,7 +292,7 @@ namespace KvotaWeb
             db.Price.AddRange(newlist);
         }
 
-        private static void ReadSingleRowTable(kvotaEntities db, int parentId, int hi, int hj, Excel.Range cell, bool noParent=false)
+        private static void ReadSingleRowTable(kvotaEntities db, int parentId, int hi, int hj, IRange cell, bool noParent = false)
         {
             var exist = (from pp in db.Price
                          join cc in db.Category on pp.catId equals cc.id
@@ -392,13 +303,13 @@ namespace KvotaWeb
             int i = 2, j = 3, empLines = 1, id;
             double cena = 0;
             i = hi;
-            while (!CellEmpty(cell[++i, hj]) )
+            while (!CellEmpty(cell[++i, hj]))
             {
-                cell[i, hj].Select();
+                cell[i, hj].Activate();
                 id = GetInt(cell[i, hj]);
-                cell[i, hj+1].Select();
-                var s = cell[i, hj+1];
-                if (!CellEmpty(s ))
+                cell[i, hj + 1].Activate();
+                var s = cell[i, hj + 1];
+                if (!CellEmpty(s))
                 {
                     cena = GetDouble(s);
                     var p = new Price { catId = id, firma = (int)Postavs.Плановая_СС, cena = cena };
@@ -412,38 +323,38 @@ namespace KvotaWeb
             db.Price.AddRange(newlist);
         }
 
-        private static void Read2DTable(            kvotaEntities db, int parentId, int hi, int hj, Excel.Range cell, bool noParent=false)
+        private static void Read2DTable(kvotaEntities db, int parentId, int hi, int hj, IRange cell, bool noParent = false)
         {
             List<Price> exist;
             if (noParent)
                 exist = (from pp in db.Price
-                         where pp.catId== parentId && pp.firma == (int)Postavs.Плановая_СС
+                         where pp.catId == parentId && pp.firma == (int)Postavs.Плановая_СС
                          orderby pp.catId, pp.tiraz
                          select pp).ToList();
-            else 
-            exist = (from pp in db.Price
+            else
+                exist = (from pp in db.Price
                          join cc in db.Category on pp.catId equals cc.id
                          where cc.parentId == parentId && pp.firma == (int)Postavs.Плановая_СС
                          orderby pp.catId, pp.tiraz
                          select pp).ToList();
             var newlist = new List<Price>();
-            int i = 2, j = 3,  id;
+            int i = 2, j = 3, id;
             double cena = 0;
             i = hi;
-            while (!CellEmpty(cell[++i, hj]) )
+            while (!CellEmpty(cell[++i, hj]))
             {
-                cell[i, hj].Select();
+                cell[i, hj].Activate();
                 id = GetInt(cell[i, hj]);
                 j = 1;
-                while (!CellEmpty(cell[i, hj + j]) )
+                while (!CellEmpty(cell[i, hj + j]))
                 {
-                    cell[i, hj + j].Select();
-                     var s= cell[i, hj + j]; 
+                    cell[i, hj + j].Activate();
+                    var s = cell[i, hj + j];
                     if (!CellEmpty(s))
                     {
                         cena = GetDouble(s);
 
-                        cell[hi, hj + j].Select();
+                        cell[hi, hj + j].Activate();
                         var tiraz = GetInt(cell[hi, hj + j]);
                         var p = new Price { catId = id, firma = (int)Postavs.Плановая_СС, cena = cena, tiraz = tiraz };
                         newlist.Add(p);
@@ -452,7 +363,7 @@ namespace KvotaWeb
                 }
             }
 
-           if(IsCompare) Compare(newlist, exist);
+            if (IsCompare) Compare(newlist, exist);
             db.Price.RemoveRange(exist);
             db.Price.AddRange(newlist);
         }
@@ -460,7 +371,7 @@ namespace KvotaWeb
         private static void Compare(List<Price> newlist, List<Price> exist)
         {
             newlist = newlist.OrderBy(pp => pp.catId).ThenBy(pp => pp.tiraz).ToList();
-            if (newlist.Count == exist.Count)
+            if (newlist.Count == exist.Count && exist.Count > 0)
             {
                 for (int k = 0; k < exist.Count; k++)
                 {
@@ -472,27 +383,28 @@ namespace KvotaWeb
             else throw new Exception("Count");
         }
 
-        private static bool CellEmpty(Excel.Range cell)
+
+        private static bool CellEmpty(IRange cell)
         {
             if (cell.Value2 == null)
                 return true;
 
-            var text = cell.Value2.ToString();
+            var text = cell.HasFormula ? cell.FormulaNumberValue.ToString() : cell.Value2.ToString();
             return text == "";
         }
 
-        private static int GetInt(Excel.Range cell)
+        private static int GetInt(IRange cell)
         {
-            var text = cell.Value2.ToString();
+            var text = cell.HasFormula ? cell.FormulaNumberValue.ToString() : cell.Value2.ToString();
             double id = 0;
-            if (double.TryParse(text, out id) && (int)id==id)
+            if (double.TryParse(text, out id) && (int)id == id)
                 return (int)id;
             throw new Exception("wrong int");
         }
 
-        private static double GetDouble(Excel.Range cell)
+        private static double GetDouble(IRange cell)
         {
-            string s = cell.Value2.ToString();
+            string s = cell.HasFormula ? cell.FormulaNumberValue.ToString() : cell.Value2.ToString();
             s = s.Replace(".", ",").Replace(" ", "").Trim();
             double cena = 0;
 
@@ -502,5 +414,7 @@ namespace KvotaWeb
             }
             throw new Exception("wrong float");
         }
+
+
     }
 }

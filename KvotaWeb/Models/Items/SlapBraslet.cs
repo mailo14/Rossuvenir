@@ -183,24 +183,31 @@ namespace KvotaWeb.Models.Items
                 ret.Add(line);
                 if (i == Postavs.Плановая_СС)
                 {
-                    if (Vid== null || Tiraz == null) continue;
+                    if (Vid == null || Tiraz == null) continue;
 
-                decimal cena;
+                    decimal cena;
 
-                if (TryGetPrice(i, Tiraz,  Vid, out cena) == false) continue;
-                
-                decimal dops = 0, allTirazDops = 0;
-                if ((Vid==553 || Vid == 554) &&  OneColor) dops +=  7 ;
-                if ((Vid==553 || Vid == 554) && DopTcveta!=null) dops += (decimal)DopTcveta.Value*7;
-                if (Vid == 553 && Polnocvet) dops += 15;
-                    if ((Vid == 553 || Vid == 554) && Upakovat) dops += 2;
-                    if (Vid == 554)
+                    if (TryGetPrice(i, Tiraz, Vid, out cena) == false) continue;
+
+                    decimal dops = 0, allTirazDops = 0;
+                    switch (Vid)
                     {
-                        if (PechatForma) allTirazDops += 300;
-                        if (SmenaTcveta) allTirazDops += 200;
+                        case 553:
+                            if (OneColor) dops += TryGetSingleParam(910);
+                            if (DopTcveta != null) dops += (decimal)DopTcveta.Value * TryGetSingleParam(911);
+                            if (Polnocvet) dops += TryGetSingleParam(912);
+                            if (Upakovat) dops += TryGetSingleParam(913);
+                            break;
+                        case 554:
+                            if (OneColor) dops += TryGetSingleParam(914);
+                            if (DopTcveta != null) dops += (decimal)DopTcveta.Value * TryGetSingleParam(915);
+                            if (Upakovat) dops += TryGetSingleParam(916);
+                            if (PechatForma) allTirazDops += TryGetSingleParam(917);
+                            if (SmenaTcveta) allTirazDops += TryGetSingleParam(918);
+                            break;
                     }
 
-                        cena += dops;
+                    cena += dops;
                     line.Cena = cena * (decimal)Tiraz.Value + allTirazDops;
                 }
             }

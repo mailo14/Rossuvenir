@@ -169,16 +169,16 @@ namespace KvotaWeb.Models.Items
                     decimal dops = 0, allTirazDops = 0;
                     if (Vid==559 && Nanesenie.HasValue)
                     {
-                        if (Nanesenie == 575) dops += 0.2m;
-                        else if (Nanesenie == 576) dops += 0.7m;
-                        else if (Nanesenie == 577) dops += 3m;
+                        if (Nanesenie == 575) dops += TryGetSingleParam(806);
+                        else if (Nanesenie == 576) dops += TryGetSingleParam(807);
+                        else if (Nanesenie == 577) dops += TryGetSingleParam(808);
                     }
                     if (Vid == 560)
                     {
                         if (NanestiLogo)
-                            dops += 0.9m;
-                        if (PechatForma) allTirazDops += 900;
-                        if (SmenaTcveta) allTirazDops += 300;
+                            dops += TryGetSingleParam(919);
+                        if (PechatForma) allTirazDops += TryGetSingleParam(920);
+                        if (SmenaTcveta) allTirazDops += TryGetSingleParam(921);
                     }
 
                 cena += dops;

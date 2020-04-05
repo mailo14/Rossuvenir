@@ -166,20 +166,43 @@ namespace KvotaWeb.Models.Items
                 ret.Add(line);
                 if (i == Postavs.Плановая_СС)
                 {
-                    if (Vid== null || Tiraz == null ||  ((Vid== 568 || Vid== 569) && RazmerForma==null )) continue;
+                    if (Vid == null || Tiraz == null || ((Vid == 568 || Vid == 569) && RazmerForma == null)) continue;
 
-                decimal cena;
+                    decimal cena;
 
-                if (TryGetPrice(i, Tiraz, (Vid == 568 || Vid == 569)?RazmerForma: Vid, out cena) == false) continue;
-                
-                decimal dops = 0;
-                if (OneColor) dops += (Vid == 567) ? 7 : 5;
-                if (DopTcveta!=null) dops += (decimal)DopTcveta.Value*( (Vid == 567) ? 7 : 5);
-                if (Polnocvet) dops += 15;
-                if (Upakovat && Vid!= 566) dops += 2;
+                    if (TryGetPrice(i, Tiraz, (Vid == 568 || Vid == 569) ? RazmerForma : Vid, out cena) == false) continue;
 
-                cena += dops;
-                line.Cena = cena * (decimal)Tiraz.Value;
+                    decimal dops = 0;
+
+                    switch (Vid)
+                    {
+                        case 566:
+                            if (OneColor) dops += TryGetSingleParam(828);
+                            if (DopTcveta != null) dops += (decimal)DopTcveta.Value * TryGetSingleParam(829);
+                            if (Polnocvet) dops += TryGetSingleParam(830);
+                            break;
+                        case 567:
+                            if (OneColor) dops += TryGetSingleParam(831);
+                            if (DopTcveta != null) dops += (decimal)DopTcveta.Value * TryGetSingleParam(832);
+                            if (Polnocvet) dops += TryGetSingleParam(833);
+                            if (Upakovat) dops += TryGetSingleParam(834);
+                            break;
+                        case 568:
+                            if (OneColor) dops += TryGetSingleParam(835);
+                            if (DopTcveta != null) dops += (decimal)DopTcveta.Value * TryGetSingleParam(836);
+                            if (Polnocvet) dops += TryGetSingleParam(837);
+                            if (Upakovat) dops += TryGetSingleParam(838);
+                            break;
+                        case 569:
+                            if (OneColor) dops += TryGetSingleParam(839);
+                            if (DopTcveta != null) dops += (decimal)DopTcveta.Value * TryGetSingleParam(840);
+                            if (Polnocvet) dops += TryGetSingleParam(841);
+                            if (Upakovat) dops += TryGetSingleParam(842);
+                            break;
+                    }
+
+                    cena += dops;
+                    line.Cena = cena * (decimal)Tiraz.Value;
                 }
             }
             var pCena = ret.First(pp => pp.Postav == Postavs.Плановая_СС).Cena; if (pCena.HasValue) ret.First(pp => pp.Postav == Postavs.РРЦ_1_5).Cena = 1.5m * pCena;

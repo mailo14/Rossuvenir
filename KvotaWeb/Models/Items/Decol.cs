@@ -103,7 +103,7 @@ namespace KvotaWeb.Models.Items
                     if (Diametr == 319) koef = 0.8;
                     else if (Diametr == 321) koef = 1.1;
                 }
-                if (Zolotoi) cena += (decimal)Ploshad.Value * 4;
+                if (Zolotoi) cena += (decimal)Ploshad.Value * TryGetSingleParam(803);
                 cena = cena * (decimal)koef;
                 line.Cena = cena * (decimal)Tiraz.Value;
             }

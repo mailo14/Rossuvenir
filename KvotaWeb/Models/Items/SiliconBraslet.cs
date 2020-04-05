@@ -261,7 +261,7 @@ namespace KvotaWeb.Models.Items
                 AddZastez = li.param64,
             };
         }
-        
+
         public override List<CalcLine> Calc()
 
         {
@@ -272,51 +272,102 @@ namespace KvotaWeb.Models.Items
                 ret.Add(line);
                 if (i == Postavs.Плановая_СС)
                 {
-                    if (Vid == null || Tiraz == null 
-                        || new int[] { 578, 579, 582, 583, 584 }.Contains(Vid.Value) && RazmerForma==null) continue;
+                    if (Vid == null || Tiraz == null
+                        || new int[] { 578, 579, 582, 583, 584 }.Contains(Vid.Value) && RazmerForma == null) continue;
 
-                decimal cena;
+                    decimal cena;
 
-                    
-                    if (TryGetPrice(i, Tiraz,  (new int[] { 578,579,582,583,584}.Contains(Vid.Value))?RazmerForma:Vid, out cena) == false) continue;
+
+                    if (TryGetPrice(i, Tiraz, (new int[] { 578, 579, 582, 583, 584 }.Contains(Vid.Value)) ? RazmerForma : Vid, out cena) == false) continue;
 
                     decimal dops = 0, allTirazDops = 0;
-                    if (DopTcveta != null && new int[] { 578, 579, 580, 581, 583, 585 }.Contains(Vid.Value))
-                        dops += (decimal)DopTcveta.Value*4;
-                    if (AddKolco && new int[] { 578, 580, 581, 585, 586, 588 }.Contains(Vid.Value))
-                        dops += (Vid==588)?2:4;
-                    if (Svetonakop && new int[] { 578, 579, 582, 583, 584 }.Contains(Vid.Value))
-                        dops += 2;
-                    if (Upakovat && new int[] { 578, 579, 580, 581, 583, 584, 585, 586, 587, 588, 589 }.Contains(Vid.Value))
+
+                    switch (Vid)
                     {
-                        if (Vid == 581) dops += 0;
-                        else if (Vid == 588) dops += 4;
-                        else dops += 2;
+                        case 578:
+                            if (DopTcveta != null) dops += (decimal)DopTcveta.Value * TryGetSingleParam(843);
+                            if (AddKolco) dops += TryGetSingleParam(844);
+                            if (Svetonakop) dops += TryGetSingleParam(845);
+                            if (Upakovat) dops += TryGetSingleParam(846);
+                            if (Svirl) dops += TryGetSingleParam(847);
+                            if (SmenaTcveta) allTirazDops += TryGetSingleParam(848);
+                            if (SmenaRazmera) allTirazDops += TryGetSingleParam(849);
+                            break;
+
+                        case 579:
+                            if (DopTcveta != null) dops += (decimal)DopTcveta.Value * TryGetSingleParam(850);
+                           if (Svetonakop) dops += TryGetSingleParam(851);
+                            if (Upakovat) dops += TryGetSingleParam(852);
+                            if (Svirl) dops += TryGetSingleParam(853);
+                            if (SmenaRazmera) allTirazDops += TryGetSingleParam(854);
+                            break;
+                        case 580:
+                            if (DopTcveta != null) dops += (decimal)DopTcveta.Value * TryGetSingleParam(855);
+                            if (AddKolco) dops += TryGetSingleParam(856);
+                            if (Upakovat) dops += TryGetSingleParam(857);
+                            if (SmenaTcveta) allTirazDops += TryGetSingleParam(858);
+                            break;
+                        case 581:
+                            if (DopTcveta != null) dops += (decimal)DopTcveta.Value * TryGetSingleParam(859);
+                            if (AddKolco) dops += TryGetSingleParam(860);
+                            if (Upakovat) dops += TryGetSingleParam(861);
+                            if (SmenaTcveta) allTirazDops += TryGetSingleParam(862);
+                            break;
+                        case 582:
+                            if (Svetonakop) dops += TryGetSingleParam(863);
+                            if (Personal) dops += TryGetSingleParam(864);
+                            break;
+                        case 583:
+                            if (DopTcveta != null) dops += (decimal)DopTcveta.Value * TryGetSingleParam(865);
+                             if (Svetonakop) dops += TryGetSingleParam(866);
+                            if (Upakovat) dops += TryGetSingleParam(867);
+                            if (Svirl) dops += TryGetSingleParam(868);
+                             if (SmenaRazmera) allTirazDops += TryGetSingleParam(869);
+                            break;
+                        case 584:
+                            if (Svetonakop) dops += TryGetSingleParam(870);
+                            if (Upakovat) dops += TryGetSingleParam(871);
+                            if (Svirl) dops += TryGetSingleParam(872);
+                            if (SmenaRazmera) allTirazDops += TryGetSingleParam(873);
+                            break;
+                        case 585:
+                            if (DopTcveta != null) dops += (decimal)DopTcveta.Value * TryGetSingleParam(874);
+                            if (AddKolco) dops += TryGetSingleParam(875);
+                           if (Upakovat) dops += TryGetSingleParam(876);
+                            if (SmenaTcveta) allTirazDops += TryGetSingleParam(877);
+                            break;
+                        case 586:
+                            if (AddKolco) dops += TryGetSingleParam(878);
+                            if (Upakovat) dops += TryGetSingleParam(879);
+                            break;
+                        case 587:
+                            if (Upakovat) dops += TryGetSingleParam(880);
+                            break;
+                        case 588:
+                            if (Logo) dops += TryGetSingleParam(881);
+                           if (Upakovat) dops += TryGetSingleParam(882);
+                            if (AddKolco) dops += TryGetSingleParam(883);
+                            break;
+                        case 589:
+                            if (Logo) dops += TryGetSingleParam(884);
+                            if (AddNum) dops += TryGetSingleParam(885);
+                            if (Upakovat) dops += TryGetSingleParam(886);
+                            if (AddKrep) dops += TryGetSingleParam(887);
+                            if (AddZastez) dops += TryGetSingleParam(888);
+                            break;
+                        case 590:
+                            if (Personal) dops += TryGetSingleParam(889);
+                            if (Logo) dops += TryGetSingleParam(890);
+                            if (AddNum) dops += TryGetSingleParam(891);
+                            break;
+                        case 591:
+                            if (Personal) dops += TryGetSingleParam(892);
+                            if (Logo) dops += TryGetSingleParam(893);
+                            if (AddNum) dops += TryGetSingleParam(894);
+                            break;
                     }
-                    if (Svirl && new int[] { 578, 579, 583, 584}.Contains(Vid.Value))
-                        dops += 4;
-                    if (SmenaTcveta && new int[] { 578, 580, 581,585}.Contains(Vid.Value))
-                        allTirazDops += 200;
-                    if (SmenaRazmera && new int[] { 578, 579, 583, 584 }.Contains(Vid.Value))
-                        allTirazDops += (Vid==578)?300:1000; 
 
-                    if (Personal && new int[] { 582,590,591}.Contains(Vid.Value))
-                        dops += (Vid==582)?40:0;
-                    if (Logo && new int[] { 588, 589, 590, 591 }.Contains(Vid.Value))
-                    {
-
-                        if (Vid == 588) dops += 4;
-                        else if (Vid == 589) dops += 10;
-                        else dops += 20;
-                    }
-                    if (AddNum && new int[] { 589, 590, 591 }.Contains(Vid.Value))
-                        dops += 20;
-                    if (AddKrep && Vid== 589)
-                        dops += 15;
-                    if (AddZastez && Vid == 589)
-                        dops += 15;
-
-                        cena += dops;
+                    cena += dops;
                     line.Cena = cena * (decimal)Tiraz.Value + allTirazDops;
                 }
             }

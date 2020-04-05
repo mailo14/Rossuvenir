@@ -153,21 +153,35 @@ namespace KvotaWeb.Models.Items
             var tiraz = (decimal)dTiraz;
             if (tiraz == 0) return false;
 
-            kvotaEntities db = new kvotaEntities();
-            var minTiraz = (from p in db.Price where p.firma == (int)firma && p.catId == catId orderby p.tiraz select (int?)p.tiraz).FirstOrDefault();
-            if (!minTiraz.HasValue) return false;
-
-            var maxTirazi = (from p in db.Price where p.firma == (int)firma && p.catId == catId orderby p.tiraz descending select p.tiraz).Take(2).ToArray();
-            if (maxTirazi.Length==2 && tiraz > 2 * maxTirazi[0] - maxTirazi[1]) InnerMessageIds.Add(InnerMessages.AskBetterPrice);
-            if (tiraz < minTiraz)
+            if (firma == Postavs.Плановая_СС || firma == Postavs.РРЦ_1_5)
             {
-                cena = (decimal)(from p in db.Price where p.firma == (int)firma && p.catId == catId && p.tiraz == minTiraz select p.cena).First();
-                cena = cena * minTiraz.Value / tiraz;
-            }
-            else
-                cena = (decimal)(from p in db.Price where p.firma == (int)firma && p.catId == catId && p.tiraz <= tiraz orderby p.tiraz descending select p.cena).First();
+                bool is1_5 = false; if (firma == Postavs.РРЦ_1_5) { is1_5 = true; firma = Postavs.Плановая_СС; }
+                kvotaEntities db = new kvotaEntities();
+                var minTiraz = (from p in db.Price where p.firma == (int)firma && p.catId == catId orderby p.tiraz select (int?)p.tiraz).FirstOrDefault();
+                if (!minTiraz.HasValue) return false;
 
-            return true;
+                var maxTirazi = (from p in db.Price where p.firma == (int)firma && p.catId == catId orderby p.tiraz descending select p.tiraz).Take(2).ToArray();
+                if (maxTirazi.Length == 2 && tiraz > 2 * maxTirazi[0] - maxTirazi[1]) InnerMessageIds.Add(InnerMessages.AskBetterPrice);
+                if (tiraz < minTiraz)
+                {
+                    cena = (decimal)(from p in db.Price where p.firma == (int)firma && p.catId == catId && p.tiraz == minTiraz select p.cena).First();
+                    cena = cena * minTiraz.Value / tiraz;
+                }
+                else
+                    cena = (decimal)(from p in db.Price where p.firma == (int)firma && p.catId == catId && p.tiraz <= tiraz orderby p.tiraz descending select p.cena).First();
+
+                if (is1_5) cena *= 1.5m;
+                return true;
+            }
+            return false;
+        }
+
+        public decimal TryGetSingleParam(int paramId,Postavs firma=Postavs.Плановая_СС)
+        {
+            kvotaEntities db = new kvotaEntities();
+            return (decimal)(from p in db.Price
+                    where p.firma == (int)firma && p.catId == paramId
+                    select p.cena).Single();
         }
 
         public enum InnerMessages

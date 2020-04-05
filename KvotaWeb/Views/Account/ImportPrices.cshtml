@@ -1,0 +1,13 @@
+﻿@model KvotaWeb.Models.ImportPricesModel
+@{
+
+}
+<hgroup class="title">
+    <h2>Импорт файла с ценами</h2>
+</hgroup>
+<h3>Выберите файл для загрузки</h3>
+@using (Html.BeginForm("Upload", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="upload" /><br>
+    <input type="submit" value="Загрузить" />
+}

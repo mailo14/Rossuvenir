@@ -208,25 +208,47 @@ namespace KvotaWeb.Models.Items
                 {
                     if (Vid != 532 && Vid == null || Tiraz == null) continue;
 
-                decimal cena;
+                    decimal cena;
 
-                if (TryGetPrice(i, Tiraz,  (Vid==532)?532:RazmerForma, out cena) == false) continue;
-                
-                decimal dops = 0, allTirazDops = 0;
-                    if (Vid != 532 && Vid != 537)
+                    if (TryGetPrice(i, Tiraz, (Vid == 532) ? 532 : RazmerForma, out cena) == false) continue;
+
+                    decimal dops = 0, allTirazDops = 0;
+                    switch (Vid)
                     {
-                        if (Premium) dops += 8;
-                        if (ZamokObriv) dops += 8;
-                        if (MezurZamok) dops += 8;                        
+                        case 532:
+                            if (Karmashek) dops += TryGetSingleParam(924);
+                            break;
+                        case 533:
+                            if (Premium) dops += TryGetSingleParam(809);
+                            if (ZamokObriv) dops += TryGetSingleParam(810);
+                            if (MezurZamok) dops += TryGetSingleParam(811);
+                            if (Karmashek) dops += TryGetSingleParam(812);
+                            if (LogoObr) dops += TryGetSingleParam(813);
+                            break;
+                        case 534:
+                            if (Premium) dops += TryGetSingleParam(814);
+                            if (ZamokObriv) dops += TryGetSingleParam(815);
+                            if (MezurZamok) dops += TryGetSingleParam(816);
+                            if (Karmashek) dops += TryGetSingleParam(817);
+                            break;
+                        case 535:
+                            if (Premium) dops += TryGetSingleParam(818);
+                            if (ZamokObriv) dops += TryGetSingleParam(819);
+                            if (MezurZamok) dops += TryGetSingleParam(820);
+                            if (Karmashek) dops += TryGetSingleParam(821);
+                            break;
+                        case 536:
+                            if (Premium) dops += TryGetSingleParam(822);
+                            if (ZamokObriv) dops += TryGetSingleParam(823);
+                            if (MezurZamok) dops += TryGetSingleParam(824);
+                            if (Karmashek) dops += TryGetSingleParam(825);
+                            break;
+                        case 537:
+                            if (LogoObyom) dops += TryGetSingleParam(826);
+                            if (KrepKolco) dops += TryGetSingleParam(827);
+                            break;
                     }
-                    if (Vid != 537 && Karmashek) dops += 18;
-                    if (Vid==533 && LogoObr) dops += 0;
-if (Vid == 537)
-                    {
-                        if (LogoObyom) dops += 20;
-                        if (KrepKolco) dops += 0;
-                    }
-                        cena += dops;
+                    cena += dops;
                     line.Cena = cena * (decimal)Tiraz.Value + allTirazDops;
                 }
             }
