@@ -107,6 +107,8 @@ namespace KvotaWeb.Controllers
             {
                 //int tipProd = SelectedIndex++;
                 li.tipProd = (int)tipProd;
+                if (li.tipProd == 3) li.bDpi = 144;
+
                 li.listId = zId;
 
                 db.ListItem.Add(li);
@@ -257,50 +259,51 @@ namespace KvotaWeb.Models
         {
             get
             {
-                return GetTipProdName((TipProds)tipProd,id);
+                return GetTipProdName((TipProds)tipProd,id,false);
             }
         }
-        public static string GetTipProdName(TipProds tipProd,int id=0)
+        public static string GetTipProdName(TipProds tipProd,int id=0,bool addIstochnikCen=true)
         {
+            string name;
             switch (tipProd)
             {
-                case TipProds.Znachok: return "Закатные значки";
-                case TipProds.Shelkografiya: return "Шелкография";
-                case TipProds.Tampopechat: return "Тампопечать";
-                case TipProds.PaketPvd: return "Пакеты ПВД";
-                case TipProds.Tisnenie: return "Тиснение";
-                case TipProds.DTG: return "DTG";
-                case TipProds.Gravirovka: return "Гравировка";
-                case TipProds.UFkachestvo: return "УФ (качество)";
-                case TipProds.UFstandart: return "УФ (стандарт)";
-                case TipProds.Decol: return "Деколь";
-                case TipProds.BumajniiPaket: return "Пакеты бумажные";
-                case TipProds.Flag: return "Флаги и растяжки";
-                case TipProds.FlagPobedi: return "Флаги Победы (Копия Знамени Победы)";
-                case TipProds.FlagNSO: return "Флаги Новосибирской области и Новосибирска";
-                case TipProds.Vimpel: return "Вымпелы";
-                case TipProds.Skatert: return "Скатерти";
-                case TipProds.Sharf: return "Шарфы";
-                case TipProds.Platok: return "Платки, косынки";
-                case TipProds.ReklNakidka: return "Рекламные накидки";
-                case TipProds.SportNomer: return "Спортивные номера";
-                case TipProds.Futbolka: return "Футболки";
-                case TipProds.SlapChasi: return "Силиконовые слэп часы";
-                case TipProds.Svetootrazatel: return "Светоотражатели";
-                case TipProds.KontrBraslet: return "Контрольные браслеты";
-                case TipProds.SlapBraslet: return "Слэп браслеты";
-                case TipProds.Lenta: return "Ленты для бейджей (ланъярды)";
-                case TipProds.SiliconBraslet: return "Силиконовые браслеты";
+                case TipProds.Znachok: name= "Закатные значки";break;
+                case TipProds.Shelkografiya: name= "Шелкография";break;
+                case TipProds.Tampopechat: name= "Тампопечать";break;
+                case TipProds.PaketPvd: name= "Пакеты ПВД";break;
+                case TipProds.Tisnenie: name= "Тиснение";break;
+                case TipProds.DTG: name= "DTG";break;
+                case TipProds.Gravirovka: name= "Гравировка";break;
+                case TipProds.UFkachestvo: name= "УФ (качество)";break;
+                case TipProds.UFstandart: name= "УФ (стандарт)";break;
+                case TipProds.Decol: name= "Деколь";break;
+                case TipProds.BumajniiPaket: name= "Пакеты бумажные";break;
+                case TipProds.Flag: name= "Флаги и растяжки";break;
+                case TipProds.FlagPobedi: name= "Флаги Победы (Копия Знамени Победы)";break;
+                case TipProds.FlagNSO: name= "Флаги Новосибирской области и Новосибирска";break;
+                case TipProds.Vimpel: name= "Вымпелы";break;
+                case TipProds.Skatert: name= "Скатерти";break;
+                case TipProds.Sharf: name= "Шарфы";break;
+                case TipProds.Platok: name= "Платки, косынки";break;
+                case TipProds.ReklNakidka: name= "Рекламные накидки";break;
+                case TipProds.SportNomer: name= "Спортивные номера";break;
+                case TipProds.Futbolka: name= "Футболки";break;
+                case TipProds.SlapChasi: name= "Силиконовые слэп часы";break;
+                case TipProds.Svetootrazatel: name= "Светоотражатели";break;
+                case TipProds.KontrBraslet: name= "Контрольные браслеты";break;
+                case TipProds.SlapBraslet: name= "Слэп браслеты";break;
+                case TipProds.Lenta: name= "Ленты для бейджей (ланъярды)";break;
+                case TipProds.SiliconBraslet: name= "Силиконовые браслеты";break;
                 case TipProds.MultiSuvenir:
                     kvotaEntities db = new kvotaEntities();
                     string ret= string.Join(@"/",
                         db.ListItem.Where(pp => pp.parentId == id).Select(pp => pp.tipProd).ToList()
-                        .Select(pp => ListItem.GetTipProdName((TipProds)pp)));
+                        .Select(pp => ListItem.GetTipProdName((TipProds)pp,id,addIstochnikCen)));
                     if (ret != "") return ret;
                         return "Сувениры";
 
 
-                case TipProds.Banner: return "Баннеры и ПВХ";
+                case TipProds.Banner:  name= "Баннеры и ПВХ";break;
                     /*
                 case 1: return "Нанесение логотипа";
                 
@@ -316,6 +319,13 @@ namespace KvotaWeb.Models
                 case 16: return "Запись дисков";*/
                 default: return null;
             }
+            if (addIstochnikCen)
+            {
+                var tipProdInfo = new kvotaEntities().Product.FirstOrDefault(pp => pp.id == (int)tipProd);
+                if (tipProdInfo != null && tipProdInfo.istochnikCen != "")
+                    name += $" ({tipProdInfo.istochnikCen})";
+            }
+            return name;
         }
         public bool askBetterPrice = false;
     }

@@ -85,6 +85,13 @@
           <Property Name="cena" Type="float" Nullable="false" />
           <Property Name="firma" Type="float" Nullable="false" />
         </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="istochnikCen" Type="varchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="Rabotnik">
           <Key>
             <PropertyRef Name="id" />
@@ -115,6 +122,7 @@
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ListItem" EntityType="Self.ListItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Price" EntityType="Self.Price" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rabotnik" EntityType="Self.Rabotnik" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Zakaz" EntityType="Self.Zakaz" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -128,6 +136,7 @@
           <EntitySet Name="Price" EntityType="kvotaModel.Price" />
           <EntitySet Name="Rabotnik" EntityType="kvotaModel.Rabotnik" />
           <EntitySet Name="Zakaz" EntityType="kvotaModel.Zakaz" />
+          <EntitySet Name="Product" EntityType="kvotaModel.Product" />
         </EntityContainer>
         <EntityType Name="Category">
           <Key>
@@ -234,6 +243,13 @@
           <Property Name="userId" Type="Int32" Nullable="false" />
           <Property Name="dat" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="userName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="istochnikCen" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -348,6 +364,14 @@
                 <ScalarProperty Name="total" ColumnName="total" />
                 <ScalarProperty Name="comment" ColumnName="comment" />
                 <ScalarProperty Name="num" ColumnName="num" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="kvotaModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="istochnikCen" ColumnName="istochnikCen" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

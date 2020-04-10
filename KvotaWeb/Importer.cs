@@ -36,7 +36,13 @@ namespace KvotaWeb
                     foreach (var mySheet in mySheets)
                     {
                         var cell = mySheet.Range;
-                        switch (GetInt(cell[1, 1]))
+                        var tipProd = GetInt(cell[1, 1]);
+
+                        var existProdInfo = db.Product.FirstOrDefault(pp => pp.id == tipProd);
+                        if (existProdInfo == null) db.Product.Add(existProdInfo = new Product() { id = tipProd });
+                        existProdInfo.istochnikCen= (cell["G1"].Value2 == null)?"": cell["G1"].Value2.ToString();
+
+                        switch (tipProd)
                         {
                             case (int)TipProds.DTG:
                                 ReadSingleRowTable(db, 415, 2, 3, cell);
@@ -70,7 +76,7 @@ namespace KvotaWeb
                             case (int)TipProds.UFstandart:
                                 Read2DTable(db, 298, 3, 3, cell);
                                 Read2DTable(db, 299, 8, 3, cell);
-                                Read2DTable(db, 300, 13, 3, cell);
+                                //Read2DTable(db, 300, 13, 3, cell);
                                 break;
                             case (int)TipProds.Shelkografiya:
                                 Read2DTable(db, 35, 3, 3, cell);
@@ -287,6 +293,7 @@ namespace KvotaWeb
             }
             newlist = newlist.OrderBy(pp => pp.catId).ThenBy(pp => pp.tiraz).ToList();
 
+            if(!newlist.Any()) throw new Exception("no values");
             if (IsCompare) Compare(newlist, exist);
             db.Price.RemoveRange(exist);
             db.Price.AddRange(newlist);
@@ -318,6 +325,7 @@ namespace KvotaWeb
             }
             newlist = newlist.OrderBy(pp => pp.catId).ThenBy(pp => pp.tiraz).ToList();
 
+            if (!newlist.Any()) throw new Exception("no values");
             if (IsCompare) Compare(newlist, exist);
             db.Price.RemoveRange(exist);
             db.Price.AddRange(newlist);
@@ -363,6 +371,7 @@ namespace KvotaWeb
                 }
             }
 
+            if (!newlist.Any()) throw new Exception("no values");
             if (IsCompare) Compare(newlist, exist);
             db.Price.RemoveRange(exist);
             db.Price.AddRange(newlist);

@@ -258,6 +258,9 @@
     <Compile Include="Models\Price.cs">
       <DependentUpon>KvotaDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Product.cs">
+      <DependentUpon>KvotaDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Rabotnik.cs">
       <DependentUpon>KvotaDB.tt</DependentUpon>
     </Compile>

@@ -1216,7 +1216,7 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
                 var z = db.Zakaz.FirstOrDefault(pp => pp.id == li.listId);
                 string s= string.Join(", ",
                 db.ListItem.Where(pp => pp.listId == z.id).Select(pp => new { pp.tipProd,pp.id }).ToList()
-                .Select(pp => ListItem.GetTipProdName((TipProds)pp.tipProd,pp.id)));
+                .Select(pp => ListItem.GetTipProdName((TipProds)pp.tipProd,pp.id,false)));
                 z.comment = (s != "") ? s : "Новый заказ";
             }
             db.SaveChanges();

@@ -77,7 +77,10 @@ namespace KvotaWeb.Models.Items
     }
 
     public enum Postavs:int { РРЦ_1_5=1, АртСувенир=2, ААА=3, Плановая_СС=10};
-    public enum TipProds:int { Znachok = 4, Shelkografiya = 23, Tampopechat = 24, PaketPvd = 29, Tisnenie = 30, DTG = 18, Gravirovka = 28, UFkachestvo = 31, UFstandart = 32, Decol = 33, BumajniiPaket = 9, Flag = 34
+    public enum TipProds : int
+    {
+        Znachok = 4, Shelkografiya = 23, Tampopechat = 24, PaketPvd = 29, Tisnenie = 30, DTG = 18, Gravirovka = 28, UFkachestvo = 31
+            , UFstandart = 32, Decol = 33, BumajniiPaket = 9, Flag = 34
             , Banner = 3,
         FlagPobedi = 35,
         FlagNSO = 36,
