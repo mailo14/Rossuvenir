@@ -1025,8 +1025,7 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
         {
             kvotaEntities db = new kvotaEntities();
 
-            if (db.ListItem.FirstOrDefault(pp=> pp.parentId == multSuvenirId && pp.tipProd==(int)tipProd)!=null)
-                return HttpNotFound();
+            //if (db.ListItem.FirstOrDefault(pp=> pp.parentId == multSuvenirId && pp.tipProd==(int)tipProd)!=null)                return HttpNotFound();
             //throw new Exception("exist tipProd");
 
             var li = new ListItem();
@@ -1096,8 +1095,10 @@ var vm =  Mapper.Map<SvetootrazatelOneValueVM>(item);//ItemBase.Create(li);
                 foreach (var k in collection.AllKeys)
                 {
                     if (k == "ZakazId" || k == "Tiraz") continue;
-                    
-                    var els = collection[k].Split(',').ToList();
+
+                    var str = collection[k];
+                    str = str.Replace("true,false", "true");
+                    var els = str.Split(',').ToList();
                     if (k == "Id" || k == "TipProd") els.RemoveAt(0);
                         int j=0;
                     foreach (var el in els)

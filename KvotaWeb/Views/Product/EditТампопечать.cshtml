@@ -18,7 +18,8 @@
             @Html.LabelFor(model => model.Osnova)
         </div>
         <div class="col-sm-7">
-            @Html.DropDownListFor(model => model.Osnova, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "paramTampopechat1", @class = "form-control", @onchange = "OnChangeParamEventTampopechat1();" })
+            @Html.DropDownListFor(model => model.Osnova, @ViewData["params1"] as SelectList, "(не выбрано)"
+           , new { @id = "paramTampopechat1" + Model.Id, @class = "form-control", @onchange = "OnChangeParamEventTampopechat1(" + Model.Id + ");" })
             @Html.ValidationMessageFor(model => model.Osnova, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -28,7 +29,8 @@
             @Html.LabelFor(model => model.KolichestvoTcvetov)
         </div>
         <div class="col-sm-7">
-            @Html.DropDownListFor(model => model.KolichestvoTcvetov, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "paramTampopechat2", @class = "form-control", @onchange = "OnChangeEvent();" })
+            @Html.DropDownListFor(model => model.KolichestvoTcvetov, @ViewData["params2"] as SelectList, "(не выбрано)"
+           , new { @id = "paramTampopechat2" + Model.Id, @class = "form-control", @onchange = "OnChangeEvent();" })
             @Html.ValidationMessageFor(model => model.KolichestvoTcvetov, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -46,18 +48,18 @@
         </div>
     }
     <script type="text/javascript">
-        function OnChangeParamEventTampopechat1() {
+        function OnChangeParamEventTampopechat1(modelId) {
             //var catId = $(this).val();
-            var catId = $('#paramTampopechat1').val();
+            var catId = $('#paramTampopechat1' + modelId).val();
                 var url = '@Url.Action("fillParam2", "Product")';
                 $.getJSON(url, { catId: catId }, function (result) {
-                    var ddl = $('#paramTampopechat2');
+                    var ddl = $('#paramTampopechat2' + modelId);
                     ddl.empty();
                     $(result).each(function () {
                         $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
                     });
                     OnChangeEvent();
-                    $('#paramTampopechat2').focus();
+                    $('#paramTampopechat2' + modelId).focus();
                 });
         }
     </script>

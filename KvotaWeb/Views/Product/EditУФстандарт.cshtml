@@ -18,7 +18,8 @@
             @Html.LabelFor(model => model.Izdelie)
         </div>
         <div class="col-sm-7">
-            @Html.DropDownListFor(model => model.Izdelie, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "paramUFstandart1", @class = "form-control", @onchange = "OnChangeParamUFstandartEvent1();" })
+            @Html.DropDownListFor(model => model.Izdelie, @ViewData["params1"] as SelectList, "(не выбрано)"
+           , new { @id = "paramUFstandart1" + Model.Id, @class = "form-control", @onchange = "OnChangeParamUFstandartEvent1(" + Model.Id + ");" })
             @Html.ValidationMessageFor(model => model.Izdelie, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -28,7 +29,8 @@
             @Html.LabelFor(model => model.Tcvet)
         </div>
         <div class="col-sm-7">
-            @Html.DropDownListFor(model => model.Tcvet, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "paramUFstandart2", @class = "form-control", @onchange = "OnChangeEvent();" })
+            @Html.DropDownListFor(model => model.Tcvet, @ViewData["params2"] as SelectList, "(не выбрано)"
+           , new { @id = "paramUFstandart2" + Model.Id, @class = "form-control", @onchange = "OnChangeEvent();" })
             @Html.ValidationMessageFor(model => model.Tcvet, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -46,18 +48,18 @@
         </div>
     }
     <script type="text/javascript">
-        function OnChangeParamUFstandartEvent1() {
+        function OnChangeParamUFstandartEvent1(modelId) {
             //var catId = $(this).val();
-            var catId = $('#paramUFstandart1').val();
+            var catId = $('#paramUFstandart1' + modelId).val();
                 var url = '@Url.Action("fillParam2", "Product")';
                 $.getJSON(url, { catId: catId }, function (result) {
-                    var ddl = $('#paramUFstandart2');
+                    var ddl = $('#paramUFstandart2' + modelId);
                     ddl.empty();
                     $(result).each(function () {
                         $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
                     });
                     OnChangeEvent();
-                    $('#paramUFstandart2').focus();
+                    $('#paramUFstandart2' + modelId).focus();
                 });
         }
     </script>

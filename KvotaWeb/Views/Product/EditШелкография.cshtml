@@ -19,7 +19,8 @@
             @Html.LabelFor(model => model.Tcvet)
         </div>
         <div class="col-sm-7">
-            @Html.DropDownListFor(model => model.Tcvet, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "paramShelkografiya1", @class = "form-control", @onchange = "OnChangeParamShelkografiyaEvent1();" })
+            @Html.DropDownListFor(model => model.Tcvet, @ViewData["params1"] as SelectList, "(не выбрано)"
+                , new { @id = "paramShelkografiya1" + Model.Id, @class = "form-control", @onchange = "OnChangeParamShelkografiyaEvent1(" + Model.Id + ");" })
             @Html.ValidationMessageFor(model => model.Tcvet, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -29,65 +30,58 @@
             @Html.LabelFor(model => model.KolichestvoTcvetov)
         </div>
         <div class="col-sm-7">
-            @Html.DropDownListFor(model => model.KolichestvoTcvetov, @ViewData["params2"] as SelectList, "(не выбрано)", new { @id = "paramShelkografiya2", @class = "form-control", @onchange = "OnChangeEvent();" })
+            @Html.DropDownListFor(model => model.KolichestvoTcvetov, @ViewData["params2"] as SelectList, "(не выбрано)"
+                , new { @id = "paramShelkografiya2" + Model.Id, @class = "form-control", @onchange = "OnChangeEvent();" })
             @Html.ValidationMessageFor(model => model.KolichestvoTcvetov, "", new { @class = "text-danger" })
         </div>
     </div>
 
 
-    <div class="form-group" id="paramDiv4" style=@ViewData["paramDivStyle4"] align="left">
-        @*<label class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
-                @Html.EditorFor(model => model.Sintetika, new { htmlAttributes = new { @id = "param4", @class = "form-check-input", @onchange = "OnChangeEvent();" } })
-                <label for="param4" id="paramLabel4">@Html.LabelFor(model => model.Sintetika)</label>
-            </label>*@
+    <div class="form-group" id="@("paramDiv4"+Model.Id)" style=@ViewData["paramDivStyle4"] align="left">
         <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
-            @Html.EditorFor(model => model.Sintetika, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
-            @Html.LabelFor(model => model.Sintetika)
+            @Html.EditorFor(model => model.Sintetika, new { htmlAttributes = new { id = "paramShelkografiya4" + Model.Id, @onchange = "OnChangeEvent();" } })
+            @Html.LabelFor(model => model.Sintetika, new { @for = "paramShelkografiya4" + Model.Id })
         </div>
     </div>
 
-    @*<div class="form-group" id="paramDiv5" style=@ViewData["paramDivStyle5"] align="left">
-            <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
-                @Html.EditorFor(model => model.FormatA3, new { htmlAttributes = new { @onchange = "OnChangeEvent();" } })
-                @Html.LabelFor(model => model.FormatA3)
-            </div>
-        </div>*@
-    <div class="form-group">
-        <div class="control-label col-sm-5">
-            @Html.LabelFor(model => model.Ploshad)
-        </div>
-        <div class="col-sm-7">
-            @Html.DropDownListFor(model => model.Ploshad, @ViewData["params3"] as SelectList, "(не выбрано)", new { @id = "param3", @class = "form-control", @onchange = "OnChangeEvent();" })
-            @Html.ValidationMessageFor(model => model.Ploshad, "", new { @class = "text-danger" })
-        </div>
-    </div>
 
-    <div class="form-group">
-        <label class="control-label col-sm-5">Срок изготовления:</label>
-        <label class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
-    </div>
-
-    @if (Model.Description != null)
-    {
         <div class="form-group">
-            <label class="control-label col-sm-5">Примечание:</label>
-            <label class="control-label col-sm-7" style="text-align:left;">@Model.Description </label>
+            <div class="control-label col-sm-5">
+                @Html.LabelFor(model => model.Ploshad)
+            </div>
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.Ploshad, @ViewData["params3"] as SelectList, "(не выбрано)"
+                    , new { @id = "param3" + Model.Id, @class = "form-control", @onchange = "OnChangeEvent();" })
+                @Html.ValidationMessageFor(model => model.Ploshad, "", new { @class = "text-danger" })
+            </div>
         </div>
-    }
-    <script type="text/javascript">
-            function OnChangeParamShelkografiyaEvent1() {
+
+        <div class="form-group">
+            <label class="control-label col-sm-5">Срок изготовления:</label>
+            <label class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
+        </div>
+
+        @if (Model.Description != null)
+        {
+            <div class="form-group">
+                <label class="control-label col-sm-5">Примечание:</label>
+                <label class="control-label col-sm-7" style="text-align:left;">@Model.Description </label>
+            </div>
+        }
+        <script type="text/javascript">
+        function OnChangeParamShelkografiyaEvent1(modelId) {
                     //var catId = $(this).val();
-                var catId = $('#paramShelkografiya1').val();
+                var catId = $('#paramShelkografiya1' + modelId).val();
                         var url = '@Url.Action("fillParam2", "Product")';
                         $.getJSON(url, { catId: catId }, function (result) {
-                            var ddl = $('#paramShelkografiya2');
+                            var ddl = $('#paramShelkografiya2' + modelId);
                             ddl.empty();
                             $(result).each(function () {
                                 $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
                             });
                             OnChangeEvent();
-                            $('#paramShelkografiya2').focus();
+                            $('#paramShelkografiya2' + modelId).focus();
                         });
                 }
-    </script>
-</div>
+        </script>
+    </div>
