@@ -41,7 +41,7 @@ namespace KvotaWeb
                         var existProdInfo = db.Product.FirstOrDefault(pp => pp.id == tipProd);
                         if (existProdInfo == null) db.Product.Add(existProdInfo = new Product() { id = tipProd });
                         existProdInfo.istochnikCen= (cell["G1"].Value2 == null)?"": cell["G1"].Value2.ToString();
-
+                        //if (!new[] { (int)TipProds.UFkachestvo, (int)TipProds.UFstandart }.Contains(tipProd)) continue;//TODO del
                         switch (tipProd)
                         {
                             case (int)TipProds.DTG:
@@ -72,6 +72,9 @@ namespace KvotaWeb
                                 Read2DTable(db, 170, 7, 3, cell, true);
                                 Read2DTable(db, 171, 11, 3, cell, true);
                                 Read2DTable(db, 172, 15, 3, cell);
+
+                                Read2DTable(db, 640, 26, 3, cell, true);
+                                Read2DTable(db, 641, 31, 3, cell, true);
                                 break;
                             case (int)TipProds.UFstandart:
                                 Read2DTable(db, 298, 3, 3, cell);
