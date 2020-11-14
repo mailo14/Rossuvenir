@@ -31,7 +31,7 @@ namespace KvotaWeb.Models.Items
                     descr = "5–7 календарных дней";
                 else if (catId == 590 || catId == 591)
                     descr = "21–25 дней";
-                return descr;
+                return descr + SrokPripiska;
             }
             set { }
         }

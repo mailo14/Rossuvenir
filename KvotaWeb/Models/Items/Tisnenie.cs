@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class Tisnenie : ItemBase
     {
-        public override string Srok { get; set; } = "от 5-ти рабочих дней";
+        public override string Srok { get; set; } = "от 5-ти рабочих дней" + SrokPripiska;
 
         [Display(Name = "Вид:")]
         public int? Vid { get; set; }

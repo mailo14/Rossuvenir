@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class FlagPobedi : ItemBase
     {
-        public override string Srok { get; set; } = "в наличии и под заказ 1-3 рабочих дня";
+        public override string Srok { get; set; } = "в наличии и под заказ 1-3 рабочих дня" + SrokPripiska;
         public override string Description { get; set; } = "Материал Флажный шелк, флаг яркий с обоих сторон. Обработка по периметру двойной строкой, карман слева 5см";
 
         [Display(Name = "Размер:")]

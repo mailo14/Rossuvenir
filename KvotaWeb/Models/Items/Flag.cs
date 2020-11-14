@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class Flag : ItemBase
     {
-        public override string Srok { get; set; } = "1-3 рабочих дня";
+        public override string Srok { get; set; } = "1-3 рабочих дня" + SrokPripiska;
         public override string Description { get; set; } = "В стоимость включена обработка флага двойной строкой, карман, петли, завязки.По желанию заказчика допольнительно можно сделать глухой карман, петлю в карман снизу + 0руб. Двухсторонний сшивной флаг - из двух слоев запечатанной ткани, с тканевой прослойкой внутри. Подробнее:  sgrafika.ru Люверсы и лента крепления включена в стоимость флага";
 
         [Display(Name = "Размер:")]

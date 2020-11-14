@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class Svetootrazatel : ItemBase
     {
-        public override string Srok { get; set; }= "2–4 рабочих дня";
+        public override string Srok { get; set; }= "2–4 рабочих дня" + SrokPripiska;
 
         public override string Description
         {

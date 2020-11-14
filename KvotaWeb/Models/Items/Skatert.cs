@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class Skatert : ItemBase
     {
-        public override string Srok { get; set; } = "1-3 рабочих дня";
+        public override string Srok { get; set; } = "1-3 рабочих дня" + SrokPripiska;
         public override string Description { get; set; } = "В стоимость включена обработка одинарной строкой или оверлок. По умолчанию изготовление на ткани искусственный шелк (таффета)";
 
         [Display(Name = "Размер:")]

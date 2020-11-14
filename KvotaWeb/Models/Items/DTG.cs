@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class DTG : ItemBase
     {
-        public override string Srok { get; set; } = "от 3-х рабочих дней";
+        public override string Srok { get; set; } = "от 3-х рабочих дней" + SrokPripiska;
 
         [Display(Name = "Размер:")]
          public int? Razmer { get; set; }

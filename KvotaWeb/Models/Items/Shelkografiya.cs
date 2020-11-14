@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class Shelkografiya : ItemBase
     {
-        public override string Srok { get; set; } = "от 5-ти рабочих дней";
+        public override string Srok { get; set; } = "от 5-ти рабочих дней" + SrokPripiska;
 
         int? _Tcvet = null;
         [Display(Name = "Цвет основы:")]

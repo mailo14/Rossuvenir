@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class ReklNakidka : ItemBase
     {
-        public override string Srok { get; set; } = "1-3 рабочих дня";
+        public override string Srok { get; set; } = "1-3 рабочих дня" + SrokPripiska;
         public override string Description { get; set; } = "Размер 60х70, 50х70. По умолчанию материал - искусственный шелк(таффета). Полный сублимационный окрас ткани с двух сторон изделия. Обработка: обшивка косой бейкой, завязки по бокам";
 
         [Display(Name = "Размер:")]

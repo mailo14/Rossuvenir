@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class FlagNSO : ItemBase
     {
-        public override string Srok { get; set; } = "в наличии и под заказ 1-3 рабочих дня";
+        public override string Srok { get; set; } = "в наличии и под заказ 1-3 рабочих дня" + SrokPripiska;
         public override string Description { get; set; } = "Размер 90х135. Материал Флажный шелк, обработка по периметру флага двойной строкой, карман слева 5см";
 
         [Display(Name = "Размер:")]

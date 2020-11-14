@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class Vimpel : ItemBase
     {
-        public override string Srok { get; set; } = "1-5 рабочих дня";
+        public override string Srok { get; set; } = "1-5 рабочих дня" + SrokPripiska;
         public override string Description { get; set; } = "Материал атлас, мокрый щёлк. Виды: с жесткой вставкой внутри, обшитые шнуром + кисть на клине, или мягкие. На одностороннем вымпеле оборотная сторона белая";
 
         [Display(Name = "Размер:")]

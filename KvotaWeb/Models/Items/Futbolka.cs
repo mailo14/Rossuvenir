@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class Futbolka : ItemBase
     {
-        public override string Srok { get; set; } = "от 1 часа до 3-5 рабочих дней";
+        public override string Srok { get; set; } = "от 1 часа до 3-5 рабочих дней" + SrokPripiska;
         public override string Description { get; set; } = "Цены указаны до А4 формата, без учета стоимости носителя. При нанесении изображения большого формата, цена рассчитывается индивидуально. Тираж менее 20 шт.и более 1000 шт.рассчитывается индивидуально· В стоимость не включена цена носителя.";
 
             int? _Osnova = null;

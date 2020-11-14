@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class Platok : ItemBase
     {
-        public override string Srok { get; set; } = "1-4 рабочих дня";
+        public override string Srok { get; set; } = "1-4 рабочих дня" + SrokPripiska;
         public override string Description { get; set; } = "Платки из ткани -платочный шелк- (плотность 60гр/м2). Обработка по краю изделия - терморез";
 
         [Display(Name = "Размер:")]

@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class SportNomer : ItemBase
     {
-        public override string Srok { get; set; } = "2-4 рабочих дня";
+        public override string Srok { get; set; } = "2-4 рабочих дня" + SrokPripiska;
         public override string Description { get; set; } = "Материал искусственный шелк(таффета),оксфорд. Полный сублимационный окрас ткани с одной или двух сторон изделия. Обработка: окантовочная лента, завязки или резинки по бокам в стоимости заказа";
 
         [Display(Name = "Размер:")]

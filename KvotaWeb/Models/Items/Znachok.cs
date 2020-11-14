@@ -12,7 +12,7 @@ namespace KvotaWeb.Models.Items
 
         [Display(Name = "Размер:")]
          public int? Razmer { get; set; }
-        public override string Srok { get; set; } = "от 3-х рабочих дней";
+        public override string Srok { get; set; } = "от 3-х рабочих дней" + SrokPripiska;
 
         public override ListItem ToListItem()
         {
@@ -102,12 +102,13 @@ namespace KvotaWeb.Models.Items
     };
     public abstract class ItemBase
     {
+        public const string SrokPripiska = " (+2 рабочих дня на проверку и сборку)";
         public int? ZakazId { get; set; }
         public string TotalLabel { get; set; }
 
         protected ItemBase(TipProds tipProd,string viewName)
-        {
-            TipProd = tipProd;
+        {            
+               TipProd = tipProd;
             ViewName = viewName;
         }
 

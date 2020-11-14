@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class BumajniiPaket : ItemBase
     {
-        public override string Srok { get; set; } = "от 7-ми рабочих дней";
+        public override string Srok { get; set; } = "от 7-ми рабочих дней" + SrokPripiska;
         public override string Description { get; set; } = "Мелованная бумага 170 гр., печать 4+0, глянцевая ламинация 1+0, установка люверсов, ручек, укрепление дна картоном";
 
         [Display(Name = "Размер:")]

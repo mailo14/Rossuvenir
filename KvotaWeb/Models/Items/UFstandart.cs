@@ -9,7 +9,7 @@ namespace KvotaWeb.Models.Items
 {
     public class UFstandart : ItemBase
     {
-        public override string Srok { get; set; } = "от 5-ти рабочих дней";
+        public override string Srok { get; set; } = "от 5-ти рабочих дней" + SrokPripiska;
 
         public override string Description { get; set; } = "Если размер нанесения превышает 50 кв.см., тогда к стоимости добавляется 0,5 руб. за каждый кв.см.при печати без подложки и 0,6 руб.за каждый кв.см.при печати с белой подложкой"
  +Environment.NewLine+"При печати на цилиндрической поверхности +30% (бутылки, термокружки и т.д.)"

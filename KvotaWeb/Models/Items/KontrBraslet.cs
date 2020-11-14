@@ -27,7 +27,7 @@ namespace KvotaWeb.Models.Items
                         descr = "12–14 календарных дней";
                         break;
                 }
-                return descr;
+                return descr + SrokPripiska;
             }
             set { }
         }

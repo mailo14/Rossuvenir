@@ -27,7 +27,7 @@ namespace KvotaWeb.Models.Items
                     descr = "8–12 календарных дней";
                 else if (catId == 537)
                     descr = "в наличии на складе";
-                return descr;
+                return descr+" (+2 рабочих дня на проверку и сборку)";
             }
             set { }
         }
