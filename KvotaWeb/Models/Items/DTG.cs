@@ -35,26 +35,24 @@ namespace KvotaWeb.Models.Items
         }
 
         public override List<CalcLine> Calc()
-
         {
-
             var ret = new List<CalcLine>();
-            foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
-            {
-                var line = new CalcLine() { Postav = i };
-                ret.Add(line);
-                if (Razmer == null || Tiraz == null) continue;
 
-                kvotaEntities db = new kvotaEntities();
-                decimal cena;
-                if (TryGetPrice(i, Tiraz, Razmer, out cena) == false) continue;
+            kvotaEntities db = new kvotaEntities();
 
-                line.Cena = cena * (decimal)Tiraz.Value;
-            }
+            if (Razmer != null && Tiraz != null)
+                foreach (var firma in db.Firma)
+                {
+                    PriceDto cena;
+                    if (TryGetPrice(firma.id, Tiraz, Razmer, out  cena) == false) continue;
+
+                    var line = new CalcLine() { FirmaId = firma.id };
+                    line.Cena = cena.isAllTiraz ? cena.Cena : cena.Cena * (decimal)Tiraz.Value;
+                    ret.Add(line);
+                }
+
             return ret;
-
         }
-
 
         public DTG():base( TipProds.DTG, "EditDTG")
         {

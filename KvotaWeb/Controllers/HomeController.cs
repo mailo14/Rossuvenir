@@ -319,12 +319,12 @@ namespace KvotaWeb.Models
                 case 16: return "Запись дисков";*/
                 default: return null;
             }
-            if (addIstochnikCen)
+            /*if (addIstochnikCen)
             {
                 var tipProdInfo = new kvotaEntities().Product.FirstOrDefault(pp => pp.id == (int)tipProd);
                 if (tipProdInfo != null && tipProdInfo.istochnikCen != "")
                     name += $" ({tipProdInfo.istochnikCen})";
-            }
+            }*/
             return name;
         }
         public bool askBetterPrice = false;

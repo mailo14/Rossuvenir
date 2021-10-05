@@ -28,8 +28,8 @@ namespace KvotaWeb.Models.Items
         [Display(Name = "Количество цветов:")]
          public int? KolichestvoTcvetov { get; set; }
 
-        [Display(Name = "печать на синтетике, сумках, зонтах, рукавах")]
-         public bool Sintetika { get; set; }
+        [Display(Name = "термотрансфер")]
+         public bool Termotransfer { get; set; }
 
         //[Display(Name = "печать более формата А4 или площади 600 кв. см.")]
         // public bool FormatA3 { get; set; }
@@ -43,32 +43,37 @@ namespace KvotaWeb.Models.Items
             var rr = base.ToListItem();
             rr.param11 = Tcvet;
             rr.param12 = KolichestvoTcvetov;
-            rr.param14 = Sintetika;
+            rr.param14 = Termotransfer;
             rr.param21 = Ploshad;
             return rr;
         }
 
         public override List<CalcLine> Calc()
-
         {
             var ret = new List<CalcLine>();
-            foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
-            {
-                var line = new CalcLine() { Postav = i };
-                ret.Add(line);
-                if (KolichestvoTcvetov == null || Tiraz == null) continue;
 
-                decimal cena;
-                if (TryGetPrice(i, Tiraz, KolichestvoTcvetov, out cena) == false) continue;
+            kvotaEntities db = new kvotaEntities();
 
-                //decimal addNacenk
-                cena = cena * (Sintetika ? 1.5m : 1m) ;
-                if (Ploshad == 0) cena = 0.9m * cena;
-                else if (Ploshad == 2) cena = 1.2m * cena;
-                line.Cena = cena * (decimal)Tiraz.Value;
-            }
+            if (KolichestvoTcvetov != null && Tiraz != null && Ploshad != null)
+                foreach (var firma in db.Firma)
+                {
+                    PriceDto cena;
+                    if (TryGetPrice(firma.id, Tiraz, KolichestvoTcvetov, out cena) == false) continue;
+
+                    var line = new CalcLine() { FirmaId = firma.id };
+                    line.Cena = cena.isAllTiraz ? cena.Cena : cena.Cena * (decimal)Tiraz.Value;
+
+                    line.Cena *= (Termotransfer ? 1.5m : 1m);
+
+                    decimal nacenk;
+                    if (TryGetSingleParam(Ploshad.Value, firma.id, out nacenk))
+                        line.Cena *= nacenk;
+                    else continue;
+
+                    ret.Add(line);
+                }
+
             return ret;
-
         }
 
         public static ItemBase CreateItem(ListItem li)
@@ -83,8 +88,8 @@ namespace KvotaWeb.Models.Items
                 Tcvet = li.param11,
                 KolichestvoTcvetov = li.param12
                     ,
-                Sintetika = li.param14,
-                Ploshad = li.param21??1
+                Termotransfer = li.param14,
+                Ploshad = li.param21
             };
         }
 
@@ -95,12 +100,8 @@ namespace KvotaWeb.Models.Items
 
             kvotaEntities db = new kvotaEntities();
             ViewData = new ViewDataDictionary();
-            ViewData["params1"] = new SelectList((from pp in db.Category where pp.parentId == 403 select pp), "id", "tip");
-            ViewData["params3"] = new SelectList(new[] {
-                new { id = 0, tip= "менее формата А4" },
-                new { id = 1, tip= "формат А4" },
-                new { id = 2, tip= "более формата А4 или площади 600 кв. см." },
-            }, "id", "tip");
+            ViewData["params1"] = new SelectList((from pp in db.Category where pp.parentId == 35/*403*/ select pp), "id", "tip");
+            ViewData["params3"] = new SelectList((from pp in db.Category where pp.parentId == 660/*403*/ select pp), "id", "tip");
         }
     }
 

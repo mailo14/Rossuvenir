@@ -1,0 +1,50 @@
+﻿@page "/DTG"
+
+<h3>DtgView</h3>
+<div>
+    <select @bind="SelectedItem1">
+    <option value=null>(не выбрано)</option>
+    @foreach (var template in list1)
+    {
+        <option value=@template.Key>@template.Value</option>
+    }
+</select>
+    <input type="text" @bind-value="@item" />
+    <button @onclick="@OnClick">Add Item</button>
+</div>
+
+@code {
+    private List<KeyValuePair<int, string>> list1 = new List<KeyValuePair<int, string>>();
+
+    public DtgView()
+    {/*
+        var empty = new SelectList(new List<Category>(), "id", "tip"); //Enumerable.Empty<SelectListItem>();
+        var nullObj = new Category() { tip = "(не выбрано)" };
+
+        kvotaEntities db = new kvotaEntities();
+        list1= new SelectList((from pp in db.Category where pp.parentId == 415 select pp), "id", "tip");
+
+*/
+    }
+    int? _SelectedItem1;
+    int? SelectedItem1
+    {
+        get =>_SelectedItem1; 
+        set
+        {
+             _SelectedItem1 = value;
+        }
+    }
+
+    private string item;
+
+    [Parameter]
+    public EventCallback//<string>
+    RecalcTotals
+    { get; set; }
+
+    void OnClick()
+    {
+        RecalcTotals.InvokeAsync();
+    }
+}

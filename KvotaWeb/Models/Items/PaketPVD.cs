@@ -49,35 +49,41 @@ namespace KvotaWeb.Models.Items
         }
 
         public override List<CalcLine> Calc()
-
         {
             var ret = new List<CalcLine>();
-            foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
-            {
-                var line = new CalcLine() { Postav = i };
-                ret.Add(line);
-                if (KolichestvoTcvetov1 == null || Paket == null || Tiraz == null) continue;
 
-                decimal cena;
-                if (TryGetPrice(i, Tiraz, KolichestvoTcvetov1, out cena) == false) continue;
+            kvotaEntities db = new kvotaEntities();
 
-                if (KolichestvoTcvetov2 != null)
+            if (KolichestvoTcvetov1 != null && Paket != null && Tiraz != null)
+                foreach (var firma in db.Firma)
                 {
-                    decimal cena2;
-                    if (TryGetPrice(i, Tiraz, KolichestvoTcvetov2, out cena2) == false) continue;
-                    cena += cena2;
+                    var line = new CalcLine() { FirmaId = firma.id };
+                    PriceDto cena;
+                    decimal paramVal;
+                    if (TryGetSingleParam(Paket.Value,firma.id,  out paramVal) == false) continue;
+                    line.Cena = paramVal * (decimal)Tiraz.Value;
+
+                    if (TryGetPrice(firma.id, Tiraz, KolichestvoTcvetov1, out cena) == false) continue;
+
+                    line.Cena += cena.isAllTiraz ? cena.Cena : cena.Cena * (decimal)Tiraz.Value;
+
+                    if (KolichestvoTcvetov2.HasValue)
+                    {
+                        if (TryGetPrice(firma.id, Tiraz, KolichestvoTcvetov2, out cena) == false) continue;
+                        line.Cena += cena.isAllTiraz ? cena.Cena : cena.Cena * (decimal)Tiraz.Value;
+                    }
+
+                    if (PoleZapechatki)
+                    {
+                        TryGetSingleParam(705,firma.id,  out paramVal);
+                        line.Cena *= paramVal;
+                    }
+
+                    ret.Add(line);
                 }
 
-                kvotaEntities db = new kvotaEntities();
-                
-                double cenaPaketa = (from p in db.Price where p.firma == (int)i && p.catId == Paket select p.cena).First();
-
-
-
-                cena = cena * (PoleZapechatki? 1.25m : 1m) + (decimal)cenaPaketa;
-                line.Cena = cena * (decimal)Tiraz.Value;
-            }
             return ret;
+
 
         }
 

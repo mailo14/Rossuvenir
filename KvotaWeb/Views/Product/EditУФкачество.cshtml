@@ -20,7 +20,7 @@
         </div>
         <div class="col-sm-7">
             @Html.DropDownListFor(model => model.Izdelie, @ViewData["params1"] as SelectList, "(не выбрано)"
-           , new { @id = "paramUFkachestvo1" + Model.Id, @class = "form-control", @onchange = "OnChangeParamEventUFkachestvo1("+Model.Id+");" })
+                     , new { @id = "paramUFkachestvo1" + Model.Id, @class = "form-control", @onchange = "OnChangeParamEventUFkachestvo1(" + Model.Id + ");" })
             @Html.ValidationMessageFor(model => model.Izdelie, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -31,23 +31,37 @@
         </div>
         <div class="col-sm-7">
             @Html.DropDownListFor(model => model.RazmerZapechatki, @ViewData["params2"] as SelectList, "(не выбрано)"
-           , new { @id = "paramUFkachestvo2"+Model.Id, @class = "form-control", @onchange = "OnChangeEvent();" })
+                     , new { @id = "paramUFkachestvo2" + Model.Id, @class = "form-control", @onchange = "OnChangeEvent();" })
             @Html.ValidationMessageFor(model => model.RazmerZapechatki, "", new { @class = "text-danger" })
         </div>
     </div>
 
 
-    <div class="form-group" id="@("IndividPersParamDiv"+Model.Id)" style=@ViewData["IndividPersParamDivStyle"] align="left">
+    <div class="form-group" id="@("paramDiv5"+Model.Id)" style=@ViewData["paramDivStyle5"] align="left">
         <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
-            @Html.EditorFor(model => model.IndividPers, new { htmlAttributes = new { id = "paramUFkachestvo4" + Model.Id, @onchange = "OnChangeEvent();" } })
-            @Html.LabelFor(model => model.IndividPers, new { @for = "paramUFkachestvo4" + Model.Id })
+            @Html.EditorFor(model => model.Dvustoronnya, new { htmlAttributes = new { @id = "paramUFkachestvo5" + Model.Id, @onchange = "OnChangeEvent();" } })
+            @Html.LabelFor(model => model.Dvustoronnya)
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" id="@("paramDiv6"+Model.Id)" style=@ViewData["paramDivStyle6"] align="left">
+        <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+            @Html.EditorFor(model => model.Zalivka50, new { htmlAttributes = new { @id = "paramUFkachestvo6" + Model.Id, @onchange = "OnChangeEvent();" } })
+            @Html.LabelFor(model => model.Zalivka50)
+        </div>
+    </div>
+
+    <div class="form-group"  id="@("paramDiv7"+Model.Id)" style=@ViewData["paramDivStyle7"] align="left">
+        <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+            @Html.EditorFor(model => model.SPodyomom, new { htmlAttributes = new { @id = "paramUFkachestvo7" + Model.Id, @onchange = "OnChangeEvent();" } })
+            @Html.LabelFor(model => model.SPodyomom)
+        </div>
+    </div>
+
+    <!--<div class="form-group">
         <label class="control-label col-sm-5">Срок изготовления:</label>
         <label class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
-    </div>
+    </div>-->
 
     @if (Model.Description != null)
     {
@@ -61,9 +75,7 @@
         //var catId = $(this).val();
         //alert(modelId);
         var catId = $('#paramUFkachestvo1'+modelId).val();
-            if (catId == 172) {
-                document.getElementById('RazmerZapechatkiParamDiv' + modelId).style.display = "block";
-                document.getElementById('IndividPersParamDiv' + modelId).style.display = "none";
+        if (catId != 641) {//== 172 || catId == 701) {
                 var url = '@Url.Action("fillParam2", "Product")';
                 $.getJSON(url, { catId: catId }, function (result) {
                     var ddl = $('#paramUFkachestvo2' + modelId);
@@ -71,15 +83,25 @@
                     $(result).each(function () {
                         $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
                     });
-
+                    OnChangeEvent();
                     $('#paramUFkachestvo2' + modelId).focus();
                 });
+              document.getElementById('RazmerZapechatkiParamDiv' + modelId).style.display = "block";
             }
             else {
-                document.getElementById('RazmerZapechatkiParamDiv' + modelId).style.display = "none";
-                document.getElementById('IndividPersParamDiv' + modelId).style.display = "block";
+              document.getElementById('RazmerZapechatkiParamDiv' + modelId).style.display = "none";
             }
-            OnChangeEvent();
+        OnChangeEvent();
+            if (catId == 702) {
+                document.getElementById('paramDiv5' + modelId).style.display = "block";
+                document.getElementById('paramDiv6' + modelId).style.display = "block";
+                document.getElementById('paramDiv7' + modelId).style.display = "block";
+            }
+            else {
+                document.getElementById('paramDiv5' + modelId).style.display = "none";
+                document.getElementById('paramDiv6' + modelId).style.display = "none";
+                document.getElementById('paramDiv7' + modelId).style.display = "none";
+            }
         }
     </script>
 </div>

@@ -1,0 +1,28 @@
+﻿@page "/Gravirovka"
+@using RossuvenirBlazorServer.Data
+<h3>GravirovkaView</h3>
+<div>
+    <button @onclick="@(() => OnDeleteItem.InvokeAsync(Model))">Del</button>
+    <input type="text" @bind-value="@Model2.Tiraz" />
+    <button @onclick="@OnClick">Add Item</button>
+</div>
+
+@code {
+    [Parameter]
+    public ItemBase Model { get; set; }
+    private Gravirovka Model2 => Model as Gravirovka;
+    private string item;
+
+    [Parameter]
+    public EventCallback<ItemBase> OnDeleteItem { get; set; }
+
+    [Parameter]
+    public EventCallback//<string>
+RecalcTotals
+    { get; set; }
+
+    void OnClick()
+    {
+        RecalcTotals.InvokeAsync();
+    }
+}

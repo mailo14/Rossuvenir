@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pages\Product\DtgView.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\Product\DtgView.cshtml" />
+    <Content Remove="Pages\Product\Index1.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Product\Index1.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Product\Index1.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\Product\Index1.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

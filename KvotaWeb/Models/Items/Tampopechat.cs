@@ -52,22 +52,23 @@ namespace KvotaWeb.Models.Items
         }
 
         public override List<CalcLine> Calc()
-
         {
             var ret = new List<CalcLine>();
-            foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
-            {
-                var line = new CalcLine() { Postav = i };
-                ret.Add(line);
-                if (KolichestvoTcvetov == null || Tiraz == null) continue;
 
-                decimal cena;
-                if (TryGetPrice(i, Tiraz, KolichestvoTcvetov, out cena) == false) continue;
+            kvotaEntities db = new kvotaEntities();
 
-                line.Cena = cena * (decimal)Tiraz.Value;
-            }
+            if (KolichestvoTcvetov != null && Tiraz != null)
+                foreach (var firma in db.Firma)
+                {
+                    PriceDto cena;
+                    if (TryGetPrice(firma.id, Tiraz, KolichestvoTcvetov, out cena) == false) continue;
+
+                    var line = new CalcLine() { FirmaId = firma.id };
+                    line.Cena = cena.isAllTiraz ? cena.Cena : cena.Cena * (decimal)Tiraz.Value;
+                    ret.Add(line);
+                }
+
             return ret;
-
         }
 
         public Tampopechat(): base(TipProds.Tampopechat, "EditТампопечать")

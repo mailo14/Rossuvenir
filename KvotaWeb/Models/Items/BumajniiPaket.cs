@@ -49,7 +49,6 @@ namespace KvotaWeb.Models.Items
             return ret;
         }
 
-
         public BumajniiPaket():base( TipProds.BumajniiPaket, "EditBumajniiPaket")
         {
             var empty = new SelectList(new List<Category>(), "id", "tip"); //Enumerable.Empty<SelectListItem>();

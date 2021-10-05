@@ -45,9 +45,12 @@ namespace KvotaWeb.Models.Items
                 subCalcs.Add(item.Calc(Tiraz));
                 foreach (var im in item.InnerMessageIds) InnerMessageIds.Add(im); 
             }
-
-            var ret = new List<CalcLine>();
-            int k = -1;
+            var rrr = subCalcs.SelectMany(x => x, (x, y) => y);
+            var groups=rrr.GroupBy(x => x.FirmaId).Where(x=>x.Count()==subs.Count).Select(x=>new CalcLine {FirmaId=x.Key,
+                Firma=db.Firma.First(z=>z.id==x.Key).name,
+                Cena =x.Sum(y=>y.Cena) });
+            var ret = groups.ToList(); //new List<CalcLine>();
+            /*int k = -1;
             foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
             {
                 k++;
@@ -56,7 +59,7 @@ namespace KvotaWeb.Models.Items
                 var srez = subCalcs.Select(pp => pp[k]).ToArray();
                 if (srez.All(pp => pp.Cena != null))
                     line.Cena = srez.Sum(pp => pp.Cena);
-            }
+            }*/
             return ret;
         }
 

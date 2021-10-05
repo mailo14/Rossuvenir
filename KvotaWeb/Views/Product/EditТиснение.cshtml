@@ -18,8 +18,31 @@
             @Html.LabelFor(model => model.Vid)
         </div>
         <div class="col-sm-7">
-            @Html.DropDownListFor(model => model.Vid, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param1", @class = "form-control", @onchange = "OnChangeEvent();" })
+            @Html.DropDownListFor(model => model.Vid, @ViewData["params1"] as SelectList, "(не выбрано)"
+                                                   , new { @id = "paramTisnenie1" + Model.Id, @class = "form-control", @onchange = "OnChangeParamEventTisnenie1(" + Model.Id + ");" })
             @Html.ValidationMessageFor(model => model.Vid, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="control-label col-sm-5">
+            @Html.LabelFor(model => model.Material)
+        </div>
+        <div class="col-sm-7">
+            @Html.DropDownListFor(model => model.Material, @ViewData["params2"] as SelectList, "(не выбрано)"
+                                                             , new { @id = "paramTisnenie2" + Model.Id, @class = "form-control", @onchange = "OnChangeEvent();" })
+            @Html.ValidationMessageFor(model => model.Material, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="control-label col-sm-5">
+            @Html.LabelFor(model => model.VidKlishe)
+        </div>
+        <div class="col-sm-7">
+            @Html.DropDownListFor(model => model.VidKlishe, @ViewData["params3"] as SelectList, "(не выбрано)"
+                                                             , new { @id = "paramTisnenie3" + Model.Id, @class = "form-control", @onchange = "OnChangeEvent();" })
+            @Html.ValidationMessageFor(model => model.VidKlishe, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -44,10 +67,10 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <!--<div class="form-group">
         <label class="control-label col-sm-5">Срок изготовления:</label>
         <label class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
-    </div>
+    </div>-->
 
     @if (Model.Description != null)
     {
@@ -56,6 +79,24 @@
             <label class="control-label col-sm-7" style="text-align:left;">@Model.Description </label>
         </div>
     }
+    <script type="text/javascript">
+        function OnChangeParamEventTisnenie1(modelId) {
+            //var catId = $(this).val();
+            var catId = $('#paramTisnenie1' + modelId).val();
+            
+                var url = '@Url.Action("fillParam2", "Product")';
+                $.getJSON(url, { catId: catId }, function (result) {
+                    var ddl = $('#paramTisnenie2' + modelId);
+                    ddl.empty();
+                    $(result).each(function () {
+                        $(document.createElement('option')).attr('value', this.id).text(this.tip).appendTo(ddl);
+                    });
+                    OnChangeEvent();
+                    $('#paramTisnenie2' + modelId).focus();
+                });
+           
+        }
+    </script>
 </div>
    
    

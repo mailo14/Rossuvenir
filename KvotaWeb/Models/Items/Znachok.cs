@@ -60,6 +60,8 @@ namespace KvotaWeb.Models.Items
 
     public class CalcLine
     {
+        public int FirmaId { get; set; }
+        public string Firma { get; set; }
         public Postavs Postav { get; set; }
         public decimal? Cena { get; set; }
     }
@@ -151,41 +153,69 @@ namespace KvotaWeb.Models.Items
             return "";
         }
 
-        public bool TryGetPrice(Postavs firma, double? dTiraz, int? catId, out decimal cena)
+        public bool TryGetPrice(int firmaId, double? dTiraz, int? catId, out PriceDto cena)
         {
-            cena = 0;
+            cena = new PriceDto();
             var tiraz = (decimal)dTiraz;
             if (tiraz == 0) return false;
 
-            if (firma == Postavs.Плановая_СС || firma == Postavs.РРЦ_1_5)
-            {
-                bool is1_5 = false; if (firma == Postavs.РРЦ_1_5) { is1_5 = true; firma = Postavs.Плановая_СС; }
                 kvotaEntities db = new kvotaEntities();
-                var minTiraz = (from p in db.Price where p.firma == (int)firma && p.catId == catId orderby p.tiraz select (int?)p.tiraz).FirstOrDefault();
+                var minTiraz = (from p in db.Price where p.firma == firmaId && p.catId == catId orderby p.tiraz select (int?)p.tiraz).FirstOrDefault();
                 if (!minTiraz.HasValue) return false;
 
-                var maxTirazi = (from p in db.Price where p.firma == (int)firma && p.catId == catId orderby p.tiraz descending select p.tiraz).Take(2).ToArray();
+                var maxTirazi = (from p in db.Price where p.firma == firmaId && p.catId == catId orderby p.tiraz descending select p.tiraz).Take(2).ToArray();
                 if (maxTirazi.Length == 2 && tiraz > 2 * maxTirazi[0] - maxTirazi[1]) InnerMessageIds.Add(InnerMessages.AskBetterPrice);
-                if (tiraz < minTiraz)
-                {
-                    cena = (decimal)(from p in db.Price where p.firma == (int)firma && p.catId == catId && p.tiraz == minTiraz select p.cena).First();
-                    cena = cena * minTiraz.Value / tiraz;
-                }
-                else
-                    cena = (decimal)(from p in db.Price where p.firma == (int)firma && p.catId == catId && p.tiraz <= tiraz orderby p.tiraz descending select p.cena).First();
+            if (tiraz < minTiraz)
+            {
+                var price = (from p in db.Price where p.firma == firmaId && p.catId == catId && p.tiraz == minTiraz select p).First();
 
-                if (is1_5) cena *= 1.5m;
-                return true;
+                cena.Cena = (decimal)price.cena;
+                if (price.isAllTiraz)
+                    cena.isAllTiraz = true;
+                else
+                    cena.Cena *= minTiraz.Value / tiraz;
             }
-            return false;
+            else
+            {
+                cena.Cena = (decimal)(from p in db.Price where p.firma == firmaId && p.catId == catId && p.tiraz <= tiraz orderby p.tiraz descending select p.cena).First();
+            }
+                return true;
         }
+
+        public bool TryGetPrice(Postavs i, double? tiraz, int? razmer, out decimal cena)
+        {
+            throw new NotImplementedException();
+        }
+
+        /* public decimal GetPriceValue(Price price,decimal tiraz,)
+         {
+  var cena = (decimal)price.cena;
+                 if (!price.isAllTiraz)
+                     cena = cena * minTiraz.Value / tiraz;
+         }*/
 
         public decimal TryGetSingleParam(int paramId,Postavs firma=Postavs.Плановая_СС)
         {
             kvotaEntities db = new kvotaEntities();
             return (decimal)(from p in db.Price
-                    where p.firma == (int)firma && p.catId == paramId
+                    where p.firma0 == (int)firma && p.catId == paramId
                     select p.cena).Single();
+        }
+
+        public bool TryGetSingleParam(int paramId,int firmaId, out decimal result)
+        {
+            kvotaEntities db = new kvotaEntities();
+            var param = (from p in db.Price
+                         where p.firma == firmaId && p.catId == paramId
+                         select p).SingleOrDefault();
+            if (param != null)
+            {
+                result = (decimal)param.cena;
+                return true;
+            }
+
+            result = 0;
+            return false;
         }
 
         public enum InnerMessages
@@ -218,13 +248,18 @@ namespace KvotaWeb.Models.Items
             Tiraz = tiraz;
             return Calc();
         }
-        public  List<CalcLine> CalcWithNacenkaAndRounded()
+        public List<CalcLine> CalcWithNacenkaAndRounded()
         {
-var lines = Calc();
+            var lines = Calc();
             var nacenk = GetNacenk(ZakazId, (int)TipProd);
+                kvotaEntities db = new kvotaEntities();
 
             foreach (var line in lines)
-            if (line.Cena!=null) line.Cena= Math.Ceiling(line.Cena.Value*nacenk / (decimal)Tiraz.Value) * (decimal)Tiraz.Value;
+            {
+                if (line.Cena != null) line.Cena = Math.Ceiling(line.Cena.Value * nacenk / (decimal)Tiraz.Value) * (decimal)Tiraz.Value;
+
+                line.Firma = db.Firma.First(z => z.id == line.FirmaId).name;
+            }
             return lines;
         }
         public decimal GetNacenk(int? listId, int tipProd)
@@ -255,7 +290,7 @@ var lines = Calc();
             InnerMessageIds.Clear();
             //List<CalcLine> initlines,double tiraz
             var lines = CalcWithNacenkaAndRounded();//initlines.ToList();
-            var baseLine = lines.First(pp => pp.Postav == Postavs.Плановая_СС);
+            //var baseLine = lines.First(pp => pp.Postav == Postavs.Плановая_СС);
 
             var ret = new TotalResultsModel()
             {
@@ -264,9 +299,11 @@ var lines = Calc();
             };
             foreach (var line in lines)
             {
-                var tLine = new TotalCalcLine();
+                var tLine = new TotalCalcLine() { Postav = line.Firma,
+                    Cena = line.Cena?.ToString("f2"),
+                    EdCena = (line.Cena / (decimal?)Tiraz)?.ToString("f2") };
                 ret.Lines.Add(tLine);
-                switch (line.Postav)
+               /* switch (line.Postav)
                 {
                     case Postavs.РРЦ_1_5:
                         tLine.Postav = "РРЦ 1,5";break;
@@ -285,7 +322,7 @@ var lines = Calc();
                         tLine.Marza = ((line.Cena - baseLine.Cena) / line.Cena * 100).Value.ToString("f2") + @"%";
                     else tLine.Marza = "-";
                 }
-                else tLine.EdCena = tLine.Cena = tLine.Marza = "-";
+                else tLine.EdCena = tLine.Cena = tLine.Marza = "-";*/
             }
             return ret;
         }
@@ -380,5 +417,12 @@ var lines = Calc();
             Type t = Type.GetType(strFullyQualifiedName);
             return Activator.CreateInstance(t);
         }
+    }
+
+
+    public class PriceDto
+    {
+        public decimal Cena { get; set; }
+        public bool isAllTiraz { get; set; }
     }
 }

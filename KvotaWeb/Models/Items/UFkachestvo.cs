@@ -24,39 +24,56 @@ namespace KvotaWeb.Models.Items
                 if (value == null)
                 {
                     ViewData["params2"] = empty;
-                        ViewData["IndividPersParamDivStyle"] = "display:none;";
                         ViewData["RazmerZapechatkiParamDivStyle"] = "display:none;";
                 }
                 else
                 {
-                    if (value == 172)
+                    if (value !=641)//== 172 || value == 701)
                     {
                         ViewData["params2"] = new SelectList((from pp in db.Category where pp.parentId == value select pp), "id", "tip");
 
                         ViewData["RazmerZapechatkiParamDivStyle"] = "display:block;";
-                        ViewData["IndividPersParamDivStyle"] = "display:none;";
                     }
                     else
                     {ViewData["params2"] =empty;
 
                         ViewData["RazmerZapechatkiParamDivStyle"] = "display:none;";
-                        ViewData["IndividPersParamDivStyle"] = "display:block;";
                     }
+
+                }
+                if (value == 702)
+                {ViewData["paramDivStyle5"] = "display:block";
+                    ViewData["paramDivStyle6"] = "display:block";
+                    ViewData["paramDivStyle7"] = "display:block";
+                }
+                else
+                {
+                    ViewData["paramDivStyle5"] = "display:none";
+                    ViewData["paramDivStyle6"] = "display:none";
+                    ViewData["paramDivStyle7"] = "display:none";
                 }
             } }
 
-        [Display(Name = "Размер запечатки:")]
+        [Display(Name = "Размер запечатки/вид/цвет:")]
          public int? RazmerZapechatki { get; set; }
 
-        [Display(Name = "индивидуальная персонализация")]
-         public bool IndividPers{ get; set; }
-        
+        [Display(Name = "двухсторонняя")]
+        public bool Dvustoronnya { get; set; }
+
+        [Display(Name = "заливка более 50% площади")]
+        public bool Zalivka50 { get; set; }
+
+        [Display(Name = "печать 'с подъемом'")]
+        public bool SPodyomom { get; set; }
+
         public override ListItem ToListItem()
         {
             var rr = base.ToListItem();
             rr.param11 = Izdelie;
             rr.param12 = RazmerZapechatki;
-            rr.param14 = IndividPers;
+            rr.param15 = Dvustoronnya;
+            rr.param24 = Zalivka50;
+            rr.param25 = SPodyomom;
             return rr;
         }
         public static ItemBase CreateItem(ListItem li)
@@ -70,42 +87,36 @@ namespace KvotaWeb.Models.Items
 
                 Izdelie = li.param11,
                 RazmerZapechatki = li.param12,
-                IndividPers = li.param14
+
+                Dvustoronnya = li.param15,
+                Zalivka50 = li.param24,
+                SPodyomom = li.param25
             };
         }
         public override List<CalcLine> Calc()
         {
             var ret = new List<CalcLine>();
-            foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
-            {
-                var line = new CalcLine() { Postav = i };
-                ret.Add(line);
-                if (Izdelie== null || Tiraz == null
-                    || (Izdelie==172 && RazmerZapechatki == null)
-                    ) continue;
 
-                decimal cena;
-                if (Izdelie == 172)
+            kvotaEntities db = new kvotaEntities();
+
+            if (Izdelie != null && (Izdelie != 641 || Izdelie ==641 && RazmerZapechatki==null) && Tiraz != null )
+                foreach (var firma in db.Firma)
                 {
-                    if (Tiraz >= 200)
-                    {
-                        InnerMessageIds.Add(InnerMessages.IndividPrice);
-                        continue;
-                    }
-                    if (TryGetPrice(i, Tiraz, RazmerZapechatki, out cena) == false) continue;
+                    PriceDto cena;
+                    var param = (Izdelie ==641) ? Izdelie : RazmerZapechatki;
+                    if (TryGetPrice(firma.id, Tiraz, param, out cena) == false) continue;
+
+                    var line = new CalcLine() { FirmaId = firma.id };
+                    line.Cena = cena.isAllTiraz ? cena.Cena : cena.Cena * (decimal)Tiraz.Value;
+
+                    if (Zalivka50) line.Cena *= 1.3m;
+                    if (SPodyomom) line.Cena *= 1.3m;
+                    if (Dvustoronnya) line.Cena *= 2m;
+                    
+                    ret.Add(line);
                 }
-                else
-                {
-                    if (TryGetPrice(i, Tiraz, Izdelie, out cena) == false) continue;
-                    cena = cena * (IndividPers ? 1.3m : 1m);
-                }
-                if (new int[]{ 170,171,172}.Contains(Izdelie.Value) && Tiraz<10)
-                    line.Cena = cena ;
-                else
-                    line.Cena = cena * (decimal)Tiraz.Value;
-            }
+
             return ret;
-
         }
 
         public UFkachestvo(): base(TipProds.UFkachestvo, "EditУФкачество")

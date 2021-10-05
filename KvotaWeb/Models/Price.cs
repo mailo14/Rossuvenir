@@ -19,6 +19,8 @@ namespace KvotaWeb.Models
         public string subtip { get; set; }
         public int tiraz { get; set; }
         public double cena { get; set; }
-        public double firma { get; set; }
+        public Nullable<double> firma0 { get; set; }
+        public Nullable<int> firma { get; set; }
+        public bool isAllTiraz { get; set; }
     }
 }

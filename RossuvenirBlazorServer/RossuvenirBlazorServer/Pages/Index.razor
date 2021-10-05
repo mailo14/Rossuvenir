@@ -1,0 +1,108 @@
+﻿@page "/"
+
+@using RossuvenirBlazorServer.Data
+@using RossuvenirBlazorServer.Pages.Product
+@using System.Collections.Generic
+@inject WeatherForecastService ForecastService
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@foreach (var item in Items)
+{
+<div>
+    @if (item is Dtg)
+    {
+    <DtgView RecalcTotals="RecalcTotals" />
+    }
+    else if (item is Gravirovka)
+    {
+    <GravirovkaView RecalcTotals="RecalcTotals" Model="@item" OnDeleteItem="DeleteItem" />
+    }
+</div>
+
+}
+
+
+<select @bind="SelectedString">
+    <option value=null>(не выбрано)</option>
+    @foreach (var template in templates)
+    {
+        <option value=@template.Key>@template.Value</option>
+    }
+</select>
+
+<select @bind="SelectedString2" hidden="@(!SecondVisible)">
+    <option value=null>(не выбрано)</option>
+    @foreach (var template in templates2)
+    {
+        <option value=@template.Key>@template.Value</option>
+    }
+</select>
+
+@code {
+    private List<KeyValuePair<int, string>> templates = new List<KeyValuePair<int, string>>(){
+        new KeyValuePair<int,string>((int)TipProds.DTG,"DTG"),
+        new KeyValuePair<int,string>((int)TipProds.Gravirovka,"Гравировка"),
+        new KeyValuePair<int,string>(3,"Maui3"),
+        new KeyValuePair<int,string>(4,"Maui5") };
+    private List<KeyValuePair<int, string>
+> templates2 = new List<KeyValuePair<int, string>>();
+    int? _SelectedString;
+    int? SelectedString
+    {
+        get { return _SelectedString; }
+        set
+        {
+           // _SelectedString = value;
+            if (value == 1)
+                templates2 = new List<KeyValuePair<int, string>>(){ new KeyValuePair<int,string>(1,"Maui"),new KeyValuePair<int,string>
+    (2,"Maui2") };
+            if (value == 2)
+                templates2 = new List<KeyValuePair<int, string>>(){ new KeyValuePair<int,string>
+    (2,"Maui2") };
+           
+            if (value == (int)TipProds.Gravirovka)
+                Items.Add(new Gravirovka());
+
+            if (value == (int)TipProds.DTG)
+                Items.Add(new Dtg());
+            _SelectedString = null;
+
+            Console.WriteLine("It is definitely3: " + SelectedString.ToString());
+        }
+    }
+
+    int? _SelectedString2;
+    int? SelectedString2
+    {
+        get { return _SelectedString2; }
+        set
+        {
+            _SelectedString2 = value;
+            if (value == 2)
+            {
+                templates.Add(new KeyValuePair<int, string>(5, "Maui555"));
+            }
+        }
+    }
+
+    private bool SecondVisible { get { return _SelectedString < 2; } }
+
+    private void RecalcTotals()
+    {
+
+    }
+
+    private void DeleteItem(ItemBase item)
+    {
+        Items.Remove(item);
+        RecalcTotals();
+    }
+    private List<ItemBase> Items { get; set; } = new List<ItemBase>();
+
+
+}

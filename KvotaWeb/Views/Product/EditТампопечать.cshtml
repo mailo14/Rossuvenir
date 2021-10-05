@@ -19,7 +19,7 @@
         </div>
         <div class="col-sm-7">
             @Html.DropDownListFor(model => model.Osnova, @ViewData["params1"] as SelectList, "(не выбрано)"
-           , new { @id = "paramTampopechat1" + Model.Id, @class = "form-control", @onchange = "OnChangeParamEventTampopechat1(" + Model.Id + ");" })
+                , new { @id = "paramTampopechat1" + Model.Id, @class = "form-control", @onchange = "OnChangeParamEventTampopechat1(" + Model.Id + ");" })
             @Html.ValidationMessageFor(model => model.Osnova, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -30,15 +30,15 @@
         </div>
         <div class="col-sm-7">
             @Html.DropDownListFor(model => model.KolichestvoTcvetov, @ViewData["params2"] as SelectList, "(не выбрано)"
-           , new { @id = "paramTampopechat2" + Model.Id, @class = "form-control", @onchange = "OnChangeEvent();" })
+                , new { @id = "paramTampopechat2" + Model.Id, @class = "form-control", @onchange = "OnChangeEvent();" })
             @Html.ValidationMessageFor(model => model.KolichestvoTcvetov, "", new { @class = "text-danger" })
         </div>
     </div>
 
-    <div class="form-group">
+    <!--<div class="form-group">
         <label class="control-label col-sm-5">Срок изготовления:</label>
         <label class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
-    </div>
+    </div>-->
 
     @if (Model.Description != null)
     {

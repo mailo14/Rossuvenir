@@ -16,6 +16,12 @@ namespace KvotaWeb.Models.Items
         [Display(Name = "Площадь, кв.см:")]
          public double? Ploshad { get; set; }
 
+        [Display(Name = "изготовление образца")]
+         public bool Obrazec { get; set; }
+
+        [Display(Name = "чернение")]
+         public bool Chernenie { get; set; }
+
 
 
 
@@ -24,6 +30,8 @@ namespace KvotaWeb.Models.Items
             var rr = base.ToListItem();
             rr.param11 = Vid;
             rr.param13 = Ploshad;
+            rr.param14 = Obrazec;
+            rr.param15 = Chernenie;
             return rr;
         }
 
@@ -38,28 +46,146 @@ namespace KvotaWeb.Models.Items
 
                 Vid = li.param11,
                 Ploshad = li.param13,
-            };
+             Obrazec =li.param14,
+             Chernenie= li.param15
+        };
         }
 
         public override List<CalcLine> Calc()
-
         {
             var ret = new List<CalcLine>();
-            foreach (Postavs i in Enum.GetValues(typeof(Postavs)))
-            {
-                var line = new CalcLine() { Postav = i };
-                ret.Add(line);
-                if (Vid == null || Tiraz == null || Ploshad ==null) continue;
 
-                var ploshad = Math.Max(2, Ploshad.Value);
-                decimal? cena= GetCena(i, Vid.Value, (decimal)ploshad);
-                if (cena == null) continue;
+            kvotaEntities db = new kvotaEntities();
+                            decimal nacenk;
 
-                decimal? cenaPriladki = GetCenaPriladki(i, Vid.Value);
-                if (cenaPriladki == null) continue;
+            if (Vid != null && Tiraz != null && Ploshad != null)
+                foreach (var firma in db.Firma)
+                {
+                    
 
-                line.Cena = cena.Value * (decimal)Tiraz.Value+ cenaPriladki.Value;
-            }
+                    var line = new CalcLine() { FirmaId = firma.id };
+
+                    if (new int[] { 665, 666, 667 }.Contains(Vid.Value))
+                    {
+                        PriceDto cena = null;
+                        if (new int[] { 665, 666 }.Contains(Vid.Value) && TryGetPrice(firma.id, Tiraz, Vid, out cena))
+                        {
+                            line.Cena = cena.isAllTiraz ? cena.Cena : cena.Cena * (decimal)Tiraz.Value;
+                        }
+                        else if (Vid == 667)
+                        {
+                            if (TryGetPrice(firma.id, Tiraz, Vid, out cena))
+                            {
+                                line.Cena = cena.isAllTiraz ? cena.Cena : cena.Cena * (decimal)Tiraz.Value;
+                            }
+                            else if (TryGetSingleParam(683, firma.id, out nacenk))
+                            {
+                                line.Cena = nacenk * (decimal)Ploshad * (decimal)Tiraz.Value;
+                            }
+                            else continue;
+                        }
+                            else continue;
+
+                        if (Ploshad > 5)
+                        {
+                            var diff = (int)Ploshad - 5;
+                            PriceDto cenaNacenk;
+                            int paramId;
+                            if (Vid == 665) paramId = 679;
+                            else
+                            if (Vid == 666) paramId = 681;
+                            else paramId = 684;
+
+                            if (TryGetSingleParam(paramId, firma.id, out nacenk))
+                            {
+                                line.Cena += nacenk * diff * (decimal)Tiraz.Value;
+                            }
+                            else
+                            if (TryGetPrice(firma.id, Tiraz, 745, out cenaNacenk) == false)
+                            {
+                                line.Cena += cenaNacenk.Cena * diff * (decimal)Tiraz.Value;
+
+                                if (TryGetSingleParam(686, firma.id, out nacenk))
+                                {
+                                    line.Cena += nacenk;
+                                }
+                                else continue;
+                            }
+                            else continue;
+                        }
+                    }
+                    else if (Vid.Value == 669)
+                    {
+                        PriceDto cena = null;
+                        if (TryGetPrice(firma.id, Tiraz, Vid, out cena))
+                        {
+                            line.Cena = cena.isAllTiraz ? cena.Cena : cena.Cena * (decimal)Tiraz.Value;
+                        }
+                        else if (TryGetSingleParam(688, firma.id, out nacenk))
+                        {
+                            line.Cena = nacenk * (decimal)Ploshad * (decimal)Tiraz.Value;
+                        }
+                        else continue;
+                    }
+                    else if (Vid.Value == 670)
+                    {
+                        PriceDto cena = null;
+                        int paramId = 0;
+                        if (Ploshad < 10) paramId = 673;
+                        else if (Ploshad < 20) paramId = 674;
+                        else if (Ploshad < 50) paramId = 675;
+                        else if (Ploshad < 100) paramId = 676;
+                        else  paramId = 677;
+
+                        if (TryGetPrice(firma.id, Tiraz, paramId, out cena))
+                        {
+                            line.Cena = cena.isAllTiraz ? cena.Cena : cena.Cena * (decimal)Tiraz.Value;
+                        }
+                        else continue;
+                    }
+                    else
+                    {
+                        PriceDto cena = null;
+
+                        if (TryGetPrice(firma.id, Tiraz, Vid, out cena))
+                        {
+                            line.Cena = cena.isAllTiraz ? cena.Cena : cena.Cena * (decimal)Tiraz.Value;
+                            line.Cena *= (decimal)Ploshad;
+                        }
+                        else continue;
+                    }
+
+                    if (Obrazec)
+                        {
+                            int paramId;
+                            if (Vid == 665) paramId = 678;
+                            else
+                            if (Vid == 666) paramId = 680;
+                            else
+                            if (Vid == 667)  paramId = 682;
+                            else
+                            if (Vid == 669)  paramId = 687;
+                            else
+                            //if (Vid == 670)
+                            paramId = 691;
+                            if (TryGetSingleParam(paramId, firma.id, out nacenk))
+                            {
+                                line.Cena += nacenk ;
+                            }
+                            else continue;
+                        }
+                        if (Chernenie)
+                    {
+                        if (TryGetSingleParam((Vid==667)?685:690, firma.id, out nacenk))
+                        {
+                            line.Cena *= (100.0m+nacenk)/100;
+                        }
+                        else continue;
+                    }
+
+                    ret.Add(line);
+                }
+
             return ret;
 
         }

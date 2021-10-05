@@ -19,7 +19,8 @@
             @Html.LabelFor(model => model.Vid)
         </div>
         <div class="col-sm-7">
-            @Html.DropDownListFor(model => model.Vid, @ViewData["params1"] as SelectList, "(не выбрано)", new { @id = "param1", @class = "form-control", @onchange = "OnChangeEvent();" })
+            @Html.DropDownListFor(model => model.Vid, @ViewData["params1"] as SelectList, "(не выбрано)"
+                                , new { @id = "paramGravirovka1" + Model.Id, @class = "form-control", @onchange = "OnChangeParamEventGravirovka1(" + Model.Id + ");" })
             @Html.ValidationMessageFor(model => model.Vid, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -34,10 +35,24 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" id="@("paramDiv4"+Model.Id)" style=@ViewData["paramDivStyle4"] align="left">
+        <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+            @Html.EditorFor(model => model.Obrazec, new { htmlAttributes = new { id = "paramGravirovka4" + Model.Id, @onchange = "OnChangeEvent();" } })
+            @Html.LabelFor(model => model.Obrazec, new { @for = "paramGravirovka4" + Model.Id })
+        </div>
+    </div>
+
+    <div class="form-group" id="@("paramDiv5"+Model.Id)" style=@ViewData["paramDivStyle5"] align="left">
+        <div class="col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7">
+            @Html.EditorFor(model => model.Chernenie, new { htmlAttributes = new { id = "paramGravirovka5" + Model.Id, @onchange = "OnChangeEvent();" } })
+            @Html.LabelFor(model => model.Chernenie, new { @for = "paramGravirovka5" + Model.Id })
+        </div>
+    </div>
+
+    <!--<div class="form-group">
         <label class="control-label col-sm-5">Срок изготовления:</label>
         <label class="control-label col-sm-7" style="text-align:left;">@Model.Srok </label>
-    </div>
+    </div>-->
 
     @if (Model.Description != null)
     {
@@ -46,4 +61,16 @@
             <label class="control-label col-sm-7" style="text-align:left;">@Model.Description </label>
         </div>
     }
+
+    <script type="text/javascript">
+        function OnChangeParamEventGravirovka1(modelId) {
+            //var catId = $(this).val();
+            var catId = $('#paramGravirovka1' + modelId).val();
+            if (catId == 667 || catId == 669)
+                document.getElementById('paramDiv5' + modelId).style.display = "none";
+            else
+                document.getElementById('paramDiv5' + modelId).style.display = "block";
+            OnChangeEvent();
+        }
+    </script>
 </div>

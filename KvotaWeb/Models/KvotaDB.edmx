@@ -13,6 +13,13 @@
           <Property Name="tip" Type="nvarchar(max)" />
           <Property Name="parentId" Type="int" />
         </EntityType>
+        <EntityType Name="Firma">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="ListItem">
           <Key>
             <PropertyRef Name="id" />
@@ -83,7 +90,9 @@
           <Property Name="subtip" Type="nvarchar(max)" />
           <Property Name="tiraz" Type="int" Nullable="false" />
           <Property Name="cena" Type="float" Nullable="false" />
-          <Property Name="firma" Type="float" Nullable="false" />
+          <Property Name="firma0" Type="float" />
+          <Property Name="firma" Type="int" />
+          <Property Name="isAllTiraz" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -120,6 +129,7 @@
         </EntityType>
         <EntityContainer Name="Хранилище kvotaModelContainer">
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Firma" EntityType="Self.Firma" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ListItem" EntityType="Self.ListItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Price" EntityType="Self.Price" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
@@ -132,11 +142,12 @@
       <Schema Namespace="kvotaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="kvotaEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Category" EntityType="kvotaModel.Category" />
+          <EntitySet Name="Firma" EntityType="kvotaModel.Firma" />
           <EntitySet Name="ListItem" EntityType="kvotaModel.ListItem" />
-          <EntitySet Name="Price" EntityType="kvotaModel.Price" />
+          <EntitySet Name="Product" EntityType="kvotaModel.Product" />
           <EntitySet Name="Rabotnik" EntityType="kvotaModel.Rabotnik" />
           <EntitySet Name="Zakaz" EntityType="kvotaModel.Zakaz" />
-          <EntitySet Name="Product" EntityType="kvotaModel.Product" />
+          <EntitySet Name="Price" EntityType="kvotaModel.Price" />
         </EntityContainer>
         <EntityType Name="Category">
           <Key>
@@ -145,6 +156,13 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="tip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="parentId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Firma">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ListItem">
           <Key>
@@ -207,16 +225,12 @@
           <Property Name="param64" Type="Boolean" Nullable="false" />
           <Property Name="parentId" Type="Int32" />
         </EntityType>
-        <EntityType Name="Price">
+        <EntityType Name="Product">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="catId" Type="Int32" Nullable="false" />
-          <Property Name="subtip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="tiraz" Type="Int32" Nullable="false" />
-          <Property Name="cena" Type="Double" Nullable="false" />
-          <Property Name="firma" Type="Double" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="istochnikCen" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Rabotnik">
           <Key>
@@ -244,12 +258,18 @@
           <Property Name="dat" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="userName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="Product">
+        <EntityType Name="Price">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="istochnikCen" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="catId" Type="Int32" Nullable="false" />
+          <Property Name="subtip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="tiraz" Type="Int32" Nullable="false" />
+          <Property Name="cena" Type="Double" Nullable="false" />
+          <Property Name="firma0" Type="Double" />
+          <Property Name="firma" Type="Int32" />
+          <Property Name="isAllTiraz" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -262,6 +282,14 @@
               <MappingFragment StoreEntitySet="Category">
                 <ScalarProperty Name="parentId" ColumnName="parentId" />
                 <ScalarProperty Name="tip" ColumnName="tip" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Firma">
+            <EntityTypeMapping TypeName="kvotaModel.Firma">
+              <MappingFragment StoreEntitySet="Firma">
+                <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -328,14 +356,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Price">
-            <EntityTypeMapping TypeName="kvotaModel.Price">
-              <MappingFragment StoreEntitySet="Price">
-                <ScalarProperty Name="firma" ColumnName="firma" />
-                <ScalarProperty Name="cena" ColumnName="cena" />
-                <ScalarProperty Name="tiraz" ColumnName="tiraz" />
-                <ScalarProperty Name="subtip" ColumnName="subtip" />
-                <ScalarProperty Name="catId" ColumnName="catId" />
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="kvotaModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="istochnikCen" ColumnName="istochnikCen" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -368,10 +392,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Product">
-            <EntityTypeMapping TypeName="kvotaModel.Product">
-              <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="istochnikCen" ColumnName="istochnikCen" />
+          <EntitySetMapping Name="Price">
+            <EntityTypeMapping TypeName="kvotaModel.Price">
+              <MappingFragment StoreEntitySet="Price">
+                <ScalarProperty Name="isAllTiraz" ColumnName="isAllTiraz" />
+                <ScalarProperty Name="firma" ColumnName="firma" />
+                <ScalarProperty Name="firma0" ColumnName="firma0" />
+                <ScalarProperty Name="cena" ColumnName="cena" />
+                <ScalarProperty Name="tiraz" ColumnName="tiraz" />
+                <ScalarProperty Name="subtip" ColumnName="subtip" />
+                <ScalarProperty Name="catId" ColumnName="catId" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
