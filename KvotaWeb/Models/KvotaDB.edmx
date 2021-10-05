@@ -144,10 +144,10 @@
           <EntitySet Name="Category" EntityType="kvotaModel.Category" />
           <EntitySet Name="Firma" EntityType="kvotaModel.Firma" />
           <EntitySet Name="ListItem" EntityType="kvotaModel.ListItem" />
+          <EntitySet Name="Price" EntityType="kvotaModel.Price" />
           <EntitySet Name="Product" EntityType="kvotaModel.Product" />
           <EntitySet Name="Rabotnik" EntityType="kvotaModel.Rabotnik" />
           <EntitySet Name="Zakaz" EntityType="kvotaModel.Zakaz" />
-          <EntitySet Name="Price" EntityType="kvotaModel.Price" />
         </EntityContainer>
         <EntityType Name="Category">
           <Key>
@@ -225,6 +225,19 @@
           <Property Name="param64" Type="Boolean" Nullable="false" />
           <Property Name="parentId" Type="Int32" />
         </EntityType>
+        <EntityType Name="Price">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="catId" Type="Int32" Nullable="false" />
+          <Property Name="subtip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="tiraz" Type="Int32" Nullable="false" />
+          <Property Name="cena" Type="Double" Nullable="false" />
+          <Property Name="firma0" Type="Double" />
+          <Property Name="firma" Type="Int32" />
+          <Property Name="isAllTiraz" Type="Boolean" Nullable="false" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="id" />
@@ -258,20 +271,7 @@
           <Property Name="dat" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="userName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="Price">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="catId" Type="Int32" Nullable="false" />
-          <Property Name="subtip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="tiraz" Type="Int32" Nullable="false" />
-          <Property Name="cena" Type="Double" Nullable="false" />
-          <Property Name="firma0" Type="Double" />
-          <Property Name="firma" Type="Int32" />
-          <Property Name="isAllTiraz" Type="Boolean" Nullable="false" />
-        </EntityType>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -356,6 +356,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Price">
+            <EntityTypeMapping TypeName="kvotaModel.Price">
+              <MappingFragment StoreEntitySet="Price">
+                <ScalarProperty Name="isAllTiraz" ColumnName="isAllTiraz" />
+                <ScalarProperty Name="firma" ColumnName="firma" />
+                <ScalarProperty Name="firma0" ColumnName="firma0" />
+                <ScalarProperty Name="cena" ColumnName="cena" />
+                <ScalarProperty Name="tiraz" ColumnName="tiraz" />
+                <ScalarProperty Name="subtip" ColumnName="subtip" />
+                <ScalarProperty Name="catId" ColumnName="catId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Product">
             <EntityTypeMapping TypeName="kvotaModel.Product">
               <MappingFragment StoreEntitySet="Product">
@@ -388,20 +402,6 @@
                 <ScalarProperty Name="total" ColumnName="total" />
                 <ScalarProperty Name="comment" ColumnName="comment" />
                 <ScalarProperty Name="num" ColumnName="num" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Price">
-            <EntityTypeMapping TypeName="kvotaModel.Price">
-              <MappingFragment StoreEntitySet="Price">
-                <ScalarProperty Name="isAllTiraz" ColumnName="isAllTiraz" />
-                <ScalarProperty Name="firma" ColumnName="firma" />
-                <ScalarProperty Name="firma0" ColumnName="firma0" />
-                <ScalarProperty Name="cena" ColumnName="cena" />
-                <ScalarProperty Name="tiraz" ColumnName="tiraz" />
-                <ScalarProperty Name="subtip" ColumnName="subtip" />
-                <ScalarProperty Name="catId" ColumnName="catId" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

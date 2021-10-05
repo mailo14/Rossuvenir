@@ -159,16 +159,17 @@ namespace KvotaWeb.Models.Items
             var tiraz = (decimal)dTiraz;
             if (tiraz == 0) return false;
 
-                kvotaEntities db = new kvotaEntities();
-                var minTiraz = (from p in db.Price where p.firma == firmaId && p.catId == catId orderby p.tiraz select (int?)p.tiraz).FirstOrDefault();
-                if (!minTiraz.HasValue) return false;
+            kvotaEntities db = new kvotaEntities();
+            var minTiraz = (from p in db.Price where p.firma == firmaId && p.catId == catId orderby p.tiraz select (int?)p.tiraz).FirstOrDefault();
+            if (!minTiraz.HasValue) return false;
 
-                var maxTirazi = (from p in db.Price where p.firma == firmaId && p.catId == catId orderby p.tiraz descending select p.tiraz).Take(2).ToArray();
-                if (maxTirazi.Length == 2 && tiraz > 2 * maxTirazi[0] - maxTirazi[1]) InnerMessageIds.Add(InnerMessages.AskBetterPrice);
+            var maxTirazi = (from p in db.Price where p.firma == firmaId && p.catId == catId orderby p.tiraz descending select p.tiraz).Take(2).ToArray();
+            if (maxTirazi.Length == 2 && tiraz > 2 * maxTirazi[0] - maxTirazi[1]) InnerMessageIds.Add(InnerMessages.AskBetterPrice);
+            Price price;
+
             if (tiraz < minTiraz)
             {
-                var price = (from p in db.Price where p.firma == firmaId && p.catId == catId && p.tiraz == minTiraz select p).First();
-
+                price = (from p in db.Price where p.firma == firmaId && p.catId == catId && p.tiraz == minTiraz select p).First();
                 cena.Cena = (decimal)price.cena;
                 if (price.isAllTiraz)
                     cena.isAllTiraz = true;
@@ -177,9 +178,12 @@ namespace KvotaWeb.Models.Items
             }
             else
             {
-                cena.Cena = (decimal)(from p in db.Price where p.firma == firmaId && p.catId == catId && p.tiraz <= tiraz orderby p.tiraz descending select p.cena).First();
+                price = (from p in db.Price where p.firma == firmaId && p.catId == catId && p.tiraz <= tiraz orderby p.tiraz descending select p).First();
+                cena.Cena = (decimal)price.cena;
+                if (price.isAllTiraz)
+                    cena.isAllTiraz = true;
             }
-                return true;
+            return true;
         }
 
         public bool TryGetPrice(Postavs i, double? tiraz, int? razmer, out decimal cena)

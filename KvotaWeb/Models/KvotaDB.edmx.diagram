@@ -8,10 +8,10 @@
         <EntityTypeShape EntityType="kvotaModel.Category" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="kvotaModel.Firma" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="kvotaModel.ListItem" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="kvotaModel.Price" Width="1.5" PointX="2.75" PointY="3.75" />
         <EntityTypeShape EntityType="kvotaModel.Product" Width="1.5" PointX="4.75" PointY="0.75" />
         <EntityTypeShape EntityType="kvotaModel.Rabotnik" Width="1.5" PointX="4.75" PointY="3.75" />
         <EntityTypeShape EntityType="kvotaModel.Zakaz" Width="1.5" PointX="6.75" PointY="0.75" />
-        <EntityTypeShape EntityType="kvotaModel.Price" Width="1.5" PointX="3.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

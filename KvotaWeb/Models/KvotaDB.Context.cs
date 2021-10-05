@@ -28,9 +28,9 @@ namespace KvotaWeb.Models
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<Firma> Firma { get; set; }
         public virtual DbSet<ListItem> ListItem { get; set; }
+        public virtual DbSet<Price> Price { get; set; }
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<Rabotnik> Rabotnik { get; set; }
         public virtual DbSet<Zakaz> Zakaz { get; set; }
-        public virtual DbSet<Price> Price { get; set; }
     }
 }
